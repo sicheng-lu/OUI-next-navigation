@@ -9,32 +9,25 @@
  * GitHub history for details.
  */
 
-import React, { useState, useMemo } from 'react';
+import React, { useContext, useState, useMemo } from 'react';
 
 import {
   OuiButtonIcon,
-  OuiCompressedTextArea,
   OuiHorizontalRule,
   OuiIcon,
   OuiTab,
   OuiTabs,
-  OuiText,
-  OuiTitle,
 } from '../../../../src/components';
+import { OuiThreadInput } from '../../../../src/components/thread_input';
 
 import { SOURCE_PAGE_MOCK } from './session_models';
+import { ThemeContext } from '../../components/with_theme';
 
 /**
  * Quick access shortcut definitions.
  * Maps to existing OUI icon assets.
  */
 const QUICK_ACCESS_ITEMS = [
-  {
-    key: 'new-chat',
-    label: 'New chat',
-    icon: 'generate',
-    action: 'thread',
-  },
   {
     key: 'discover-log',
     label: 'Discover (log)',
@@ -89,36 +82,36 @@ const FILTER_CHIPS = [
  */
 const CHIP_DATA = {
   favorites: [
-    { key: 'fav-1', title: 'System overview', subtitle: 'Dashboard · Updated 5 min ago' },
-    { key: 'fav-2', title: 'Error rate by service', subtitle: 'Saved log · source=logs | where level="ERROR"' },
-    { key: 'fav-3', title: 'CPU utilization', subtitle: 'Saved metric · source=metrics | stats avg(cpu) by host' },
-    { key: 'fav-4', title: 'Payment service P99 latency breach', subtitle: 'Alert · Critical · 15 min ago' },
-    { key: 'fav-5', title: 'API performance', subtitle: 'Dashboard · Updated 30 min ago' },
+    { key: 'fav-1', title: 'System overview', type: 'Dashboard', time: '5 min ago' },
+    { key: 'fav-2', title: 'Error rate by service', type: 'Saved log', time: '2 hours ago' },
+    { key: 'fav-3', title: 'CPU utilization', type: 'Saved metric', time: '1 hour ago' },
+    { key: 'fav-4', title: 'Payment service P99 latency breach', type: 'Alert', time: '15 min ago' },
+    { key: 'fav-5', title: 'API performance', type: 'Dashboard', time: '30 min ago' },
   ],
   dashboards: [
-    { key: 'dash-1', title: 'System overview', subtitle: 'Updated 5 min ago' },
-    { key: 'dash-2', title: 'Web traffic analytics', subtitle: 'Updated 15 min ago' },
-    { key: 'dash-3', title: 'API performance', subtitle: 'Updated 30 min ago' },
-    { key: 'dash-4', title: 'Payment service — connection pool', subtitle: 'Created from thread · just now' },
+    { key: 'dash-1', title: 'System overview', type: 'Dashboard', time: '5 min ago' },
+    { key: 'dash-2', title: 'Web traffic analytics', type: 'Dashboard', time: '15 min ago' },
+    { key: 'dash-3', title: 'API performance', type: 'Dashboard', time: '30 min ago' },
+    { key: 'dash-4', title: 'Payment service — connection pool', type: 'Dashboard', time: 'Just now' },
   ],
   'saved-logs': [
-    { key: 'log-1', title: 'Error rate by service', subtitle: 'source=logs | where level="ERROR"' },
-    { key: 'log-2', title: 'Auth failure events', subtitle: 'source=logs | where event="auth_fail"' },
-    { key: 'log-3', title: 'Slow query log', subtitle: 'source=logs | where duration > 5000' },
-    { key: 'log-4', title: 'Payment service timeout logs', subtitle: 'source=payment | where level="WARN"' },
-    { key: 'log-5', title: 'Connection timeout errors', subtitle: 'source=logs | where severity="ERROR"' },
+    { key: 'log-1', title: 'Error rate by service', type: 'Saved log', time: '2 hours ago' },
+    { key: 'log-2', title: 'Auth failure events', type: 'Saved log', time: '4 hours ago' },
+    { key: 'log-3', title: 'Slow query log', type: 'Saved log', time: '1 day ago' },
+    { key: 'log-4', title: 'Payment service timeout logs', type: 'Saved log', time: '3 hours ago' },
+    { key: 'log-5', title: 'Connection timeout errors', type: 'Saved log', time: '6 hours ago' },
   ],
   'saved-metric': [
-    { key: 'met-1', title: 'Throughput over time', subtitle: 'source=metrics | stats avg(throughput)' },
-    { key: 'met-2', title: 'CPU utilization', subtitle: 'source=metrics | stats avg(cpu) by host' },
-    { key: 'met-3', title: 'Memory pressure', subtitle: 'source=metrics | stats max(mem_used)' },
-    { key: 'met-4', title: 'Disk I/O by volume', subtitle: 'source=metrics | stats avg(disk_io) by volume' },
+    { key: 'met-1', title: 'Throughput over time', type: 'Saved metric', time: '1 hour ago' },
+    { key: 'met-2', title: 'CPU utilization', type: 'Saved metric', time: '2 hours ago' },
+    { key: 'met-3', title: 'Memory pressure', type: 'Saved metric', time: '30 min ago' },
+    { key: 'met-4', title: 'Disk I/O by volume', type: 'Saved metric', time: '45 min ago' },
   ],
   alerts: [
-    { key: 'alert-1', title: 'CPU threshold exceeded', subtitle: 'Critical · 10 min ago' },
-    { key: 'alert-2', title: 'Disk usage warning', subtitle: 'Warning · 1 hour ago' },
-    { key: 'alert-3', title: 'Error rate spike', subtitle: 'Critical · 3 hours ago' },
-    { key: 'alert-4', title: 'Payment service P99 latency breach', subtitle: 'Critical · 15 min ago' },
+    { key: 'alert-1', title: 'CPU threshold exceeded', type: 'Alert · Critical', time: '10 min ago' },
+    { key: 'alert-2', title: 'Disk usage warning', type: 'Alert · Warning', time: '1 hour ago' },
+    { key: 'alert-3', title: 'Error rate spike', type: 'Alert · Critical', time: '3 hours ago' },
+    { key: 'alert-4', title: 'Payment service P99 latency breach', type: 'Alert · Critical', time: '15 min ago' },
   ],
 };
 
@@ -200,104 +193,6 @@ const SystemCallout = ({ alert, onAction }) => {
   );
 };
 
-/**
- * DualPurposeInput — Input field that accepts AI prompts or page search queries.
- *
- * @param {Object} props
- * @param {(prompt: string) => void} props.onStartThread
- * @param {(pageKey: string) => void} props.onOpenPage
- */
-const DualPurposeInput = ({ onStartThread, onOpenPage, onSearchChange }) => {
-  const [inputValue, setInputValue] = useState('');
-  const [showSuggestions, setShowSuggestions] = useState(false);
-
-  const matchingPages = useMemo(() => {
-    if (!inputValue.trim()) return [];
-    const query = inputValue.toLowerCase();
-    return Object.entries(SOURCE_PAGE_MOCK)
-      .filter(([, { title }]) => title.toLowerCase().includes(query))
-      .map(([key, { title }]) => ({ key, title }));
-  }, [inputValue]);
-
-  const handleChange = (e) => {
-    const value = e.target.value;
-    setInputValue(value);
-    setShowSuggestions(value.trim().length > 0);
-    if (onSearchChange) {
-      onSearchChange(value);
-    }
-  };
-
-  const handleSubmit = (e) => {
-    if (e.key === 'Enter' && inputValue.trim()) {
-      // Check if input matches a page
-      const exactMatch = Object.entries(SOURCE_PAGE_MOCK).find(
-        ([, { title }]) =>
-          title.toLowerCase() === inputValue.trim().toLowerCase()
-      );
-      if (exactMatch) {
-        onOpenPage(exactMatch[0]);
-      } else {
-        onStartThread(inputValue.trim());
-      }
-      setInputValue('');
-      setShowSuggestions(false);
-    }
-  };
-
-  const handleSelectPage = (pageKey) => {
-    onOpenPage(pageKey);
-    setInputValue('');
-    setShowSuggestions(false);
-  };
-
-  return (
-    <div className="emptySessionPage__inputWrap">
-      <div className="emptySessionPage__inputField">
-        <OuiCompressedTextArea
-          placeholder="Ask anything. Type / for actions."
-          value={inputValue}
-          onChange={handleChange}
-          onKeyDown={handleSubmit}
-          rows={3}
-          resize="none"
-          fullWidth
-          className="emptySessionPage__textarea"
-        />
-        <div className="emptySessionPage__inputActions">
-          <OuiButtonIcon
-            iconType="plus"
-            aria-label="Add attachment"
-            size="s"
-            color="text"
-          />
-          <OuiButtonIcon
-            iconType="sortUp"
-            aria-label="Send"
-            display="fill"
-            size="s"
-            isDisabled={!inputValue.trim()}
-            onClick={() => {
-              if (inputValue.trim()) {
-                const exactMatch = Object.entries(SOURCE_PAGE_MOCK).find(
-                  ([, { title }]) =>
-                    title.toLowerCase() === inputValue.trim().toLowerCase()
-                );
-                if (exactMatch) {
-                  onOpenPage(exactMatch[0]);
-                } else {
-                  onStartThread(inputValue.trim());
-                }
-                setInputValue('');
-                setShowSuggestions(false);
-              }
-            }}
-          />
-        </div>
-      </div>
-    </div>
-  );
-};
 
 /**
  * QuickAccessRow — Row of circular icon buttons for common actions.
@@ -338,6 +233,16 @@ const QuickAccessRow = ({ onStartThread, onOpenPage }) => {
       </div>
       {showMore && (
         <div className="emptySessionPage__moreOptions">
+          <div className="emptySessionPage__moreOptionsHeader">
+            <span className="emptySessionPage__moreOptionsTitle">More options</span>
+            <OuiButtonIcon
+              iconType="cross"
+              aria-label="Close more options"
+              size="s"
+              color="text"
+              onClick={() => setShowMore(false)}
+            />
+          </div>
           {Object.entries(SOURCE_PAGE_MOCK).map(([pageKey, { title }]) => (
             <button
               key={pageKey}
@@ -547,6 +452,30 @@ export const EmptySessionPage = ({
   favoriteItems = [],
   systemAlert = null,
 }) => {
+  const themeContext = useContext(ThemeContext);
+  const isDark = themeContext.theme === 'v9-dark';
+
+  // Graph paper grid background (matching login page)
+  const gridColor = isDark
+    ? 'rgba(122, 159, 212, 0.12)'
+    : 'rgba(46, 74, 143, 0.04)';
+  const gridColorSmall = isDark
+    ? 'rgba(122, 159, 212, 0.05)'
+    : 'rgba(46, 74, 143, 0.015)';
+  const bgColor = isDark ? '#060D1A' : '#F4F6FB';
+
+  const gridBackground = `
+    linear-gradient(to right, ${gridColor} 1px, transparent 1px),
+    linear-gradient(to bottom, ${gridColor} 1px, transparent 1px),
+    linear-gradient(to right, ${gridColorSmall} 1px, transparent 1px),
+    linear-gradient(to bottom, ${gridColorSmall} 1px, transparent 1px)
+  `;
+
+  const vignetteColor = isDark
+    ? 'rgba(6, 13, 26, 0.85)'
+    : 'rgba(244, 246, 251, 0.9)';
+  const vignette = `radial-gradient(ellipse at center, transparent 40%, ${vignetteColor} 100%)`;
+
   const [activeChip, setActiveChip] = useState('favorites');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -576,22 +505,65 @@ export const EmptySessionPage = ({
   }, [searchQuery, allSearchableItems]);
 
   return (
-    <div className="emptySessionPage">
-      <div className="emptySessionPage__panel">
-        {/* Welcome title */}
-        <div className="emptySessionPage__header">
-          <OuiTitle size="m">
-            <h1>Welcome to OpenSearch Observability</h1>
-          </OuiTitle>
-        </div>
-
+    <div
+      className="emptySessionPage"
+      style={{
+        backgroundColor: bgColor,
+        backgroundImage: gridBackground,
+        backgroundSize: '24px 24px, 24px 24px, 6px 6px, 6px 6px',
+        position: 'relative',
+      }}>
+      {/* Vignette overlay */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: vignette,
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+      <div className="emptySessionPage__panel" style={{ position: 'relative', zIndex: 1 }}>
         {/* Content container — max 832px */}
         <div className="emptySessionPage__content">
-          {/* Textarea input */}
-          <DualPurposeInput
-            onStartThread={onStartThread}
-            onOpenPage={onOpenPage}
-            onSearchChange={setSearchQuery}
+          {/* Title */}
+          <div className="emptySessionPage__header">
+            <h1>Hi Maya, what are you working on?</h1>
+          </div>
+
+          {/* Thread input */}
+          <OuiThreadInput
+            placeholder="Ask anything. Type / for actions."
+            value={searchQuery}
+            onChange={(value) => setSearchQuery(value)}
+            onSubmit={(value) => {
+              const exactMatch = Object.entries(SOURCE_PAGE_MOCK).find(
+                ([, { title }]) => title.toLowerCase() === value.trim().toLowerCase()
+              );
+              if (exactMatch) {
+                onOpenPage(exactMatch[0]);
+              } else {
+                onStartThread(value);
+              }
+            }}
+            rows={3}
+            actionsLeft={
+              <OuiButtonIcon
+                iconType="plus"
+                aria-label="Add attachment"
+                size="s"
+                color="text"
+              />
+            }
+            actionsRight={
+              <OuiButtonIcon
+                iconType="sortUp"
+                aria-label="Send"
+                display="fill"
+                size="s"
+                isDisabled={!searchQuery.trim()}
+              />
+            }
           />
 
           {/* Search results OR normal content */}
@@ -640,16 +612,19 @@ export const EmptySessionPage = ({
                 ))}
               </div>
 
-              {/* List items based on active chip */}
+              {/* Card items based on active chip */}
               <div className="emptySessionPage__tabContent">
                 {(CHIP_DATA[activeChip] || []).map((item) => (
                   <button
                     key={item.key}
                     type="button"
-                    className="emptySessionPage__listItem"
+                    className="emptySessionPage__card"
                     onClick={() => onOpenPage(activeChip === 'dashboards' ? 'dashboards' : activeChip === 'saved-logs' ? 'logs' : activeChip === 'saved-metric' ? 'metrics' : 'alerts')}>
-                    <span className="emptySessionPage__listItemTitle">{item.title}</span>
-                    <span className="emptySessionPage__listItemTime">{item.subtitle}</span>
+                    <span className="emptySessionPage__cardTitle">{item.title}</span>
+                    <span className="emptySessionPage__cardMeta">
+                      <span className="emptySessionPage__cardType">{item.type}</span>
+                      <span className="emptySessionPage__cardTime">{item.time}</span>
+                    </span>
                   </button>
                 ))}
               </div>
