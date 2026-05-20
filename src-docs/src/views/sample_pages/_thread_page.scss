@@ -710,6 +710,8 @@
 
 // Mock canvas pages
 .mockCanvasPage {
+  padding: 0;
+
   h4 {
     font-size: $ouiFontSizeS;
     font-weight: 600;
@@ -727,9 +729,15 @@
     margin-bottom: 2px;
   }
 
+  // Text content gets padding so it's not flush to edge
+  > .ouiText {
+    padding: 8px 12px;
+  }
+
   &--fullBody {
-    margin: -12px;
-    height: calc(100% + 24px);
+    padding: 0;
+    margin: 0;
+    height: 100%;
     display: flex;
     flex-direction: column;
   }
@@ -745,10 +753,14 @@
   border-radius: $ouiBorderRadius;
 }
 
-// Force border on panels in dashboard and canvas
+// Force border on panels in dashboard and canvas — no radius, flush to edges
+// sass-lint:disable no-important
 .threadPage__canvasTabContent .ouiPanel,
 .dashboardPage__content .ouiPanel,
 .mockCanvasPage--fullBody .ouiPanel,
 .mockCanvasPage .ouiPanel {
   border: 1px solid $ouiBorderColor !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
 }
+// sass-lint:enable no-important

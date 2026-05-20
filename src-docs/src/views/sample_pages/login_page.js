@@ -68,7 +68,7 @@ export const LoginPage = ({ onLogin }) => {
 
   return (
     <div
-      className="loginPage"
+      className="loginPage v9-grid-background"
       style={{
         display: 'flex',
         justifyContent: 'center',
@@ -142,10 +142,13 @@ export const LoginPage = ({ onLogin }) => {
                   style={
                     isDark
                       ? {
-                          '--ouiLogoPrimary': '#3B9FD9',
-                          '--ouiLogoSecondary': '#1A7BBF',
+                          '--ouiLogoPrimary': '#0284C7',
+                          '--ouiLogoSecondary': '#BAE6FD',
                         }
-                      : {}
+                      : {
+                          '--ouiLogoPrimary': '#075985',
+                          '--ouiLogoSecondary': '#082F49',
+                        }
                   }
                 />
               </OuiFlexItem>

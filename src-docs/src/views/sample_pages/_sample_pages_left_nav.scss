@@ -295,8 +295,10 @@
 .samplePagesLeftNav {
   width: 48px;
   min-width: 48px;
-  background-color: lightOrDarkTheme(rgba(255, 255, 255, 0.75), rgba(14, 21, 37, 0.80)); // sass-lint:disable-line no-color-literals
-  border-right: none;
+  background-color: lightOrDarkTheme(rgba(red($ouiColorEmptyShade), green($ouiColorEmptyShade), blue($ouiColorEmptyShade), 0.4), rgba(red($ouiColorEmptyShade), green($ouiColorEmptyShade), blue($ouiColorEmptyShade), 0.4)); // sass-lint:disable-line no-color-literals
+  border-right: 1px solid $ouiBorderColor;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -825,8 +827,8 @@
 // ============================================================
 .samplePagesContentPanel {
   height: 100%;
-  background-color: lightOrDarkTheme($ouiColorEmptyShade, $ouiPageBackgroundColor);
-  border-radius: 8px;
+  background-color: transparent;
+  border-radius: 0;
   overflow: hidden;
 }
 

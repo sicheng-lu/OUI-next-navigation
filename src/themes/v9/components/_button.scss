@@ -6,7 +6,22 @@
 // Agentic OSD Utility Button Styles
 // Pill-shaped buttons with lift hover effect and premium shadows
 
-// Force light text/icons on filled buttons in light mode,
+// sass-lint:disable no-important
+
+// Global transition on ALL buttons and button icons — covers every variant
+.ouiButton,
+.ouiButtonEmpty,
+.ouiButtonIcon {
+  transition:
+    transform 250ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 250ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    background-color 150ms ease-in-out,
+    border-color 150ms ease-in-out,
+    color 150ms ease-in-out !important;
+}
+
+// sass-lint:enable no-important
+
 // dark content in dark mode where primary is a lighter color
 // sass-lint:disable no-important
 .ouiButton--primary.ouiButton--fill:not(.ouiButton-isDisabled),

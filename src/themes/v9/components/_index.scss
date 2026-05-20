@@ -32,8 +32,8 @@
 
 // Logo colors - Agentic OSD Utility palette
 :root {
-  --ouiLogoPrimary: #{lightOrDarkTheme(#2E4A8F, #7A9FD4)};
-  --ouiLogoSecondary: #{lightOrDarkTheme(#4168B8, #B8D4F0)};
+  --ouiLogoPrimary: #{lightOrDarkTheme(#075985, #0284C7)};
+  --ouiLogoSecondary: #{lightOrDarkTheme(#082F49, #BAE6FD)};
 
   // Text colors for inline styles in popovers
   --ouiColorDarkShade: #{$ouiColorDarkShade};

@@ -5,7 +5,8 @@
 
 // sass-lint:disable no-color-literals, leading-zero, no-trailing-zero
 
-// V9 theme — Agentic OSD Utility: Solid backgrounds with graph paper grid and vignette
+// V9 theme — Agentic OSD Utility: Solid backgrounds
+// Grid and vignette are opt-in via .v9-grid-background class (login page only)
 
 // Graph paper grid variables
 $grid-size: 24px;
@@ -44,83 +45,59 @@ $grid-size-small: 6px;
   background-position: 0 0;
 }
 
+// Base page background — solid color, no grid
+html {
+  background-color: $ouiPageBackgroundColor;
+  min-height: 100vh;
+}
+
+body {
+  background: transparent;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+// sass-lint:disable no-important
+.ouiPage,
+.ouiPageBody {
+  background: transparent !important;
+}
+// sass-lint:enable no-important
+
+// ============================================================
+// OPT-IN: Grid + vignette — applied only to .v9-grid-background
+// Used by the login page only
+// ============================================================
+
 @if (lightness($ouiPageBackgroundColor) < 50) {
-  // ============================================================
-  // DARK MODE — Obsidian background with subtle blue grid
-  // ============================================================
-  html {
-    background-color: $ouiPageBackgroundColor;
+  // Dark mode grid
+  .v9-grid-background {
     @include graph-paper-grid-dark;
-    min-height: 100vh;
     position: relative;
 
-    // Vignette overlay - sits between grid background and content
-    // Fades the grid at edges but not the UI elements
     &::before {
       content: '';
-      position: fixed;
+      position: absolute;
       inset: 0;
       background: radial-gradient(ellipse at center, transparent 40%, rgba(6, 13, 26, 0.85) 100%);
       pointer-events: none;
       z-index: 0;
     }
   }
-
-  body {
-    background: transparent;
-    min-height: 100vh;
-    position: relative;
-    z-index: 1;
-  }
-
-  .ouiPage,
-  .ouiPageBody {
-    background: transparent !important; // sass-lint:disable-line no-important
-  }
-
-  // Utility class for applying grid to fixed containers
-  .v9-grid-background {
-    background-color: $ouiPageBackgroundColor;
-    @include graph-paper-grid-dark;
-  }
-
 } @else {
-  // ============================================================
-  // LIGHT MODE — Opal background with subtle blue grid
-  // ============================================================
-  html {
-    background-color: $ouiPageBackgroundColor;
+  // Light mode grid
+  .v9-grid-background {
     @include graph-paper-grid-light;
-    min-height: 100vh;
     position: relative;
 
-    // Vignette overlay - sits between grid background and content
-    // Fades the grid at edges but not the UI elements
     &::before {
       content: '';
-      position: fixed;
+      position: absolute;
       inset: 0;
       background: radial-gradient(ellipse at center, transparent 40%, rgba(244, 246, 251, 0.9) 100%);
       pointer-events: none;
       z-index: 0;
     }
-  }
-
-  body {
-    background: transparent;
-    min-height: 100vh;
-    position: relative;
-    z-index: 1;
-  }
-
-  .ouiPage,
-  .ouiPageBody {
-    background: transparent !important; // sass-lint:disable-line no-important
-  }
-
-  // Utility class for applying grid to fixed containers
-  .v9-grid-background {
-    background-color: $ouiPageBackgroundColor;
-    @include graph-paper-grid-light;
   }
 }

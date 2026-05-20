@@ -85,6 +85,7 @@
 .ouiDatePopoverButton,
 .ouiSuperDatePicker__prettyFormat {
   background-color: rgba(red($ouiFormBackgroundColor), green($ouiFormBackgroundColor), blue($ouiFormBackgroundColor), 0.55) !important;
+  border-radius: $ouiFormControlBorderRadius !important;
 }
 
 .ouiFormControlLayout:not(.ouiFormControlLayout--group) {
@@ -104,6 +105,7 @@
 .ouiSelect--compressed,
 .ouiDatePopoverButton-compressed {
   background-color: rgba(red($ouiFormBackgroundColor), green($ouiFormBackgroundColor), blue($ouiFormBackgroundColor), 0.55) !important;
+  border-radius: $ouiFormControlCompressedBorderRadius !important;
 }
 
 // Inside groups, inputs get no radius (group clips them)
@@ -368,7 +370,7 @@
 .ouiTextArea,
 .ouiDatePopoverButton,
 .ouiSuperDatePicker__prettyFormat {
-  transition: box-shadow 150ms ease-in-out, background-color 150ms ease-in-out !important;
+  transition: box-shadow 200ms cubic-bezier(0.22, 0.61, 0.36, 1), background-color 150ms ease-in-out, transform 200ms cubic-bezier(0.22, 0.61, 0.36, 1) !important;
 }
 
 .ouiFieldText:hover,

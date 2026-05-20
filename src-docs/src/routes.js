@@ -140,6 +140,8 @@ import { InnerTextExample } from './views/inner_text/inner_text_example';
 import { KeyPadMenuExample } from './views/key_pad_menu/key_pad_menu_example';
 
 import { LeftNavExample } from './views/left_nav/left_nav_example';
+import { ThreadLeftNavExample } from './views/thread_left_nav/thread_left_nav_example';
+import { ThreadSessionListItemExample } from './views/thread_session_list_item/thread_session_list_item_example';
 
 import { LinkExample } from './views/link/link_example';
 
@@ -370,6 +372,7 @@ const navigation = [
       FacetExample,
       KeyPadMenuExample,
       LeftNavExample,
+      ThreadLeftNavExample,
       LinkExample,
       PaginationExample,
       TreeViewExample,
@@ -418,6 +421,7 @@ const navigation = [
       StatExample,
       TextExample,
       ThreadListExample,
+      ThreadSessionListItemExample,
       TitleExample,
       ToastExample,
       ToolTipExample,

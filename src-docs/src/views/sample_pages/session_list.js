@@ -9,14 +9,16 @@
  * GitHub history for details.
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   OuiButton,
+  OuiFieldSearch,
   OuiIcon,
   OuiText,
   OuiTitle,
 } from '../../../../src/components';
+import { OuiThreadSessionListItem } from '../../../../src/components/thread_session_list_item';
 
 /**
  * Formats a timestamp into a human-readable relative time string.
@@ -51,6 +53,15 @@ export const SessionList = ({
   onSelectSession,
   onCreateSession,
 }) => {
+  const [query, setQuery] = useState('');
+
+  const filtered = [...sessions]
+    .sort((a, b) => b.createdAt - a.createdAt)
+    .filter((s) =>
+      query.trim() === '' ||
+      s.title.toLowerCase().includes(query.toLowerCase())
+    );
+
   return (
     <div className="sessionList">
       {/* Header */}
@@ -67,57 +78,48 @@ export const SessionList = ({
         </OuiButton>
       </div>
 
+      {/* Search */}
+      <div className="sessionList__search">
+        <OuiFieldSearch
+          placeholder="Search sessions..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          fullWidth
+          compressed
+          aria-label="Search sessions"
+        />
+      </div>
+
       {/* Session cards */}
       <div className="sessionList__cards">
-        {sessions.length === 0 ? (
+        {filtered.length === 0 ? (
           <div className="sessionList__empty">
             <OuiText size="s" color="subdued">
-              <p>No sessions yet. Create one to get started.</p>
+              <p>{query ? 'No sessions match your search.' : 'No sessions yet. Create one to get started.'}</p>
             </OuiText>
           </div>
         ) : (
-          sessions.map((session) => {
+          filtered.map((session) => {
             const isActive = session.id === activeSessionId;
             return (
-              <button
+              <OuiThreadSessionListItem
                 key={session.id}
-                className={`sessionList__card${
-                  isActive ? ' sessionList__card--active' : ''
+                title={session.title}
+                meta={`${formatSessionTime(session.createdAt)}${
+                  session.tabs.length > 0
+                    ? ` · ${session.tabs.length} ${session.tabs.length === 1 ? 'tab' : 'tabs'}`
+                    : ''
                 }`}
-                onClick={() => onSelectSession(session.id)}
-                aria-label={`${isActive ? 'Active session: ' : ''}${
-                  session.title
-                }`}
-                aria-current={isActive ? 'true' : undefined}>
-                <div className="sessionList__cardIcon">
+                icon={
                   <OuiIcon
                     type={session.threadKey ? 'discuss' : 'document'}
                     size="m"
                     color={isActive ? 'primary' : 'subdued'}
                   />
-                </div>
-                <div className="sessionList__cardContent">
-                  <span className="sessionList__cardTitle">
-                    {session.title}
-                  </span>
-                  <span className="sessionList__cardMeta">
-                    {formatSessionTime(session.createdAt)}
-                    {session.tabs.length > 0 && (
-                      <span className="sessionList__cardTabs">
-                        {' · '}
-                        {session.tabs.length}{' '}
-                        {session.tabs.length === 1 ? 'tab' : 'tabs'}
-                      </span>
-                    )}
-                  </span>
-                </div>
-                {isActive && (
-                  <span
-                    className="sessionList__activeIndicator"
-                    aria-hidden="true"
-                  />
-                )}
-              </button>
+                }
+                isActive={isActive}
+                onClick={() => onSelectSession(session.id)}
+              />
             );
           })
         )}

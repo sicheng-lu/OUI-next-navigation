@@ -100,9 +100,14 @@ export const SessionContainer = ({
     }
   }, [triggerAnimation, onUpdateSession, aiButtonHighlight, pendingAiResponse]);
 
+  const pagePanelWrapRef = useRef(null);
+
   const handleResize = useCallback((leftWidthPercent) => {
     if (threadPanelRef.current) {
       threadPanelRef.current.style.width = `${leftWidthPercent}%`;
+    }
+    if (pagePanelWrapRef.current) {
+      pagePanelWrapRef.current.style.width = `${100 - leftWidthPercent}%`;
     }
   }, []);
 
@@ -187,11 +192,11 @@ export const SessionContainer = ({
     leftWidth = '0px';
     rightStyle = { width: '100%' };
   } else if (isFullScreen) {
-    leftWidth = `calc(100% - ${COLLAPSED_WIDTH}px - 8px)`;
+    leftWidth = `calc(100% - ${COLLAPSED_WIDTH}px)`;
     rightStyle = { width: `${COLLAPSED_WIDTH}px` };
   } else {
     leftWidth = `${threadPanelWidth}%`;
-    rightStyle = { width: `calc(${100 - threadPanelWidth}% - 8px)` };
+    rightStyle = { width: `${100 - threadPanelWidth}%` };
   }
 
   return (
@@ -223,6 +228,7 @@ export const SessionContainer = ({
 
       {/* Right: Page panel */}
       <div
+        ref={pagePanelWrapRef}
         className={`sessionContainer__pagePanelWrap${
           isAnimating ? ' sessionContainer__pagePanelWrap--animating' : ''
         }`}

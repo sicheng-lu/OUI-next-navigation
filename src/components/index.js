@@ -362,7 +362,11 @@ export { useOuiTextDiff } from './text_diff';
 
 export { OuiThreadInput, OuiThreadScrollButton } from './thread_input';
 
+export { OuiThreadLeftNav } from './thread_left_nav';
+
 export { OuiThreadList, OuiThreadListItem } from './thread_list';
+
+export { OuiThreadSessionListItem } from './thread_session_list_item';
 
 export { OuiTitle } from './title';
 

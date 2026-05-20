@@ -50,48 +50,24 @@ const KVRow = ({ label, children }) => (
 // Alert detail page mock
 export const AlertPageMock = () => (
   <div className="mockCanvasPage">
-    <OuiFlexGroup gutterSize="m" responsive={false}>
-      <OuiFlexItem>
-        <OuiPanel paddingSize="m" hasShadow={false} hasBorder>
-          <OuiText size="m" color="danger">
-            <strong>2,340ms</strong>
-          </OuiText>
-          <OuiText size="xs" color="subdued">
-            P99 latency
-          </OuiText>
-        </OuiPanel>
-      </OuiFlexItem>
-      <OuiFlexItem>
-        <OuiPanel paddingSize="m" hasShadow={false} hasBorder>
-          <OuiText size="m">
-            <strong>&gt; 2,000ms</strong>
-          </OuiText>
-          <OuiText size="xs" color="subdued">
-            for 15 min
-          </OuiText>
-        </OuiPanel>
-      </OuiFlexItem>
-      <OuiFlexItem>
-        <OuiPanel paddingSize="m" hasShadow={false} hasBorder>
-          <OuiText size="m">
-            <strong>3 of 4 pods</strong>
-          </OuiText>
-          <OuiText size="xs" color="subdued">
-            breaching
-          </OuiText>
-        </OuiPanel>
-      </OuiFlexItem>
-      <OuiFlexItem>
-        <OuiPanel paddingSize="m" hasShadow={false} hasBorder>
-          <OuiText size="m">
-            <strong>—</strong>
-          </OuiText>
-          <OuiText size="xs" color="subdued">
-            notification target
-          </OuiText>
-        </OuiPanel>
-      </OuiFlexItem>
-    </OuiFlexGroup>
+    <div style={{ display: 'flex', gap: 1 }}>
+      <div style={{ flex: 1, padding: '12px 16px', borderRight: '1px solid var(--ouiBorderColor, #D4DCE8)' }}>
+        <OuiText size="m" color="danger"><strong>2,340ms</strong></OuiText>
+        <OuiText size="xs" color="subdued">P99 latency</OuiText>
+      </div>
+      <div style={{ flex: 1, padding: '12px 16px', borderRight: '1px solid var(--ouiBorderColor, #D4DCE8)' }}>
+        <OuiText size="m"><strong>&gt; 2,000ms</strong></OuiText>
+        <OuiText size="xs" color="subdued">for 15 min</OuiText>
+      </div>
+      <div style={{ flex: 1, padding: '12px 16px', borderRight: '1px solid var(--ouiBorderColor, #D4DCE8)' }}>
+        <OuiText size="m"><strong>3 of 4 pods</strong></OuiText>
+        <OuiText size="xs" color="subdued">breaching</OuiText>
+      </div>
+      <div style={{ flex: 1, padding: '12px 16px' }}>
+        <OuiText size="m"><strong>—</strong></OuiText>
+        <OuiText size="xs" color="subdued">notification target</OuiText>
+      </div>
+    </div>
 
     <OuiSpacer size="m" />
 
@@ -392,48 +368,24 @@ export const AppServicesPageMock = () => <EmptyPlaceholderPage title="Applicatio
 // Trace analysis page mock — payments-db trace waterfall
 export const TraceAnalysisPageMock = () => (
   <div className="mockCanvasPage">
-    <OuiFlexGroup gutterSize="m" responsive={false}>
-      <OuiFlexItem>
-        <OuiPanel paddingSize="m" hasShadow={false} hasBorder>
-          <OuiText size="m" color="danger">
-            <strong>8,400ms</strong>
-          </OuiText>
-          <OuiText size="xs" color="subdued">
-            Peak latency
-          </OuiText>
-        </OuiPanel>
-      </OuiFlexItem>
-      <OuiFlexItem>
-        <OuiPanel paddingSize="m" hasShadow={false} hasBorder>
-          <OuiText size="m">
-            <strong>12ms → 8,400ms</strong>
-          </OuiText>
-          <OuiText size="xs" color="subdued">
-            Latency spike
-          </OuiText>
-        </OuiPanel>
-      </OuiFlexItem>
-      <OuiFlexItem>
-        <OuiPanel paddingSize="m" hasShadow={false} hasBorder>
-          <OuiText size="m">
-            <strong>14:29:58</strong>
-          </OuiText>
-          <OuiText size="xs" color="subdued">
-            Spike start
-          </OuiText>
-        </OuiPanel>
-      </OuiFlexItem>
-      <OuiFlexItem>
-        <OuiPanel paddingSize="m" hasShadow={false} hasBorder>
-          <OuiText size="m" color="danger">
-            <strong>3 prior</strong>
-          </OuiText>
-          <OuiText size="xs" color="subdued">
-            Matching incidents
-          </OuiText>
-        </OuiPanel>
-      </OuiFlexItem>
-    </OuiFlexGroup>
+    <div style={{ display: 'flex', gap: 1 }}>
+      <div style={{ flex: 1, padding: '12px 16px', borderRight: '1px solid var(--ouiBorderColor, #D4DCE8)' }}>
+        <OuiText size="m" color="danger"><strong>8,400ms</strong></OuiText>
+        <OuiText size="xs" color="subdued">Peak latency</OuiText>
+      </div>
+      <div style={{ flex: 1, padding: '12px 16px', borderRight: '1px solid var(--ouiBorderColor, #D4DCE8)' }}>
+        <OuiText size="m"><strong>12ms → 8,400ms</strong></OuiText>
+        <OuiText size="xs" color="subdued">Latency spike</OuiText>
+      </div>
+      <div style={{ flex: 1, padding: '12px 16px', borderRight: '1px solid var(--ouiBorderColor, #D4DCE8)' }}>
+        <OuiText size="m"><strong>14:29:58</strong></OuiText>
+        <OuiText size="xs" color="subdued">Spike start</OuiText>
+      </div>
+      <div style={{ flex: 1, padding: '12px 16px' }}>
+        <OuiText size="m" color="danger"><strong>3 prior</strong></OuiText>
+        <OuiText size="xs" color="subdued">Matching incidents</OuiText>
+      </div>
+    </div>
 
     <OuiSpacer size="m" />
 
@@ -649,7 +601,7 @@ export const DashboardPageMock = () => (
   <div
     className="mockCanvasPage mockCanvasPage--fullBody"
     style={{ padding: 12, overflow: 'auto' }}>
-    <OuiFlexGroup gutterSize="m">
+    <OuiFlexGroup gutterSize="s">
       <OuiFlexItem>
         <OuiPanel paddingSize="m" hasShadow={false} hasBorder>
           <OuiStat
@@ -694,7 +646,7 @@ export const DashboardPageMock = () => (
 
     <OuiSpacer size="m" />
 
-    <OuiFlexGroup gutterSize="m">
+    <OuiFlexGroup gutterSize="s">
       <OuiFlexItem grow={2}>
         <OuiPanel paddingSize="m" hasShadow={false} hasBorder>
           <OuiTitle size="xs">

@@ -22,8 +22,8 @@
   min-width: 0;
   height: 100%;
   overflow: hidden;
-  background-color: $ouiColorEmptyShade;
-  border-radius: 8px;
+  background-color: transparent;
+  border-radius: 0;
 }
 
 // ============================================================
@@ -37,7 +37,7 @@
   border-bottom: 1px solid $ouiBorderColor;
   flex-shrink: 0;
   height: 48px;
-  padding: 0 0 0 $ouiSizeS;
+  padding: 0 0 0 8px;
   gap: $ouiSizeS;
 
   .sessionContainer--chatMinimized & {
@@ -231,19 +231,19 @@
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 16px;
+  padding: 0;
 }
 
-// Override detailPageHeader inside pagePanel — no border, 16px lr padding
+// Detail page header inside pagePanel — left padding only, right goes to edge
 .pagePanel .detailPageHeader__title {
-  border-bottom: none;
-  padding-left: 16px;
-  padding-right: 16px;
+  border-bottom: 1px solid $ouiBorderColor;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 .pagePanel .detailPageHeader__actions {
-  border-bottom: none;
-  padding-right: 16px;
+  border-bottom: 1px solid $ouiBorderColor;
+  padding-right: 12px;
 }
 
 // AI button in tab bar (when chat minimized)

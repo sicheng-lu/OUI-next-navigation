@@ -17,9 +17,10 @@
   height: 100%;
   min-width: 0;
   overflow: hidden;
-  background-color: $ouiColorEmptyShade;
-  border-radius: 8px;
+  background-color: transparent;
+  border-radius: 0;
   flex-shrink: 0;
+  border-right: 1px solid $ouiBorderColor;
 }
 
 .threadPanel--animating {
@@ -59,4 +60,5 @@
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  padding: $ouiSizeL;
 }
