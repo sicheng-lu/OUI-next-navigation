@@ -9,9 +9,10 @@
  * GitHub history for details.
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { ThemeContext } from '../../components/with_theme';
 
 // GLB path — served from the static build directory
 const LOGO_GLB_PATH = '/OpenSearch3D.glb';
@@ -28,6 +29,10 @@ export const Logo3DPage = () => {
   const modelGroupRef = useRef(null);
   const meshesRef = useRef([]);
   const originalMaterialsRef = useRef([]);
+  const modelDataRef = useRef({ baseScale: 1, center: new THREE.Vector3() });
+
+  const themeContext = useContext(ThemeContext);
+  const isDark = themeContext.theme === 'v9-dark';
 
   const [isWireframe, setIsWireframe] = useState(true);
   const [modelScale, setModelScale] = useState(3);
@@ -88,15 +93,19 @@ export const Logo3DPage = () => {
     loader.load(LOGO_GLB_PATH, (gltf) => {
       const model = gltf.scene;
 
-      // Center and scale
+      // Compute center and base scale
       const box = new THREE.Box3().setFromObject(model);
       const center = box.getCenter(new THREE.Vector3());
       const size = box.getSize(new THREE.Vector3());
       const maxDim = Math.max(size.x, size.y, size.z);
       const baseScale = 1 / maxDim;
+
+      // Store for later use
+      modelDataRef.current = { baseScale, center: center.clone() };
+
+      // Apply initial scale and center
       model.scale.setScalar(baseScale * modelScale);
-      model.position.sub(center.multiplyScalar(baseScale * modelScale));
-      model.userData.baseScale = baseScale;
+      model.position.copy(center).multiplyScalar(-baseScale * modelScale);
 
       // Collect meshes and store original materials
       const meshes = [];
@@ -213,10 +222,12 @@ export const Logo3DPage = () => {
       0xBAE6FD, // pale blue
     ];
 
+    const wireColor = isDark ? 0x7DD3FC : 0x1e3a5f;
+
     meshes.forEach((mesh, i) => {
       if (isWireframe) {
         mesh.material = new THREE.MeshBasicMaterial({
-          color: 0x1e3a5f,
+          color: wireColor,
           wireframe: true,
           transparent: true,
           opacity: 0.7,
@@ -230,17 +241,19 @@ export const Logo3DPage = () => {
         });
       }
     });
-  }, [isWireframe]);
+  }, [isWireframe, isDark]);
 
-  // Update scale
+  // Update scale — always anchor from center
   useEffect(() => {
     const group = modelGroupRef.current;
     if (!group || group.children.length === 0) return;
     const model = group.children[0];
-    const baseScale = model.userData.baseScale;
+    const { baseScale, center } = modelDataRef.current;
     if (!baseScale) return;
 
-    model.scale.setScalar(baseScale * modelScale);
+    const s = baseScale * modelScale;
+    model.scale.setScalar(s);
+    model.position.copy(center).multiplyScalar(-s);
   }, [modelScale]);
 
   return (
@@ -265,11 +278,11 @@ export const Logo3DPage = () => {
           alignItems: 'center',
           gap: 16,
           padding: '10px 20px',
-          background: 'rgba(255, 255, 255, 0.1)',
+          background: isDark ? 'rgba(6, 13, 26, 0.6)' : 'rgba(255, 255, 255, 0.15)',
           backdropFilter: 'blur(8px)',
           WebkitBackdropFilter: 'blur(8px)',
           borderRadius: 12,
-          border: '1px solid rgba(30, 58, 95, 0.2)',
+          border: isDark ? '1px solid rgba(122, 159, 212, 0.2)' : '1px solid rgba(30, 58, 95, 0.2)',
           zIndex: 10,
         }}>
         {/* Wireframe / Filled toggle */}
@@ -277,10 +290,12 @@ export const Logo3DPage = () => {
           onClick={() => setIsWireframe(!isWireframe)}
           style={{
             padding: '6px 14px',
-            border: '1px solid rgba(30, 58, 95, 0.3)',
+            border: isDark ? '1px solid rgba(122, 159, 212, 0.3)' : '1px solid rgba(30, 58, 95, 0.3)',
             borderRadius: 6,
-            background: isWireframe ? 'rgba(30, 58, 95, 0.1)' : 'rgba(30, 58, 95, 0.2)',
-            color: '#1e3a5f',
+            background: isDark
+              ? (isWireframe ? 'rgba(122, 159, 212, 0.1)' : 'rgba(122, 159, 212, 0.2)')
+              : (isWireframe ? 'rgba(30, 58, 95, 0.1)' : 'rgba(30, 58, 95, 0.2)'),
+            color: isDark ? '#BAE6FD' : '#1e3a5f',
             fontSize: 13,
             cursor: 'pointer',
             fontFamily: 'Outfit, sans-serif',
@@ -289,7 +304,7 @@ export const Logo3DPage = () => {
         </button>
 
         {/* Scale slider */}
-        <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: '#1e3a5f', fontFamily: 'Outfit, sans-serif' }}>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: isDark ? '#BAE6FD' : '#1e3a5f', fontFamily: 'Outfit, sans-serif' }}>
           Scale
           <input
             type="range"
