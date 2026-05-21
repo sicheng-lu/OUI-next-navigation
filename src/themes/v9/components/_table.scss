@@ -1,0 +1,9 @@
+// V9 override: table headers use body font (Outfit) instead of display font
+.ouiTableHeaderCell {
+  font-family: $ouiFontFamily;
+
+  .ouiTableHeaderButton,
+  .ouiTableCellContent__text {
+    font-family: $ouiFontFamily;
+  }
+}

@@ -143,30 +143,32 @@ export const NewTabPage = ({ onSelectPage }) => {
 
           <OuiHorizontalRule margin="m" />
 
-          <div className="emptySessionPage__chips">
-            {TAB_FILTER_CHIPS.map((chip) => (
-              <button
-                key={chip.key}
-                type="button"
-                className={`emptySessionPage__chip${activeChip === chip.key ? ' emptySessionPage__chip--active' : ''}`}
-                onClick={() => setActiveChip(chip.key)}>
-                <OuiIcon type={chip.icon} size="m" />
-                <span>{chip.label}</span>
-              </button>
-            ))}
-          </div>
+          <div className="emptySessionPage__chipsAndContent">
+            <div className="emptySessionPage__chips">
+              {TAB_FILTER_CHIPS.map((chip) => (
+                <button
+                  key={chip.key}
+                  type="button"
+                  className={`emptySessionPage__chip${activeChip === chip.key ? ' emptySessionPage__chip--active' : ''}`}
+                  onClick={() => setActiveChip(chip.key)}>
+                  <OuiIcon type={chip.icon} size="m" />
+                  <span>{chip.label}</span>
+                </button>
+              ))}
+            </div>
 
-          <div className="emptySessionPage__tabContent">
-            {(TAB_CHIP_DATA[activeChip] || []).map((item) => (
-              <button
-                key={item.key}
-                type="button"
-                className="emptySessionPage__listItem"
-                onClick={() => onSelectPage(item.pageKey, item.title)}>
-                <span className="emptySessionPage__listItemTitle">{item.title}</span>
-                <span className="emptySessionPage__listItemTime">{item.subtitle}</span>
-              </button>
-            ))}
+            <div className="emptySessionPage__tabContent">
+              {(TAB_CHIP_DATA[activeChip] || []).map((item) => (
+                <button
+                  key={item.key}
+                  type="button"
+                  className="emptySessionPage__listItem"
+                  onClick={() => onSelectPage(item.pageKey, item.title)}>
+                  <span className="emptySessionPage__listItemTitle">{item.title}</span>
+                  <span className="emptySessionPage__listItemTime">{item.subtitle}</span>
+                </button>
+              ))}
+            </div>
           </div>
         </>
       )}

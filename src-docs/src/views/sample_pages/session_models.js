@@ -115,6 +115,7 @@ export const SOURCE_PAGE_MOCK = {
  * @returns {Session}
  */
 export function createDefaultSession(id) {
+  const suffix = Math.floor(1000 + Math.random() * 9000);
   return {
     id: id || `session-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
     threadKey: null,
@@ -124,6 +125,6 @@ export function createDefaultSession(id) {
     threadPanelState: 'minimized',
     threadPanelWidth: 50,
     createdAt: Date.now(),
-    title: 'New Session',
+    title: `New Session #${suffix}`,
   };
 }

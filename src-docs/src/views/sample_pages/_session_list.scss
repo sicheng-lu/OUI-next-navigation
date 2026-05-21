@@ -11,6 +11,17 @@
 
 // sass-lint:disable no-misspelled-properties
 
+@keyframes pageFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 // ============================================================
 // SESSION LIST — Displays all sessions with selection support
 // ============================================================
@@ -20,9 +31,19 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-  padding: $ouiSizeL;
+  padding: 0 $ouiSizeL $ouiSizeL;
   overflow-y: auto;
   background-color: transparent;
+  animation: pageFadeUp 250ms ease-out both;
+}
+
+// Sticky header + search wrapper
+.sessionList__stickyTop {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding-top: 32px;
+  flex-shrink: 0;
 }
 
 // Header with title and create button
@@ -30,6 +51,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 0;
   margin-bottom: $ouiSizeL;
   flex-shrink: 0;
   max-width: 832px;
@@ -44,7 +66,6 @@
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: $ouiSizeM;
   flex-shrink: 0;
 }
 
@@ -57,6 +78,7 @@
   width: 100%;
   margin-left: auto;
   margin-right: auto;
+  padding-top: $ouiSizeL;
 }
 
 // Empty state
@@ -151,4 +173,106 @@
   border-radius: 50%;
   background-color: $ouiColorPrimary;
   flex-shrink: 0;
+}
+
+// ============================================================
+// RECENT ITEMS SECTION
+// ============================================================
+
+.sessionList__recents {
+  max-width: 832px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// Filter chips row
+.sessionList__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $ouiSizeS;
+  margin-bottom: $ouiSizeM;
+}
+
+.sessionList__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: $ouiSizeXS;
+  padding: 6px 12px;
+  background-color: $ouiColorEmptyShade;
+  border: $ouiBorderThin;
+  border-radius: $ouiBorderRadius * 2;
+  cursor: pointer;
+  font-size: $ouiFontSizeXS;
+  color: $ouiTitleColor;
+  white-space: nowrap;
+  transition: background-color 150ms ease-in-out;
+
+  // Reserve bold width to prevent layout shift on activation
+  span {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+
+    &::before {
+      content: attr(data-text);
+      font-weight: 600;
+      visibility: hidden;
+      height: 0;
+      overflow: hidden;
+      pointer-events: none;
+      user-select: none;
+    }
+  }
+
+  &:hover {
+    background-color: $ouiColorLightShade;
+  }
+
+  &--active {
+    background-color: $ouiColorLightShade;
+    font-weight: 600;
+    border-color: $ouiColorPrimary;
+  }
+}
+
+// Items list
+.sessionList__recentItems {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sessionList__recentItem {
+  display: flex;
+  align-items: center;
+  gap: $ouiSizeS;
+  padding: $ouiSizeS;
+  border-radius: $ouiBorderRadiusSmall;
+  cursor: pointer;
+  transition: background-color 150ms ease-in-out;
+
+  &:hover {
+    background-color: $ouiFocusBackgroundColor;
+  }
+}
+
+.sessionList__recentItemContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.sessionList__recentItemTitle {
+  font-size: $ouiFontSizeS;
+  color: $ouiTextColor;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sessionList__recentItemMeta {
+  font-size: $ouiFontSizeXS;
+  color: $ouiColorMediumShade;
 }

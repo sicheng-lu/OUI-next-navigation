@@ -9,7 +9,7 @@
  * GitHub history for details.
  */
 
-import React, { useState } from 'react';
+import React, { useContext, useState, useMemo } from 'react';
 
 import {
   OuiButton,
@@ -19,6 +19,8 @@ import {
   OuiTitle,
 } from '../../../../src/components';
 import { OuiThreadSessionListItem } from '../../../../src/components/thread_session_list_item';
+import { FILTER_CHIPS, CHIP_DATA } from './session_mock_data';
+import { ThemeContext } from '../../components/with_theme';
 
 /**
  * Formats a timestamp into a human-readable relative time string.
@@ -53,7 +55,23 @@ export const SessionList = ({
   onSelectSession,
   onCreateSession,
 }) => {
+  const themeContext = useContext(ThemeContext);
+  const isDark = themeContext.theme === 'v9-dark';
+  const bgColor = isDark ? '#060D1A' : '#F4F6FB';
+
   const [query, setQuery] = useState('');
+
+  // Flatten all chip data items into a single list, deduplicated by title
+  const allRecentItems = useMemo(() => {
+    const seen = new Set();
+    return FILTER_CHIPS.flatMap((chip) =>
+      (CHIP_DATA[chip.key] || []).filter((item) => {
+        if (seen.has(item.title)) return false;
+        seen.add(item.title);
+        return true;
+      }).map((item) => ({ ...item, chipKey: chip.key }))
+    );
+  }, []);
 
   const filtered = [...sessions]
     .sort((a, b) => b.createdAt - a.createdAt)
@@ -62,66 +80,102 @@ export const SessionList = ({
       s.title.toLowerCase().includes(query.toLowerCase())
     );
 
+  const filteredRecents = allRecentItems.filter(
+    (item) =>
+      query.trim() === '' ||
+      item.title.toLowerCase().includes(query.toLowerCase())
+  );
+
   return (
     <div className="sessionList">
-      {/* Header */}
-      <div className="sessionList__header">
-        <OuiTitle size="s">
-          <h2>Sessions</h2>
-        </OuiTitle>
-        <OuiButton
-          size="s"
-          iconType="plusInCircle"
-          onClick={onCreateSession}
-          aria-label="Create new session">
-          New session
-        </OuiButton>
+      {/* Sticky header + search */}
+      <div
+        className="sessionList__stickyTop"
+        style={{
+          backgroundColor: bgColor,
+          boxShadow: `0 8px 12px 3px ${bgColor}`,
+        }}>
+        {/* Header */}
+        <div className="sessionList__header">
+          <OuiTitle size="s">
+            <h2>Sessions</h2>
+          </OuiTitle>
+          <OuiButton
+            size="s"
+            iconType="plusInCircle"
+            onClick={onCreateSession}
+            aria-label="Create new session">
+            New session
+          </OuiButton>
+        </div>
+
+        {/* Search */}
+        <div className="sessionList__search">
+          <OuiFieldSearch
+            placeholder="Search sessions..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            fullWidth
+            aria-label="Search sessions"
+          />
+        </div>
       </div>
 
-      {/* Search */}
-      <div className="sessionList__search">
-        <OuiFieldSearch
-          placeholder="Search sessions..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          fullWidth
-          compressed
-          aria-label="Search sessions"
-        />
-      </div>
-
-      {/* Session cards */}
+      {/* All items in one list */}
       <div className="sessionList__cards">
-        {filtered.length === 0 ? (
+        {filtered.length === 0 && filteredRecents.length === 0 ? (
           <div className="sessionList__empty">
             <OuiText size="s" color="subdued">
-              <p>{query ? 'No sessions match your search.' : 'No sessions yet. Create one to get started.'}</p>
+              <p>{query ? 'No results match your search.' : 'No sessions yet. Create one to get started.'}</p>
             </OuiText>
           </div>
         ) : (
-          filtered.map((session) => {
-            const isActive = session.id === activeSessionId;
-            return (
+          <>
+            {filtered.map((session) => {
+              const isActive = session.id === activeSessionId;
+              return (
+                <OuiThreadSessionListItem
+                  key={session.id}
+                  title={session.title}
+                  meta={`${formatSessionTime(session.createdAt)}${
+                    session.tabs.length > 0
+                      ? ` · ${session.tabs.length} ${session.tabs.length === 1 ? 'tab' : 'tabs'}`
+                      : ''
+                  }`}
+                  icon={
+                    <OuiIcon
+                      type={session.threadKey ? 'discuss' : 'document'}
+                      size="m"
+                      color={isActive ? 'primary' : 'subdued'}
+                    />
+                  }
+                  isActive={isActive}
+                  onClick={() => onSelectSession(session.id)}
+                />
+              );
+            })}
+            {filteredRecents.map((item) => (
               <OuiThreadSessionListItem
-                key={session.id}
-                title={session.title}
-                meta={`${formatSessionTime(session.createdAt)}${
-                  session.tabs.length > 0
-                    ? ` · ${session.tabs.length} ${session.tabs.length === 1 ? 'tab' : 'tabs'}`
-                    : ''
-                }`}
+                key={item.key}
+                title={item.title}
+                meta={`${item.type} · ${item.time}`}
                 icon={
                   <OuiIcon
-                    type={session.threadKey ? 'discuss' : 'document'}
+                    type={
+                      item.type === 'Dashboard' ? 'navDashboards'
+                      : item.type === 'Saved log' ? 'navDiscover'
+                      : item.type === 'Saved metric' ? 'visArea'
+                      : 'navAlerting'
+                    }
                     size="m"
-                    color={isActive ? 'primary' : 'subdued'}
+                    color="subdued"
                   />
                 }
-                isActive={isActive}
-                onClick={() => onSelectSession(session.id)}
+                isActive={false}
+                onClick={() => {}}
               />
-            );
-          })
+            ))}
+          </>
         )}
       </div>
     </div>

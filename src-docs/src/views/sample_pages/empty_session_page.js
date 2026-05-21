@@ -12,6 +12,8 @@
 import React, { useContext, useState, useMemo } from 'react';
 
 import {
+  OuiButton,
+  OuiButtonEmpty,
   OuiButtonIcon,
   OuiHorizontalRule,
   OuiIcon,
@@ -19,8 +21,10 @@ import {
   OuiTabs,
 } from '../../../../src/components';
 import { OuiThreadInput } from '../../../../src/components/thread_input';
+import { OuiThreadSessionListItem } from '../../../../src/components/thread_session_list_item';
 
 import { SOURCE_PAGE_MOCK } from './session_models';
+import { FILTER_CHIPS, CHIP_DATA } from './session_mock_data';
 import { ThemeContext } from '../../components/with_theme';
 
 /**
@@ -65,55 +69,6 @@ const QUICK_ACCESS_ITEMS = [
   },
   { key: 'more', label: 'More', icon: 'apps', action: 'more' },
 ];
-
-/**
- * Filter chips for the bottom section.
- */
-const FILTER_CHIPS = [
-  { key: 'favorites', label: 'Favorites', icon: 'starEmpty' },
-  { key: 'dashboards', label: 'Dashboards', icon: 'navDashboards' },
-  { key: 'saved-logs', label: 'Saved logs', icon: 'navDiscover' },
-  { key: 'saved-metric', label: 'Saved metric', icon: 'visArea' },
-  { key: 'alerts', label: 'Alerts', icon: 'navAlerting' },
-];
-
-/**
- * Mock data for each filter chip.
- */
-const CHIP_DATA = {
-  favorites: [
-    { key: 'fav-1', title: 'System overview', type: 'Dashboard', time: '5 min ago' },
-    { key: 'fav-2', title: 'Error rate by service', type: 'Saved log', time: '2 hours ago' },
-    { key: 'fav-3', title: 'CPU utilization', type: 'Saved metric', time: '1 hour ago' },
-    { key: 'fav-4', title: 'Payment service P99 latency breach', type: 'Alert', time: '15 min ago' },
-    { key: 'fav-5', title: 'API performance', type: 'Dashboard', time: '30 min ago' },
-  ],
-  dashboards: [
-    { key: 'dash-1', title: 'System overview', type: 'Dashboard', time: '5 min ago' },
-    { key: 'dash-2', title: 'Web traffic analytics', type: 'Dashboard', time: '15 min ago' },
-    { key: 'dash-3', title: 'API performance', type: 'Dashboard', time: '30 min ago' },
-    { key: 'dash-4', title: 'Payment service — connection pool', type: 'Dashboard', time: 'Just now' },
-  ],
-  'saved-logs': [
-    { key: 'log-1', title: 'Error rate by service', type: 'Saved log', time: '2 hours ago' },
-    { key: 'log-2', title: 'Auth failure events', type: 'Saved log', time: '4 hours ago' },
-    { key: 'log-3', title: 'Slow query log', type: 'Saved log', time: '1 day ago' },
-    { key: 'log-4', title: 'Payment service timeout logs', type: 'Saved log', time: '3 hours ago' },
-    { key: 'log-5', title: 'Connection timeout errors', type: 'Saved log', time: '6 hours ago' },
-  ],
-  'saved-metric': [
-    { key: 'met-1', title: 'Throughput over time', type: 'Saved metric', time: '1 hour ago' },
-    { key: 'met-2', title: 'CPU utilization', type: 'Saved metric', time: '2 hours ago' },
-    { key: 'met-3', title: 'Memory pressure', type: 'Saved metric', time: '30 min ago' },
-    { key: 'met-4', title: 'Disk I/O by volume', type: 'Saved metric', time: '45 min ago' },
-  ],
-  alerts: [
-    { key: 'alert-1', title: 'CPU threshold exceeded', type: 'Alert · Critical', time: '10 min ago' },
-    { key: 'alert-2', title: 'Disk usage warning', type: 'Alert · Warning', time: '1 hour ago' },
-    { key: 'alert-3', title: 'Error rate spike', type: 'Alert · Critical', time: '3 hours ago' },
-    { key: 'alert-4', title: 'Payment service P99 latency breach', type: 'Alert · Critical', time: '15 min ago' },
-  ],
-};
 
 /**
  * Saved objects data for the bottom section when a quick access item is selected.
@@ -448,9 +403,11 @@ function formatRelativeTime(timestamp) {
 export const EmptySessionPage = ({
   onStartThread,
   onOpenPage,
+  onBrowseSessions,
   recentItems = [],
   favoriteItems = [],
   systemAlert = null,
+  hideRecents = false,
 }) => {
   const themeContext = useContext(ThemeContext);
   const isDark = themeContext.theme === 'v9-dark';
@@ -589,6 +546,8 @@ export const EmptySessionPage = ({
             </div>
           ) : (
             <>
+              {/* "Start something new" section */}
+              <h6 className="emptySessionPage__sectionLabel emptySessionPage__sectionLabel--spaced">Start something new</h6>
               {/* Quick access row */}
               <QuickAccessRow
                 onStartThread={onStartThread}
@@ -596,38 +555,68 @@ export const EmptySessionPage = ({
               />
 
               {/* Horizontal rule */}
-              <OuiHorizontalRule margin="m" />
+              {!hideRecents && <OuiHorizontalRule margin="m" />}
 
-              {/* Filter chips */}
-              <div className="emptySessionPage__chips">
-                {FILTER_CHIPS.map((chip) => (
-                  <button
-                    key={chip.key}
-                    type="button"
-                    className={`emptySessionPage__chip${activeChip === chip.key ? ' emptySessionPage__chip--active' : ''}`}
-                    onClick={() => setActiveChip(chip.key)}>
-                    <OuiIcon type={chip.icon} size="m" />
-                    <span>{chip.label}</span>
-                  </button>
-                ))}
-              </div>
+              {/* "Pick up where you left off" section */}
+              {!hideRecents && (
+                <>
+                  <h6 className="emptySessionPage__sectionLabel">Pick up where you left off</h6>
 
-              {/* Card items based on active chip */}
-              <div className="emptySessionPage__tabContent">
-                {(CHIP_DATA[activeChip] || []).map((item) => (
-                  <button
-                    key={item.key}
-                    type="button"
-                    className="emptySessionPage__card"
-                    onClick={() => onOpenPage(activeChip === 'dashboards' ? 'dashboards' : activeChip === 'saved-logs' ? 'logs' : activeChip === 'saved-metric' ? 'metrics' : 'alerts')}>
-                    <span className="emptySessionPage__cardTitle">{item.title}</span>
-                    <span className="emptySessionPage__cardMeta">
-                      <span className="emptySessionPage__cardType">{item.type}</span>
-                      <span className="emptySessionPage__cardTime">{item.time}</span>
-                    </span>
-                  </button>
-                ))}
-              </div>
+                  {/* Filter chips */}
+                  <div className="emptySessionPage__chips">
+                    {FILTER_CHIPS.map((chip) => (
+                      <button
+                        key={chip.key}
+                        type="button"
+                        className={`emptySessionPage__chip${activeChip === chip.key ? ' emptySessionPage__chip--active' : ''}`}
+                        onClick={() => setActiveChip(chip.key)}
+                        onMouseEnter={() => setActiveChip(chip.key)}>
+                        <OuiIcon type={chip.icon} size="m" />
+                        <span data-text={chip.label}>{chip.label}</span>
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Card items based on active chip */}
+                  <div className="emptySessionPage__tabContent">
+                    {(CHIP_DATA[activeChip] || []).map((item) => (
+                      <OuiThreadSessionListItem
+                        key={item.key}
+                        title={item.title}
+                        meta={`${item.type} · ${item.time}`}
+                        icon={
+                          <OuiIcon
+                            type={
+                              item.type === 'Dashboard' ? 'navDashboards'
+                              : item.type === 'Saved log' ? 'navDiscover'
+                              : item.type === 'Saved metric' ? 'visArea'
+                              : 'navAlerting'
+                            }
+                            size="m"
+                            color="subdued"
+                          />
+                        }
+                        isActive={false}
+                        onClick={() => onOpenPage(activeChip === 'dashboards' ? 'dashboards' : activeChip === 'saved-logs' ? 'logs' : activeChip === 'saved-metric' ? 'metrics' : 'alerts')}
+                      />
+                    ))}
+                  </div>
+
+                  {/* View all sessions */}
+                  {onBrowseSessions && (
+                    <div className="emptySessionPage__viewAll">
+                      <OuiButtonEmpty
+                        size="s"
+                        color="text"
+                        onClick={onBrowseSessions}
+                        iconType="arrowRight"
+                        iconSide="right">
+                        View all sessions
+                      </OuiButtonEmpty>
+                    </div>
+                  )}
+                </>
+              )}
             </>
           )}
         </div>

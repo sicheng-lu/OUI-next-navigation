@@ -9,7 +9,7 @@
  * GitHub history for details.
  */
 
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useCallback, useRef, useState } from 'react';
 
 import { OuiButtonIcon, OuiIcon, OuiToolTip } from '../../../../src/components';
 import { ThreadPage } from './thread_page';
@@ -29,6 +29,7 @@ export const ThreadPanel = forwardRef(
       width,
       title,
       isAnimating,
+      onRenameSession,
     },
     ref
   ) => {
@@ -39,6 +40,39 @@ export const ThreadPanel = forwardRef(
     };
 
     const displayTitle = title || 'New chat';
+    const [isEditing, setIsEditing] = useState(false);
+    const [editValue, setEditValue] = useState('');
+    const inputRef = useRef(null);
+
+    const startEditing = () => {
+      setEditValue(displayTitle);
+      setIsEditing(true);
+      setTimeout(() => inputRef.current?.select(), 0);
+    };
+
+    const commitRename = () => {
+      const trimmed = editValue.trim();
+      if (trimmed && trimmed !== displayTitle && onRenameSession) {
+        onRenameSession(trimmed);
+      }
+      setIsEditing(false);
+    };
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Enter') commitRename();
+      if (e.key === 'Escape') setIsEditing(false);
+    };
+
+    const [headerShadowOpacity, setHeaderShadowOpacity] = useState(0);
+
+    const handleContentScroll = useCallback((e) => {
+      const scrollTop = e.target.scrollTop;
+      if (scrollTop >= 20) {
+        setHeaderShadowOpacity(1);
+      } else {
+        setHeaderShadowOpacity(scrollTop / 20);
+      }
+    }, []);
 
     return (
       <div
@@ -46,10 +80,34 @@ export const ThreadPanel = forwardRef(
         className={`threadPanel${isAnimating ? ' threadPanel--animating' : ''}`}
         style={{ width }}>
         {/* Header */}
-        <div className="threadPanel__header">
+        <div
+          className="threadPanel__header"
+          style={{
+            boxShadow: headerShadowOpacity > 0
+              ? `0 2px 6px rgba(0, 0, 0, ${0.08 * headerShadowOpacity})`
+              : 'none',
+            transition: 'box-shadow 150ms ease',
+          }}>
           <div className="threadPanel__headerLeft">
             <OuiIcon type="generate" size="m" />
-            <span className="threadPanel__title">{displayTitle}</span>
+            {isEditing ? (
+              <input
+                ref={inputRef}
+                className="threadPanel__titleInput"
+                value={editValue}
+                onChange={(e) => setEditValue(e.target.value)}
+                onBlur={commitRename}
+                onKeyDown={handleKeyDown}
+                aria-label="Rename session"
+              />
+            ) : (
+              <span
+                className="threadPanel__title threadPanel__title--editable"
+                onClick={startEditing}
+                title="Click to rename">
+                {displayTitle}
+              </span>
+            )}
           </div>
           <div className="threadPanel__headerRight">
             <OuiToolTip content="Minimize" position="bottom">
@@ -95,7 +153,7 @@ export const ThreadPanel = forwardRef(
         </div>
 
         {/* Content */}
-        <div className="threadPanel__content">
+        <div className="threadPanel__content" onScroll={handleContentScroll}>
           <ThreadPage
             selectedItem={
               threadKey || (pendingThread ? pendingThread.key : null)

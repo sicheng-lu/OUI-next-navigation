@@ -249,3 +249,50 @@ export const PAGE_FIRST_MOCK_DATA = {
   proactiveInsight:
     'I see 847 connection timeout errors to payments-db starting at 14:30. Want me to check the trace data for this dependency?',
 };
+
+// ---------------------------------------------------------------------------
+// Shared chip/tab data — used by EmptySessionPage and SessionList
+// ---------------------------------------------------------------------------
+
+export const FILTER_CHIPS = [
+  { key: 'favorites',    label: 'Favorites',     icon: 'starEmpty' },
+  { key: 'dashboards',   label: 'Dashboards',    icon: 'navDashboards' },
+  { key: 'saved-logs',   label: 'Saved logs',    icon: 'navDiscover' },
+  { key: 'saved-metric', label: 'Saved metric',  icon: 'visArea' },
+  { key: 'alerts',       label: 'Alerts',        icon: 'navAlerting' },
+];
+
+export const CHIP_DATA = {
+  favorites: [
+    { key: 'fav-1', title: 'System overview',                    type: 'Dashboard',        time: '5 min ago' },
+    { key: 'fav-2', title: 'Error rate by service',              type: 'Saved log',        time: '2 hours ago' },
+    { key: 'fav-3', title: 'CPU utilization',                    type: 'Saved metric',     time: '1 hour ago' },
+    { key: 'fav-4', title: 'Payment service P99 latency breach', type: 'Alert',            time: '15 min ago' },
+    { key: 'fav-5', title: 'API performance',                    type: 'Dashboard',        time: '30 min ago' },
+  ],
+  dashboards: [
+    { key: 'dash-1', title: 'System overview',                        type: 'Dashboard', time: '5 min ago' },
+    { key: 'dash-2', title: 'Web traffic analytics',                  type: 'Dashboard', time: '15 min ago' },
+    { key: 'dash-3', title: 'API performance',                        type: 'Dashboard', time: '30 min ago' },
+    { key: 'dash-4', title: 'Payment service — connection pool',      type: 'Dashboard', time: 'Just now' },
+  ],
+  'saved-logs': [
+    { key: 'log-1', title: 'Error rate by service',         type: 'Saved log', time: '2 hours ago' },
+    { key: 'log-2', title: 'Auth failure events',           type: 'Saved log', time: '4 hours ago' },
+    { key: 'log-3', title: 'Slow query log',                type: 'Saved log', time: '1 day ago' },
+    { key: 'log-4', title: 'Payment service timeout logs',  type: 'Saved log', time: '3 hours ago' },
+    { key: 'log-5', title: 'Connection timeout errors',     type: 'Saved log', time: '6 hours ago' },
+  ],
+  'saved-metric': [
+    { key: 'met-1', title: 'Throughput over time', type: 'Saved metric', time: '1 hour ago' },
+    { key: 'met-2', title: 'CPU utilization',       type: 'Saved metric', time: '2 hours ago' },
+    { key: 'met-3', title: 'Memory pressure',       type: 'Saved metric', time: '30 min ago' },
+    { key: 'met-4', title: 'Disk I/O by volume',    type: 'Saved metric', time: '45 min ago' },
+  ],
+  alerts: [
+    { key: 'alert-1', title: 'CPU threshold exceeded',               type: 'Alert · Critical', time: '10 min ago' },
+    { key: 'alert-2', title: 'Disk usage warning',                   type: 'Alert · Warning',  time: '1 hour ago' },
+    { key: 'alert-3', title: 'Error rate spike',                     type: 'Alert · Critical', time: '3 hours ago' },
+    { key: 'alert-4', title: 'Payment service P99 latency breach',   type: 'Alert · Critical', time: '15 min ago' },
+  ],
+};

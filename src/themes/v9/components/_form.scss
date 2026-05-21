@@ -505,7 +505,7 @@
 // More visible horizontal rules in light mode
 // sass-lint:disable no-important, no-color-literals
 .ouiHorizontalRule {
-  background-color: lightOrDarkTheme(#A0A8B0, $ouiColorLightShade) !important;
+  background-color: $ouiColorLightShade !important;
 }
 // sass-lint:enable no-important, no-color-literals
 

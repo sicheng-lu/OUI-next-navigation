@@ -59,14 +59,14 @@ import { SessionLeftNav } from './session_left_nav';
 import { SessionContainer } from './session_container';
 import { SessionList } from './session_list';
 import { EmptySessionPage } from './empty_session_page';
-import { SOURCE_PAGE_MOCK } from './session_models';
+import { SOURCE_PAGE_MOCK, createDefaultSession } from './session_models';
 import {
   createSession,
   updateSession,
   setActiveSession,
   openCanvasPage,
 } from './session_state_manager';
-import { LATENCY_SPIKE_SESSION } from './session_mock_data';
+import { LATENCY_SPIKE_SESSION, CHIP_DATA } from './session_mock_data';
 
 const renderPage = (
   activePage,
@@ -1471,17 +1471,7 @@ function initializeSessionState() {
   // Always start fresh — no persistence
   // Include the Latency Spike Investigation demo session in the list
   // but land on a new empty session
-  const emptySession = {
-    id: `session-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
-    threadKey: null,
-    pendingThread: null,
-    title: 'New Session',
-    threadPanelState: 'minimized',
-    threadPanelWidth: 30,
-    tabs: [],
-    activeTabId: null,
-    createdAt: Date.now(),
-  };
+  const emptySession = { ...createDefaultSession(), threadPanelWidth: 30 };
 
   return {
     sessions: [emptySession, LATENCY_SPIKE_SESSION],
@@ -1617,6 +1607,7 @@ export const SessionPagesView = () => {
         <EmptySessionPage
           onStartThread={handleStartThread}
           onOpenPage={handleOpenPage}
+          onBrowseSessions={handleBrowseSessions}
           recentItems={[]}
           favoriteItems={[]}
           systemAlert={null}
@@ -1644,7 +1635,7 @@ export const SessionPagesView = () => {
         bottom: 0,
       }}>
       <SessionLeftNav
-        sessionCount={sessionState.sessions.length}
+        sessionCount={sessionState.sessions.length + new Set(Object.values(CHIP_DATA).flat().map((i) => i.title)).size}
         onCreateSession={handleCreateSession}
         onBrowseSessions={handleBrowseSessions}
         activeView={activeView}

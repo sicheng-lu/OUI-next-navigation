@@ -18,8 +18,10 @@
   width: 100%;
   padding: $ouiSize;
   border: $ouiBorderThin;
-  border-radius: $ouiBorderRadius;
-  background-color: $ouiColorEmptyShade;
+  border-radius: $ouiBorderRadius * 2;
+  background-color: rgba($ouiColorEmptyShade, 0.1);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   cursor: pointer;
   text-align: left;
   position: relative;

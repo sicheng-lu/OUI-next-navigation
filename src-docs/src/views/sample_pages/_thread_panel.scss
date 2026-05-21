@@ -21,6 +21,10 @@
   border-radius: 0;
   flex-shrink: 0;
   border-right: 1px solid $ouiBorderColor;
+
+  .sessionContainer--chatMinimized & {
+    border-right: none;
+  }
 }
 
 .threadPanel--animating {
@@ -48,6 +52,31 @@
   font-size: $ouiFontSizeXS;
   color: $ouiTitleColor;
   white-space: nowrap;
+
+  &--editable {
+    cursor: text;
+    border-radius: $ouiBorderRadiusSmall;
+    padding: 1px 4px;
+    margin: -1px -4px;
+    transition: background-color 150ms ease-in-out;
+
+    &:hover {
+      background-color: $ouiColorLightShade;
+    }
+  }
+}
+
+.threadPanel__titleInput {
+  font-size: $ouiFontSizeXS;
+  color: $ouiTitleColor;
+  background: $ouiColorEmptyShade;
+  border: 1px solid $ouiColorPrimary;
+  border-radius: $ouiBorderRadiusSmall;
+  padding: 1px 4px;
+  outline: none;
+  min-width: 120px;
+  max-width: 240px;
+  width: auto;
 }
 
 .threadPanel__headerRight {
@@ -60,5 +89,5 @@
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding: $ouiSizeL;
+  padding: $ouiSizeM $ouiSize $ouiSizeL;
 }

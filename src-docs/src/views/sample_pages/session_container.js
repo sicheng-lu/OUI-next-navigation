@@ -107,7 +107,8 @@ export const SessionContainer = ({
       threadPanelRef.current.style.width = `${leftWidthPercent}%`;
     }
     if (pagePanelWrapRef.current) {
-      pagePanelWrapRef.current.style.width = `${100 - leftWidthPercent}%`;
+      pagePanelWrapRef.current.style.width = '';
+      pagePanelWrapRef.current.style.flex = '1';
     }
   }, []);
 
@@ -190,13 +191,13 @@ export const SessionContainer = ({
 
   if (isMinimized) {
     leftWidth = '0px';
-    rightStyle = { width: '100%' };
+    rightStyle = { flex: 1, minWidth: 0, overflow: 'hidden' };
   } else if (isFullScreen) {
     leftWidth = `calc(100% - ${COLLAPSED_WIDTH}px)`;
-    rightStyle = { width: `${COLLAPSED_WIDTH}px` };
+    rightStyle = { width: `${COLLAPSED_WIDTH}px`, flexShrink: 0 };
   } else {
     leftWidth = `${threadPanelWidth}%`;
-    rightStyle = { width: `${100 - threadPanelWidth}%` };
+    rightStyle = { flex: 1, minWidth: 0, overflow: 'hidden' };
   }
 
   return (
@@ -215,6 +216,7 @@ export const SessionContainer = ({
         width={leftWidth}
         title={session.title}
         isAnimating={isAnimating}
+        onRenameSession={(newTitle) => onUpdateSession({ title: newTitle })}
       />
 
       {/* Resize handle — only in side-by-side */}
@@ -231,13 +233,15 @@ export const SessionContainer = ({
         ref={pagePanelWrapRef}
         className={`sessionContainer__pagePanelWrap${
           isAnimating ? ' sessionContainer__pagePanelWrap--animating' : ''
-        }`}
+        }${isFullScreen ? ' sessionContainer__pagePanelWrap--fullScreen' : ''}`}
         style={rightStyle}>
         <div
           style={{
             display: isFullScreen ? 'none' : 'flex',
             width: '100%',
             height: '100%',
+            overflow: 'hidden',
+            minWidth: 0,
           }}>
           <PagePanel
             tabs={session.tabs}
