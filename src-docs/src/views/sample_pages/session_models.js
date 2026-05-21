@@ -21,6 +21,7 @@ import {
   ConnectionPoolPageMock,
   TraceAnalysisPageMock,
 } from './mock_canvas_pages';
+import { Logo3DPage } from './logo_3d_page';
 
 /**
  * @typedef {Object} Session
@@ -106,6 +107,7 @@ export const SOURCE_PAGE_MOCK = {
   'app-traces': { component: AppTracesPageMock, title: 'Application Traces' },
   'app-services': { component: AppServicesPageMock, title: 'Application Services' },
   traces: { component: TraceAnalysisPageMock, title: 'Trace Analysis' },
+  'logo-3d': { component: Logo3DPage, title: '3D Logo' },
 };
 
 /**
