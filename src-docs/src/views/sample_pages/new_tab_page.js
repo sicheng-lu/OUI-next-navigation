@@ -15,10 +15,11 @@ import {
   OuiHorizontalRule,
   OuiIcon,
 } from '../../../../src/components';
+import { OuiThreadSessionListItem } from '../../../../src/components/thread_session_list_item';
 import { SOURCE_PAGE_MOCK } from './session_models';
 
 /**
- * Quick access items for the new tab page (no "New chat").
+ * Quick access items for the new tab page.
  */
 const TAB_QUICK_ACCESS = [
   { key: 'discover-log', label: 'Discover (log)', icon: 'navDiscover', pageKey: 'discover-log' },
@@ -95,83 +96,100 @@ export const NewTabPage = ({ onSelectPage }) => {
 
   return (
     <div className="newTabPage">
-      {/* Search field */}
-      <OuiCompressedFieldSearch
-        placeholder="Search pages..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        fullWidth
-      />
+      <div className="emptySessionPage__content">
+        {/* Search field */}
+        <OuiCompressedFieldSearch
+          placeholder="Search pages..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          fullWidth
+        />
 
-      {searchResults ? (
-        <div className="emptySessionPage__tabContent">
-          {searchResults.length === 0 ? (
-            <p style={{ color: '#676e75', textAlign: 'center', padding: '16px' }}>No results found</p>
-          ) : (
-            <>
-              <span className="emptySessionPage__searchLabel">Suggested pages</span>
-              {searchResults.map((item) => (
-                <button
+        {searchResults ? (
+          <div className="emptySessionPage__tabContent">
+            {searchResults.length === 0 ? (
+              <p style={{ color: '#676e75', textAlign: 'center', padding: '16px' }}>No results found</p>
+            ) : (
+              searchResults.map((item) => (
+                <OuiThreadSessionListItem
                   key={item.key}
-                  type="button"
-                  className="emptySessionPage__listItem"
-                  onClick={() => onSelectPage(item.pageKey, item.title)}>
-                  <span className="emptySessionPage__listItemTitle">{item.title}</span>
-                  <span className="emptySessionPage__listItemTime">{item.subtitle}</span>
-                </button>
-              ))}
-            </>
-          )}
-        </div>
-      ) : (
-        <>
-          <div className="emptySessionPage__quickAccess">
-            <div className="emptySessionPage__quickAccessRow">
-              {TAB_QUICK_ACCESS.map((item) => (
-                <div
-                  key={item.key}
-                  className="emptySessionPage__quickAccessItem"
-                  onClick={() => item.pageKey && onSelectPage(item.pageKey, item.label)}>
-                  <button className="emptySessionPage__quickAccessButton" aria-label={item.label}>
-                    <OuiIcon type={item.icon} size="m" />
-                  </button>
-                  <span className="emptySessionPage__quickAccessLabel">{item.label}</span>
-                </div>
-              ))}
-            </div>
+                  title={item.title}
+                  meta={item.subtitle}
+                  icon={<OuiIcon type="document" size="m" color="subdued" />}
+                  isActive={false}
+                  onClick={() => onSelectPage(item.pageKey, item.title)}
+                />
+              ))
+            )}
           </div>
+        ) : (
+          <>
+            {/* "Start something new" section */}
+            <h6 className="emptySessionPage__sectionLabel emptySessionPage__sectionLabel--spaced">Start something new</h6>
 
-          <OuiHorizontalRule margin="m" />
+            <div className="emptySessionPage__quickAccess">
+              <div className="emptySessionPage__quickAccessRow">
+                {TAB_QUICK_ACCESS.map((item) => (
+                  <div
+                    key={item.key}
+                    className="emptySessionPage__quickAccessItem"
+                    onClick={() => item.pageKey && onSelectPage(item.pageKey, item.label)}>
+                    <button className="emptySessionPage__quickAccessButton" aria-label={item.label}>
+                      <OuiIcon type={item.icon} size="m" />
+                    </button>
+                    <span className="emptySessionPage__quickAccessLabel">{item.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-          <div className="emptySessionPage__chipsAndContent">
+            <OuiHorizontalRule margin="m" />
+
+            {/* "Pick up where you left off" section */}
+            <h6 className="emptySessionPage__sectionLabel">Pick up where you left off</h6>
+
+            {/* Filter chips */}
             <div className="emptySessionPage__chips">
               {TAB_FILTER_CHIPS.map((chip) => (
                 <button
                   key={chip.key}
                   type="button"
                   className={`emptySessionPage__chip${activeChip === chip.key ? ' emptySessionPage__chip--active' : ''}`}
-                  onClick={() => setActiveChip(chip.key)}>
+                  onClick={() => setActiveChip(chip.key)}
+                  onMouseEnter={() => setActiveChip(chip.key)}>
                   <OuiIcon type={chip.icon} size="m" />
-                  <span>{chip.label}</span>
+                  <span data-text={chip.label}>{chip.label}</span>
                 </button>
               ))}
             </div>
 
+            {/* List items based on active chip */}
             <div className="emptySessionPage__tabContent">
               {(TAB_CHIP_DATA[activeChip] || []).map((item) => (
-                <button
+                <OuiThreadSessionListItem
                   key={item.key}
-                  type="button"
-                  className="emptySessionPage__listItem"
-                  onClick={() => onSelectPage(item.pageKey, item.title)}>
-                  <span className="emptySessionPage__listItemTitle">{item.title}</span>
-                  <span className="emptySessionPage__listItemTime">{item.subtitle}</span>
-                </button>
+                  title={item.title}
+                  meta={item.subtitle}
+                  icon={
+                    <OuiIcon
+                      type={
+                        item.pageKey === 'dashboards' ? 'navDashboards'
+                        : item.pageKey === 'logs' ? 'navDiscover'
+                        : item.pageKey === 'metrics' ? 'visArea'
+                        : 'navAlerting'
+                      }
+                      size="m"
+                      color="subdued"
+                    />
+                  }
+                  isActive={false}
+                  onClick={() => onSelectPage(item.pageKey, item.title)}
+                />
               ))}
             </div>
-          </div>
-        </>
-      )}
+          </>
+        )}
+      </div>
     </div>
   );
 };

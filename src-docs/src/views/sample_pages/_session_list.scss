@@ -33,8 +33,16 @@
   height: 100%;
   padding: 0 $ouiSizeL $ouiSizeL;
   overflow-y: auto;
-  background-color: transparent;
   animation: pageFadeUp 250ms ease-out both;
+
+  // Grid background
+  background-color: lightOrDarkTheme(#F4F6FB, #060D1A);
+  background-image:
+    linear-gradient(to right, lightOrDarkTheme(rgba(46, 74, 143, 0.04), rgba(122, 159, 212, 0.12)) 1px, transparent 1px),
+    linear-gradient(to bottom, lightOrDarkTheme(rgba(46, 74, 143, 0.04), rgba(122, 159, 212, 0.12)) 1px, transparent 1px),
+    linear-gradient(to right, lightOrDarkTheme(rgba(46, 74, 143, 0.015), rgba(122, 159, 212, 0.05)) 1px, transparent 1px),
+    linear-gradient(to bottom, lightOrDarkTheme(rgba(46, 74, 143, 0.015), rgba(122, 159, 212, 0.05)) 1px, transparent 1px);
+  background-size: 24px 24px, 24px 24px, 6px 6px, 6px 6px;
 }
 
 // Sticky header + search wrapper
