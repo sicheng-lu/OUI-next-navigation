@@ -19,7 +19,7 @@ import {
 
 import { SOURCE_PAGE_MOCK } from './session_models';
 // Mascot placeholder - inline OpenSearch logo
-const OpenSearchMascot = ({ size = 28 }) => (
+const OpenSearchMascot = ({ size = 28, expression = 'comma' }) => (
   <svg width={size} height={size} viewBox="0 0 80 80" fill="none">
     <defs>
       <linearGradient id="mascotGrad" x1="40" y1="80" x2="40" y2="0" gradientUnits="userSpaceOnUse">
@@ -33,10 +33,21 @@ const OpenSearchMascot = ({ size = 28 }) => (
     </defs>
     <circle cx="40" cy="40" r="39.5" fill="url(#mascotGrad)" />
     <ellipse cx="28" cy="22" rx="22" ry="14" fill="url(#mascotHL)" />
-    <g transform="translate(48, 31) scale(1) translate(-48, -31)">
-      <path d="M 34.683 36.338 C 35.807 36.175 37.166 35.792 38.484 34.55 C 41.213 31.978 41.23 27.557 38.948 25.291 C 38.054 24.404 36.446 24.068 35.112 25.325 C 34.532 25.871 34.42 26.47 34.547 27.187 C 34.667 27.87 34.994 28.604 35.365 29.436 C 35.813 30.44 36.34 31.599 36.409 32.77 C 36.491 34.173 36.241 35.386 34.683 36.338 Z" fill="#fff" />
-      <path d="M 52.683 36.338 C 53.807 36.175 55.166 35.792 56.484 34.55 C 59.213 31.978 59.23 27.557 56.948 25.291 C 56.054 24.404 54.446 24.068 53.112 25.325 C 52.532 25.871 52.42 26.47 52.547 27.187 C 52.667 27.87 52.994 28.604 53.365 29.436 C 53.813 30.44 54.34 31.599 54.409 32.77 C 54.491 34.173 54.241 35.386 52.683 36.338 Z" fill="#fff" />
-    </g>
+    {expression === 'wow' ? (
+      /* Big open eyes — attention/needs input */
+      <g>
+        <circle cx="30" cy="38" r="8" fill="#fff" />
+        <circle cx="30" cy="38" r="4" fill="#153A5A" />
+        <circle cx="50" cy="38" r="8" fill="#fff" />
+        <circle cx="50" cy="38" r="4" fill="#153A5A" />
+      </g>
+    ) : (
+      /* Default comma eyes */
+      <g transform="translate(48, 31) scale(1) translate(-48, -31)">
+        <path d="M 34.683 36.338 C 35.807 36.175 37.166 35.792 38.484 34.55 C 41.213 31.978 41.23 27.557 38.948 25.291 C 38.054 24.404 36.446 24.068 35.112 25.325 C 34.532 25.871 34.42 26.47 34.547 27.187 C 34.667 27.87 34.994 28.604 35.365 29.436 C 35.813 30.44 36.34 31.599 36.409 32.77 C 36.491 34.173 36.241 35.386 34.683 36.338 Z" fill="#fff" />
+        <path d="M 52.683 36.338 C 53.807 36.175 55.166 35.792 56.484 34.55 C 59.213 31.978 59.23 27.557 56.948 25.291 C 56.054 24.404 54.446 24.068 53.112 25.325 C 52.532 25.871 52.42 26.47 52.547 27.187 C 52.667 27.87 52.994 28.604 53.365 29.436 C 53.813 30.44 54.34 31.599 54.409 32.77 C 54.491 34.173 54.241 35.386 52.683 36.338 Z" fill="#fff" />
+      </g>
+    )}
   </svg>
 );
 
@@ -686,8 +697,8 @@ export const UiPolishEmptySession = ({
                               <span className="uiPolish__findingCardSummary">{item.summary}</span>
                               <span className="uiPolish__findingCardMeta">
                                 {item.source === 'ai' ? (
-                                  <span className="uiPolish__findingDot">
-                                    <OpenSearchMascot size={22} idle={false} bob={false} follow={false} expression="comma" />
+                                  <span className="uiPolish__findingDot uiPolish__findingDot--attention">
+                                    <OpenSearchMascot size={22} expression="wow" />
                                   </span>
                                 ) : (
                                   <span className="uiPolish__findingDot uiPolish__findingDot--alert">

@@ -1155,6 +1155,15 @@
   &--alert {
     background: #DC3545;
   }
+
+  &--attention {
+    animation: findingDotPulse 2s ease-in-out infinite;
+  }
+}
+
+@keyframes findingDotPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(46, 74, 143, 0.3); }
+  50% { box-shadow: 0 0 0 4px rgba(46, 74, 143, 0.1); }
 }
 
 .uiPolish__findingSource {

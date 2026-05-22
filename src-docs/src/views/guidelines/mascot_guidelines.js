@@ -46,7 +46,7 @@ const expressions = [
   {
     name: 'WOW',
     states: 'Attention / Asking / Needs input',
-    description: 'Wide eyes, body shifts gold. The mascot needs you.',
+    description: 'Wide open eyes — the big reaction. The mascot scales up and eyes go round to signal it needs you.',
   },
   {
     name: 'WINK',
@@ -112,15 +112,15 @@ const lifecyclePhases = [
   },
   {
     phase: 'Interrupt',
-    expression: 'WOW + gold body',
+    expression: 'WOW',
     scale: '52px',
-    description: 'The agent needs to come back with a question. This is the ONE moment the BODY changes color — navy shifts to gold. The eye opens wide (wow). It\'s the loudest signal in the system.',
+    description: 'The agent needs to come back with a question. The eyes snap open wide (wow) and the mascot scales UP — it\'s the loudest signal in the system. No body color change needed; the big eye-open reaction is unmistakable.',
     example: null,
     richInterrupt: true,
     whyNotes: [
-      'Body goes gold — the ONLY color change in the system',
-      'Eye opens to wow (O O) — wide, attentive',
-      'Scales UP to 52px and inhabits a stripe-gold card',
+      'Eyes snap to wow (O O) — wide, round, unmissable',
+      'Scales UP to 52px — size is the attention signal',
+      'Subtle pulse animation draws the eye without color shift',
     ],
     keyIdea: 'If the user walks away, the eye drifts to dot after ~30s (blocked → patient waiting). A nudge, not a tantrum.',
   },
@@ -137,7 +137,7 @@ const lifecyclePhases = [
       'Wink reads as "satisfied", not "look at me"',
       'If user thumbs-up, eye briefly becomes heart (1.2s) before settling',
     ],
-    keyIdea: 'Edge case — couldn\'t find: mascot resolves to blocked (gold dot), not error. xx is reserved for tool failures.',
+    keyIdea: 'Edge case — couldn\'t find: mascot resolves to blocked (dot eyes), not error. xx is reserved for tool failures.',
   },
 ];
 
@@ -156,10 +156,9 @@ const microMoments = [
     description: 'On \'found\', the eye flips to ^ ^ for 280ms with a subtle 4px hop, then resolves to wink. Repeating it more than once turns it into a tic. Once is satisfying; twice is annoying.',
   },
   {
-    title: 'Gold body, never gold eye',
+    title: 'Big eyes signal attention, not color',
     expression: 'wow',
-    gold: true,
-    description: 'The ONLY moment the body color changes is when a human is needed. After ~30s without response, the wow eye softens to dot — patient waiting. The gold body stays.',
+    description: 'When the agent needs you, the eyes snap open wide and the mascot scales up. The body color never changes — size and expression are the attention signals. After ~30s without response, the wow eye softens to dot — patient waiting.',
   },
   {
     title: 'xx flashes, then returns to comma',
@@ -186,11 +185,11 @@ const microMoments = [
 
 const principles = [
   { rule: 'One mascot per message', detail: 'Never show multiple mascots in the same context.' },
-  { rule: 'Body is invariant', detail: 'Only the eyes change. The body shape stays constant.' },
+  { rule: 'Body is invariant', detail: 'Only the eyes change. The body shape and color stay constant — always navy.' },
   { rule: 'Scale signals urgency', detail: 'Bigger means more important. Smaller means background.' },
   { rule: 'State follows the current tool', detail: 'The expression maps to what the agent is doing right now.' },
   { rule: "Don't wear the result", detail: 'The mascot reacts, then returns to neutral. It doesn\'t stay happy forever.' },
-  { rule: 'Gold means human-needed', detail: 'The only time the body color changes is when the agent needs your input.' },
+  { rule: 'Big eyes mean human-needed', detail: 'The only time the mascot scales up with wide-open eyes is when the agent needs your input.' },
 ];
 
 export const MascotGuidelinesView = () => {
@@ -201,7 +200,7 @@ export const MascotGuidelinesView = () => {
         <p>
           The OpenSearch mascot is a single circular character with comma-shaped eyes.
           It communicates agent state through nine eye expressions and a scale ladder from 18px to 96px.
-          The body never morphs — only the eyes change. Color shifts to gold only when the agent needs human input.
+          The body never morphs — only the eyes change. When the agent needs human input, the eyes snap open wide and the mascot scales up.
         </p>
       </OuiText>
 
@@ -223,7 +222,7 @@ export const MascotGuidelinesView = () => {
         {expressions.map((expr) => (
           <OuiFlexItem key={expr.name} style={{ minWidth: 180, maxWidth: 220 }}>
             <OuiPanel paddingSize="m" style={{ textAlign: 'center' }}>
-              <MascotSVG size={56} expression={expr.name.toLowerCase()} color={expr.name === 'WOW' ? ['#B8860B', '#8B6914'] : undefined} idle={false} follow={false} bob={false} />
+              <MascotSVG size={56} expression={expr.name.toLowerCase()} idle={false} follow={false} bob={false} />
               <OuiSpacer size="s" />
               <OuiTitle size="xxs">
                 <h4>{expr.name}</h4>
@@ -279,7 +278,7 @@ export const MascotGuidelinesView = () => {
                       <MascotSVG
                         size={parseInt(phase.scale)}
                         expression={phase.expression.split(' ')[0].toLowerCase().replace('/', '')}
-                        color={phase.expression.includes('gold') ? ['#B8860B', '#8B6914'] : undefined} idle={false} follow={false} bob={false}
+                        idle={false} follow={false} bob={false}
                       />
                     </OuiFlexItem>
                     <OuiFlexItem>
@@ -393,11 +392,11 @@ export const MascotGuidelinesView = () => {
                       <div style={{ fontSize: 12, color: 'var(--ouiColorSuccess, #5CB198)', marginTop: 2 }}>Found 2 candidate dependencies</div>
                     </div>
                   </div>
-                  {/* Gold interrupt card */}
-                  <div style={{ border: '1px solid #CDA849', borderRadius: 10, background: 'rgba(205, 168, 73, 0.06)', padding: '20px 24px' }}>
+                  {/* Interrupt card — big eye-open reaction */}
+                  <div style={{ border: '1px solid var(--ouiBorderColor, #D4DCE8)', borderRadius: 10, background: 'rgba(46, 74, 143, 0.04)', padding: '20px 24px' }}>
                     <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
                       <div style={{ flexShrink: 0, marginTop: 2 }}>
-                        <MascotSVG size={52} expression="wow" color={['#B8860B', '#8B6914']} idle={false} follow={false} bob={false} />
+                        <MascotSVG size={52} expression="wow" idle={false} follow={false} bob={false} />
                       </div>
                       <div>
                         <div style={{ fontSize: 15, fontWeight: 600, color: 'var(--ouiTitleColor, #0E1525)', marginBottom: 4 }}>Two services look related — which should I dig into first?</div>
@@ -543,7 +542,6 @@ export const MascotGuidelinesView = () => {
                 <MascotSVG
                   size={40}
                   expression={moment.expression}
-                  color={moment.gold ? ['#B8860B', '#8B6914'] : undefined}
                   idle={moment.idle || false}
                   follow={false}
                   bob={false}
