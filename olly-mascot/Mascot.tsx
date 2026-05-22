@@ -69,10 +69,10 @@ const EYE_GEOMETRY: Record<MascotExpression, { left: string; right: string }> = 
   happy:  { left: "M36.4 33L39.0 28.5L41.6 33L40.4 33L39.0 30.6L37.6 33Z", right: "M54.4 33L57.0 28.5L59.6 33L58.4 33L57.0 30.6L55.6 33Z" },
   dot:    { left: "M37.7 30.3H40.3V32.9H37.7V30.3Z", right: "M55.7 30.3H58.3V32.9H55.7V30.3Z" },
   squint: { left: "M36.6 28L41.4 31L36.6 34L36.6 32.5L39.3 31L36.6 29.5Z", right: "M59.4 28L54.6 31L59.4 34L59.4 32.5L56.7 31L59.4 29.5Z" },
-  // Tall pill "0 0" — matches comma height, straight sides.
+  // Tall pill "0 0" — big open eyes with OpenSearch brand colors.
   wow: {
-    left:  "M 38 26 A 1 1 0 0 1 40 26 L 40 36 A 1 1 0 0 1 38 36 Z",
-    right: "M 56 26 A 1 1 0 0 1 58 26 L 58 36 A 1 1 0 0 1 56 36 Z",
+    left:  "M 36 25 A 3 3 0 0 1 42 25 L 42 37 A 3 3 0 0 1 36 37 Z",
+    right: "M 54 25 A 3 3 0 0 1 60 25 L 60 37 A 3 3 0 0 1 54 37 Z",
   },
   // Wink — curvy comma on the left, slash on the right.
   wink: {
@@ -258,8 +258,8 @@ export const Mascot: React.FC<MascotProps> = ({
           transform={`translate(${EYE_CX}, ${EYE_CY}) scale(${eyeScale}) translate(${-EYE_CX + pupilOffset.x / eyeScale}, ${-EYE_CY + pupilOffset.y / eyeScale})`}
         >
           {/* keyed on path data so swaps trigger the eye-pop animation */}
-          <path key={`l-${active}`} d={geom.left}  fill={eyeColor} style={{ animation: "__mascot_eye_pop__ 160ms ease-out", transformOrigin: "center" }} />
-          <path key={`r-${active}`} d={geom.right} fill={eyeColor} style={{ animation: "__mascot_eye_pop__ 160ms ease-out", transformOrigin: "center" }} />
+          <path key={`l-${active}`} d={geom.left}  fill={active === 'wow' ? '#003B4F' : eyeColor} style={{ animation: "__mascot_eye_pop__ 160ms ease-out", transformOrigin: "center" }} />
+          <path key={`r-${active}`} d={geom.right} fill={active === 'wow' ? '#005EB8' : eyeColor} style={{ animation: "__mascot_eye_pop__ 160ms ease-out", transformOrigin: "center" }} />
         </g>
       </svg>
     </div>
