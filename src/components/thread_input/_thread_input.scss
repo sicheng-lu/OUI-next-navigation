@@ -5,6 +5,7 @@
 
 .ouiThreadInput {
   width: 100%;
+  position: relative;
 }
 
 .ouiThreadInput--fullWidth {
@@ -94,6 +95,64 @@
 .ouiThreadInput--disabled .ouiThreadInput__wrapper {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+// Suggestions dropdown
+.ouiThreadInput__suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: $ouiZLevel1;
+  margin-top: $ouiSizeXS;
+  background-color: $ouiColorEmptyShade;
+  border: 1px solid $ouiFormBorderColor;
+  border-radius: $ouiBorderRadius;
+  box-shadow: 0 4px 16px lightOrDarkTheme(rgba(46, 74, 143, 0.12), rgba(0, 0, 0, 0.3));
+  overflow: hidden;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.ouiThreadInput__suggestionItem {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: $ouiSizeS $ouiSizeM;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font-family: $ouiFontFamily;
+  font-size: $ouiFontSizeS;
+  line-height: $ouiLineHeight;
+  color: $ouiTextColor;
+  transition: background-color 100ms ease;
+  gap: $ouiSizeS;
+
+  &:hover {
+    background-color: lightOrDarkTheme(rgba(46, 74, 143, 0.06), rgba(255, 255, 255, 0.05));
+  }
+
+  &:active {
+    background-color: lightOrDarkTheme(rgba(46, 74, 143, 0.10), rgba(255, 255, 255, 0.08));
+  }
+
+  & + & {
+    border-top: 1px solid lightOrDarkTheme($ouiColorLightestShade, $ouiColorLightShade);
+  }
+}
+
+.ouiThreadInput__suggestionIcon {
+  flex-shrink: 0;
+  color: $ouiColorMediumShade;
+}
+
+.ouiThreadInput__suggestionLabel {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 

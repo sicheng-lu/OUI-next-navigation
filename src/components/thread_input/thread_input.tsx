@@ -16,13 +16,22 @@ import React, {
   ReactNode,
   useState,
   useCallback,
+  useRef,
 } from 'react';
 import classNames from 'classnames';
 import { CommonProps } from '../common';
+import { OuiIcon } from '../icon';
+
+export interface OuiThreadInputSuggestion {
+  /** Display label for the suggestion */
+  label: string;
+  /** Optional description shown below the label */
+  description?: string;
+}
 
 export interface OuiThreadInputProps
   extends CommonProps,
-    Omit<HTMLAttributes<HTMLDivElement>, 'onSubmit'> {
+    Omit<HTMLAttributes<HTMLDivElement>, 'onSubmit' | 'onChange'> {
   /** Placeholder text for the textarea */
   placeholder?: string;
   /** Current value of the textarea */
@@ -43,6 +52,12 @@ export interface OuiThreadInputProps
   actionsRight?: ReactNode;
   /** Whether to use full width */
   fullWidth?: boolean;
+  /** List of suggestions to show in the dropdown */
+  suggestions?: OuiThreadInputSuggestion[];
+  /** Whether to show the suggestions dropdown. Defaults to true. Set to false for chat dialogs at the bottom of the page. */
+  showSuggestions?: boolean;
+  /** Callback when a suggestion is clicked */
+  onSuggestionClick?: (suggestion: OuiThreadInputSuggestion) => void;
 }
 
 export const OuiThreadInput: FunctionComponent<OuiThreadInputProps> = ({
@@ -56,10 +71,15 @@ export const OuiThreadInput: FunctionComponent<OuiThreadInputProps> = ({
   actionsLeft,
   actionsRight,
   fullWidth = true,
+  suggestions = [],
+  showSuggestions = true,
+  onSuggestionClick,
   className,
   ...rest
 }) => {
   const [internalValue, setInternalValue] = useState('');
+  const [isFocused, setIsFocused] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const isControlled = controlledValue !== undefined;
   const currentValue = isControlled ? controlledValue : internalValue;
 
@@ -93,6 +113,41 @@ export const OuiThreadInput: FunctionComponent<OuiThreadInputProps> = ({
     [handleSubmit]
   );
 
+  const handleFocus = useCallback(() => setIsFocused(true), []);
+  const handleBlur = useCallback((e: React.FocusEvent) => {
+    // Don't close if clicking within the suggestion dropdown
+    if (
+      wrapperRef.current &&
+      e.relatedTarget &&
+      wrapperRef.current.contains(e.relatedTarget as Node)
+    ) {
+      return;
+    }
+    setIsFocused(false);
+  }, []);
+
+  const handleSuggestionClick = useCallback(
+    (suggestion: OuiThreadInputSuggestion) => {
+      if (onSuggestionClick) {
+        onSuggestionClick(suggestion);
+      } else {
+        // Default behavior: fill the input with the suggestion label
+        if (!isControlled) {
+          setInternalValue(suggestion.label);
+        }
+        onChange?.(suggestion.label);
+      }
+      setIsFocused(false);
+    },
+    [onSuggestionClick, isControlled, onChange]
+  );
+
+  const shouldShowSuggestions =
+    showSuggestions &&
+    isFocused &&
+    currentValue.trim().length > 0 &&
+    suggestions.length > 0;
+
   const classes = classNames(
     'ouiThreadInput',
     {
@@ -103,7 +158,7 @@ export const OuiThreadInput: FunctionComponent<OuiThreadInputProps> = ({
   );
 
   return (
-    <div className={classes} {...rest}>
+    <div className={classes} ref={wrapperRef} onBlur={handleBlur} {...rest}>
       <div className="ouiThreadInput__wrapper">
         <textarea
           className="ouiThreadInput__textarea"
@@ -111,6 +166,7 @@ export const OuiThreadInput: FunctionComponent<OuiThreadInputProps> = ({
           value={currentValue}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
+          onFocus={handleFocus}
           rows={rows}
           disabled={isDisabled}
           aria-label={placeholder}
@@ -124,6 +180,27 @@ export const OuiThreadInput: FunctionComponent<OuiThreadInputProps> = ({
           )}
         </div>
       </div>
+      {shouldShowSuggestions && (
+        <div className="ouiThreadInput__suggestions">
+          {suggestions.map((suggestion, index) => (
+            <button
+              key={index}
+              type="button"
+              className="ouiThreadInput__suggestionItem"
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => handleSuggestionClick(suggestion)}>
+              <OuiIcon
+                type="search"
+                size="s"
+                className="ouiThreadInput__suggestionIcon"
+              />
+              <span className="ouiThreadInput__suggestionLabel">
+                {suggestion.label}
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
