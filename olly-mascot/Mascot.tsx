@@ -258,8 +258,8 @@ export const Mascot: React.FC<MascotProps> = ({
           transform={`translate(${EYE_CX}, ${EYE_CY}) scale(${eyeScale}) translate(${-EYE_CX + pupilOffset.x / eyeScale}, ${-EYE_CY + pupilOffset.y / eyeScale})`}
         >
           {/* keyed on path data so swaps trigger the eye-pop animation */}
-          <path key={`l-${active}`} d={geom.left}  fill={active === 'wow' ? '#003B4F' : eyeColor} style={{ animation: "__mascot_eye_pop__ 160ms ease-out", transformOrigin: "center" }} />
-          <path key={`r-${active}`} d={geom.right} fill={active === 'wow' ? '#005EB8' : eyeColor} style={{ animation: "__mascot_eye_pop__ 160ms ease-out", transformOrigin: "center" }} />
+          <path key={`l-${active}`} d={geom.left}  fill={eyeColor} style={{ animation: "__mascot_eye_pop__ 160ms ease-out", transformOrigin: "center" }} />
+          <path key={`r-${active}`} d={geom.right} fill={eyeColor} style={{ animation: "__mascot_eye_pop__ 160ms ease-out", transformOrigin: "center" }} />
         </g>
       </svg>
     </div>
