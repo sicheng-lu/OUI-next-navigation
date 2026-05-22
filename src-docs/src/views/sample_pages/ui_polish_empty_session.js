@@ -36,11 +36,9 @@ const OpenSearchMascot = ({ size = 28, expression = 'comma' }) => (
     {expression === 'wow' ? (
       /* Big open eyes — attention/needs input, OpenSearch brand colors */
       <g>
-        <circle cx="30" cy="38" r="16" fill="rgba(255,255,255,0.55)" />
-        <circle cx="30" cy="38" r="13" fill="#fff" />
+        <circle cx="30" cy="38" r="13" fill="#fff" stroke="#fff" strokeWidth="3" />
         <circle cx="30" cy="39" r="7.5" fill="#003B4F" />
-        <circle cx="50" cy="38" r="16" fill="rgba(255,255,255,0.55)" />
-        <circle cx="50" cy="38" r="13" fill="#fff" />
+        <circle cx="50" cy="38" r="13" fill="#fff" stroke="#fff" strokeWidth="3" />
         <circle cx="50" cy="39" r="7.5" fill="#005EB8" />
       </g>
     ) : (
