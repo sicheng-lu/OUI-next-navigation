@@ -97,7 +97,7 @@ export class AppView extends Component {
             />
           </OuiErrorBoundary>
 
-          <OuiPageBody>
+          <OuiPageBody paddingSize="l">
             <OuiContext i18n={i18n}>
               <ThemeContext.Consumer>
                 {(context) => {
