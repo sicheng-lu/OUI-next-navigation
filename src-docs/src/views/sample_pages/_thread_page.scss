@@ -785,6 +785,137 @@
   border-radius: $ouiBorderRadius;
 }
 
+// Thinking indicator with mascot and shimmer
+.threadPage__thinking {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 8px 0;
+  animation: thinkingFadeIn 400ms ease-out;
+}
+
+@keyframes thinkingFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.threadPage__thinkingMascot {
+  flex-shrink: 0;
+  width: 36px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 2px 8px rgba($ouiColorPrimary, 0.25));
+}
+
+.threadPage__olly {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+// Curl sway animation
+.threadPage__ollyCurl {
+  animation: ollySway 4s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: 82px 95px;
+}
+
+@keyframes ollySway {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+
+// Halo pulse behind the dot
+.threadPage__ollyHalo {
+  animation: ollyHaloPulse 1.8s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes ollyHaloPulse {
+  0%, 100% { transform: scale(1); opacity: 0.25; }
+  50% { transform: scale(1.7); opacity: 0.55; }
+}
+
+// Eye blink (double-blink every 5s)
+.threadPage__ollyEye {
+  animation: ollyBlink 5s infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes ollyBlink {
+  0%, 80%, 84%, 86%, 90%, 100% { transform: scaleY(1); }
+  82%, 88% { transform: scaleY(0.06); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .threadPage__ollyCurl,
+  .threadPage__ollyHalo,
+  .threadPage__ollyEye,
+  .threadPage__thinkingShimmerLine {
+    animation: none !important;
+  }
+}
+
+.threadPage__thinkingContent {
+  flex: 1;
+  min-width: 0;
+  padding-top: 4px;
+}
+
+.threadPage__thinkingShimmer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.threadPage__thinkingShimmerLine {
+  height: 10px;
+  border-radius: 5px;
+  background: linear-gradient(
+    90deg,
+    rgba($ouiColorMediumShade, 0.05) 0%,
+    rgba($ouiColorPrimary, 0.09) 40%,
+    rgba($ouiColorMediumShade, 0.05) 80%,
+    rgba($ouiColorMediumShade, 0.05) 100%
+  );
+  background-size: 300% 100%;
+  animation: shimmerSlide 4s ease-in-out infinite;
+
+  &--1 {
+    width: 80%;
+    animation-delay: 0ms;
+  }
+
+  &--2 {
+    width: 60%;
+    animation-delay: 150ms;
+  }
+
+  &--3 {
+    width: 45%;
+    animation-delay: 300ms;
+  }
+}
+
+@keyframes shimmerSlide {
+  0% {
+    background-position: 300% 0;
+  }
+  100% {
+    background-position: -300% 0;
+  }
+}
+
 // Force border on panels in dashboard and canvas
 .threadPage__canvasTabContent .ouiPanel,
 .dashboardPage__content .ouiPanel,

@@ -22,7 +22,139 @@
   overflow-y: auto;
 }
 
+// Card styling for list items in new tab page
+.newTabPage .emptySessionPage__listItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $ouiSize;
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid $ouiBorderColor;
+  border-radius: 8px;
+  background-color: $ouiColorEmptyShade;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 150ms ease, box-shadow 150ms ease;
+
+  &:hover {
+    background-color: $ouiFocusBackgroundColor;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  }
+}
+
+.newTabPage .emptySessionPage__listItemContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.newTabPage .emptySessionPage__listItemTitle {
+  font-size: $ouiFontSizeS;
+  font-weight: 500;
+  color: $ouiTitleColor;
+}
+
+.newTabPage .emptySessionPage__listItemTime {
+  font-size: $ouiFontSizeXS;
+  color: $ouiColorMediumShade;
+}
+
+.newTabPage .emptySessionPage__listItemRight {
+  flex-shrink: 0;
+}
+
 // Active/warning list item highlight
 .newTabPage .emptySessionPage__listItem--warning {
   // no special styling
+}
+
+// Filter chips in new tab page
+.newTabPage .emptySessionPage__chips {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.newTabPage .emptySessionPage__chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background-color: transparent;
+  border: 1px solid $ouiBorderColor;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: $ouiFontSizeXS;
+  font-weight: 500;
+  color: $ouiColorDarkShade;
+  white-space: nowrap;
+  transition: background-color 150ms ease, border-color 150ms ease;
+
+  &:hover {
+    background-color: $ouiColorLightestShade;
+    border-color: $ouiColorPrimary;
+    color: $ouiColorPrimary;
+  }
+
+  &--active {
+    background-color: $ouiColorLightestShade;
+    border-color: $ouiColorPrimary;
+    color: $ouiColorPrimary;
+    font-weight: 600;
+  }
+}
+
+// Discover/Monitor grid items as cards
+.newTabPage .emptySessionPage__discoverGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  width: 100%;
+}
+
+.newTabPage .emptySessionPage__discoverGridItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border: 1px solid $ouiBorderColor;
+  border-radius: 8px;
+  background: $ouiColorEmptyShade;
+  cursor: pointer;
+  font-size: $ouiFontSizeS;
+  font-weight: 500;
+  color: $ouiTitleColor;
+  transition: background-color 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+
+  &:hover {
+    background-color: $ouiFocusBackgroundColor;
+    border-color: $ouiColorPrimary;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  }
+
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+
+    &:hover {
+      background-color: $ouiColorEmptyShade;
+      border-color: $ouiBorderColor;
+      box-shadow: none;
+    }
+  }
+}
+
+// Tab content list
+.newTabPage .emptySessionPage__tabContent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
 }

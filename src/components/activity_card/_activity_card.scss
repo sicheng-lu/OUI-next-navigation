@@ -1,0 +1,141 @@
+/*!
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+// ─── Base card ───
+.ouiActivityCard {
+  position: relative;
+  border-radius: $ouiBorderRadius;
+  transition: background-color 150ms ease;
+
+  &:hover {
+    background-color: lightOrDarkTheme(rgba(46, 74, 143, 0.04), rgba(255, 255, 255, 0.03));
+  }
+}
+
+.ouiActivityCard--dismissing {
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+
+.ouiActivityCard__clickable {
+  display: block;
+  width: 100%;
+  padding: $ouiSizeS $ouiSizeM;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font-family: $ouiFontFamily;
+  color: $ouiTextColor;
+}
+
+.ouiActivityCard__action {
+  position: absolute;
+  right: $ouiSizeS;
+  bottom: $ouiSizeS;
+}
+
+// ─── Base variant ───
+.ouiActivityCard__base {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $ouiSizeS;
+}
+
+.ouiActivityCard__title {
+  font-size: $ouiFontSizeS;
+  font-weight: 500;
+  color: $ouiTitleColor;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.ouiActivityCard__subtitle {
+  font-size: $ouiFontSizeXS;
+  color: $ouiColorMediumShade;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+// ─── Activity variant ───
+.ouiActivityCard--activity {
+  border-left: 3px solid $ouiColorDanger;
+}
+
+.ouiActivityCard__finding {
+  display: flex;
+  flex-direction: column;
+  gap: $ouiSizeS;
+}
+
+.ouiActivityCard__summary {
+  font-size: $ouiFontSizeS;
+  font-weight: 400;
+  line-height: 1.5;
+  color: $ouiTextColor;
+}
+
+.ouiActivityCard__meta {
+  display: flex;
+  align-items: center;
+  gap: $ouiSizeS;
+  flex-wrap: wrap;
+}
+
+.ouiActivityCard__avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.ouiActivityCard__priority {
+  font-family: $ouiFontFamily;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &--alert {
+    background-color: $ouiColorDanger;
+    color: #fff;
+  }
+
+  &--warn {
+    background-color: lightOrDarkTheme(rgba(205, 168, 73, 0.15), rgba(205, 168, 73, 0.2));
+    color: lightOrDarkTheme(#8B6914, #CDA849);
+  }
+}
+
+.ouiActivityCard__service {
+  font-family: $ouiCodeFontFamily;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background-color: lightOrDarkTheme($ouiColorLightestShade, $ouiColorLightShade);
+  color: $ouiColorDarkShade;
+}
+
+.ouiActivityCard__metaText {
+  font-size: 11px;
+  color: $ouiColorMediumShade;
+  line-height: 1.5;
+
+  strong {
+    color: $ouiTitleColor;
+    font-weight: 600;
+  }
+}

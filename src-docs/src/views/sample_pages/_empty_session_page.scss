@@ -24,53 +24,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 48px;
+  gap: 24px;
   width: 100%;
   height: 100%;
+  border: 1px solid $ouiBorderColor;
   border-radius: 8px;
-  padding: 120px 24px 24px;
+  padding: 80px 24px 24px;
   overflow: hidden;
-  position: relative;
-  background-image:
-    linear-gradient(to right, rgba(46, 74, 143, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(46, 74, 143, 0.04) 1px, transparent 1px),
-    linear-gradient(to right, rgba(46, 74, 143, 0.015) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(46, 74, 143, 0.015) 1px, transparent 1px);
-  background-size:
-    24px 24px,
-    24px 24px,
-    6px 6px,
-    6px 6px;
-  background-position: 0 0;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    pointer-events: none;
-    background:
-      linear-gradient(to right, $ouiPageBackgroundColor 0px, transparent 40px),
-      linear-gradient(to left, $ouiPageBackgroundColor 0px, transparent 40px),
-      linear-gradient(to bottom, $ouiPageBackgroundColor 0px, transparent 40px),
-      linear-gradient(to top, $ouiPageBackgroundColor 0px, transparent 40px);
-    z-index: 0;
-  }
 }
 
 // Header / Title
 .emptySessionPage__header {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.emptySessionPage__headerText {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+  text-align: center;
 }
 
 // Content container — constrains width
@@ -83,68 +48,6 @@
   max-width: 832px;
   flex: 1;
   min-height: 0;
-}
-
-// Alert callout (warning)
-.emptySessionPage__alertCallout {
-  display: flex;
-  gap: $ouiSize;
-  padding: $ouiSize;
-  border: 1px solid $ouiColorWarning;
-  border-radius: $ouiBorderRadius;
-  background-color: tintOrShade($ouiColorWarning, 90%, 80%);
-}
-
-.emptySessionPage__alertCalloutIcon {
-  flex-shrink: 0;
-  padding-top: 2px;
-}
-
-.emptySessionPage__alertCalloutBody {
-  display: flex;
-  flex-direction: column;
-  gap: $ouiSizeS;
-}
-
-.emptySessionPage__alertCalloutText {
-  font-size: $ouiFontSizeS;
-  color: $ouiTextColor;
-  line-height: 1.5;
-  margin: 0;
-}
-
-.emptySessionPage__alertCalloutSubtext {
-  font-size: $ouiFontSizeXS;
-  color: $ouiColorMediumShade;
-  line-height: 1.4;
-  margin: 0;
-}
-
-.emptySessionPage__alertCalloutActions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: $ouiSizeS;
-}
-
-.emptySessionPage__alertCalloutAction {
-  font-size: $ouiFontSizeXS;
-  font-weight: $ouiFontWeightMedium;
-  color: $ouiColorMediumShade;
-  background: none;
-  border: 1px solid $ouiBorderColor;
-  border-radius: $ouiBorderRadius;
-  padding: 4px $ouiSizeS;
-  cursor: pointer;
-  transition: background-color $ouiAnimSpeedFast ease-in-out;
-
-  &:hover {
-    background-color: $ouiFocusBackgroundColor;
-  }
-
-  &--primary {
-    color: $ouiColorPrimary;
-    border-color: $ouiColorPrimary;
-  }
 }
 
 // System Callout
@@ -262,9 +165,6 @@
 // Quick Access Row
 .emptySessionPage__quickAccess {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 48px;
 }
 
 .emptySessionPage__quickAccessRow {
@@ -272,22 +172,6 @@
   align-items: flex-start;
   justify-content: center;
   gap: 64px;
-
-  &--expandable {
-    animation: quickAccessSlideDown 300ms ease-out;
-    overflow: hidden;
-  }
-}
-
-@keyframes quickAccessSlideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .emptySessionPage__quickAccessItem {
@@ -306,14 +190,14 @@
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  border: $ouiBorderThin;
+  border: none;
   background-color: $ouiColorEmptyShade;
   cursor: pointer;
   padding: 24px;
   transition: background-color 150ms ease-in-out;
 
   &:hover {
-    background-color: $ouiColorLightestShade;
+    background-color: $ouiColorLightShade;
   }
 }
 
@@ -394,140 +278,6 @@
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  scrollbar-width: none; // Firefox
-  -ms-overflow-style: none; // IE/Edge
-
-  &::-webkit-scrollbar {
-    display: none; // Chrome/Safari
-  }
-}
-
-.emptySessionPage__sectionHeader {
-  font-family: $ouiCodeFontFamily;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  color: $ouiColorPrimary;
-  margin-top: 20px;
-  padding: 8px 0 4px;
-
-  &:first-child {
-    margin-top: 0;
-  }
-}
-
-// Saved query card — short and wide
-.emptySessionPage__savedQueryCard {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  width: 100%;
-  padding: 12px 16px;
-  background-color: $ouiColorEmptyShade;
-  border: $ouiBorderThin;
-  border-radius: $ouiBorderRadius;
-  cursor: pointer;
-  appearance: none;
-  text-align: left;
-  transition: background-color 150ms ease-in-out, box-shadow 150ms ease-in-out;
-  flex-shrink: 0;
-
-  &:hover {
-    background-color: $ouiColorLightestShade;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  }
-}
-
-.emptySessionPage__savedQueryLeft {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  flex: 1;
-  min-width: 0;
-}
-
-.emptySessionPage__savedQueryTitle {
-  font-size: $ouiFontSizeS;
-  font-weight: $ouiFontWeightMedium;
-  color: $ouiTitleColor;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.emptySessionPage__savedQueryCode {
-  font-family: $ouiCodeFontFamily;
-  font-size: 11px;
-  color: $ouiColorMediumShade;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.emptySessionPage__savedQueryChart {
-  width: 120px;
-  height: 48px;
-  align-self: center;
-  flex-shrink: 0;
-  color: $ouiColorDanger;
-}
-
-.emptySessionPage__savedQuerySvg {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-.emptySessionPage__savedQueryRight {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 2px;
-  flex-shrink: 0;
-}
-
-.emptySessionPage__savedQueryValue {
-  font-size: $ouiFontSizeL;
-  font-weight: $ouiFontWeightBold;
-  color: $ouiColorDanger;
-  line-height: 1;
-}
-
-.emptySessionPage__savedQueryTrend {
-  font-size: 11px;
-  font-weight: $ouiFontWeightMedium;
-  color: $ouiColorDanger;
-}
-
-.emptySessionPage__savedQueryRange {
-  font-size: 11px;
-  color: $ouiColorMediumShade;
-}
-
-// Side-by-side layout for SAVED QUERY + SERVICE
-.emptySessionPage__sideBySide {
-  display: flex;
-  gap: 16px;
-  width: 100%;
-  align-items: stretch;
-  margin-top: 20px;
-}
-
-.emptySessionPage__sideBySideCol {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  .emptySessionPage__sectionHeader {
-    margin-top: 0;
-  }
-
-  .emptySessionPage__savedQueryCard,
-  .emptySessionPage__favoritePanel {
-    flex: 1;
-  }
 }
 
 .emptySessionPage__tabs .ouiTabs--condensed {
@@ -562,215 +312,35 @@
 .emptySessionPage__listItem {
   display: flex;
   align-items: center;
-  gap: $ouiSize;
+  gap: $ouiSizeS;
   width: 100%;
-  padding: $ouiSize;
-  border: $ouiBorderThin;
-  border-radius: 8px;
-  background-color: $ouiColorEmptyShade;
-  cursor: pointer;
-  text-align: left;
-  font-size: $ouiFontSizeS;
-  color: $ouiTextColor;
-  transition: background-color $ouiAnimSpeedFast ease-in-out,
-              box-shadow $ouiAnimSpeedFast ease-in-out,
-              opacity 300ms ease-out,
-              max-height 300ms ease-out,
-              margin 300ms ease-out,
-              padding 300ms ease-out;
-
-  &:hover {
-    background-color: $ouiFocusBackgroundColor;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px $ouiFocusRingColor;
-  }
-
-  &--warning {
-    // no special styling, just uses the icon/meta to indicate status
-  }
-
-  &--activity {
-    border-color: $ouiColorWarning;
-    background-color: tintOrShade($ouiColorWarning, 94%, 85%);
-    position: relative;
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  &--activityLayout {
-    position: relative;
-    flex-direction: column;
-    align-items: stretch;
-    min-height: 140px;
-    overflow: hidden;
-    flex-shrink: 0;
-  }
-
-  &--dismissing {
-    opacity: 0;
-    transform: translateX(-100%);
-    max-height: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    margin-top: 0;
-    margin-bottom: 0;
-    border-color: transparent;
-    transition: transform 300ms ease-in, opacity 200ms ease-in, max-height 200ms 250ms ease-out, padding 200ms 250ms, margin 200ms 250ms, border-color 200ms 250ms;
-  }
-}
-
-.emptySessionPage__listItemClickable {
-  display: flex;
-  align-items: center;
-  gap: $ouiSize;
-  flex: 1;
-  min-width: 0;
-  width: 100%;
-  background: none;
+  padding: $ouiSizeS $ouiSizeS;
   border: none;
-  padding: 0;
+  background: none;
   cursor: pointer;
   text-align: left;
   font-size: $ouiFontSizeS;
   color: $ouiTextColor;
-}
-
-.emptySessionPage__listItemDismiss {
-  font-size: $ouiFontSizeXS;
-  color: $ouiColorPrimary;
-  background: none;
-  border: 1px solid $ouiBorderColor;
-  border-radius: 999px;
-  padding: 4px 12px;
-  cursor: pointer;
-  flex-shrink: 0;
-  position: absolute;
-  top: $ouiSize;
-  right: $ouiSize;
-
-  &:hover {
-    background-color: $ouiFocusBackgroundColor;
-    border-color: $ouiColorPrimary;
-  }
-}
-
-.emptySessionPage__listItemEmpty {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: $ouiSizeXL $ouiSize;
-  border: 1px dashed $ouiBorderColor;
-  border-radius: $ouiBorderRadius;
-  color: $ouiColorMediumShade;
-  font-size: $ouiFontSizeS;
-  background-color: $ouiPageBackgroundColor;
-}
-
-.emptySessionPage__discoverGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  width: 100%;
-  margin-bottom: $ouiSize;
-
-  &--3col {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-}
-
-.emptySessionPage__discoverGridItem {
-  display: flex;
-  align-items: center;
-  gap: $ouiSizeS;
-  padding: $ouiSize;
-  height: 64px;
-  border: $ouiBorderThin;
-  border-radius: 8px;
-  background-color: $ouiColorEmptyShade;
-  cursor: pointer;
-  font-size: $ouiFontSizeS;
-  color: $ouiTextColor;
-  transition: background-color $ouiAnimSpeedFast ease-in-out;
+  border-radius: 2px;
 
   &:hover {
     background-color: $ouiFocusBackgroundColor;
   }
-
-  &--disabled {
-    cursor: default;
-
-    &:hover {
-      background-color: $ouiColorEmptyShade;
-    }
-  }
-}
-
-.emptySessionPage__listItemContent {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  flex: 1;
-  min-width: 0;
-}
-
-.emptySessionPage__listItemIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.emptySessionPage__listItemRight {
-  display: flex;
-  align-items: center;
-  gap: $ouiSizeS;
-  flex-shrink: 0;
 }
 
 .emptySessionPage__listItemTitle {
   flex: 1;
-  font-size: $ouiFontSizeS;
-  color: $ouiTextColor;
-}
-
-.emptySessionPage__activityCard .emptySessionPage__listItemTitle {
-  font-weight: $ouiFontWeightMedium;
 }
 
 .emptySessionPage__listItemTime {
   color: $ouiColorMediumShade;
   font-size: $ouiFontSizeXS;
-  white-space: normal;
-  line-height: 1.4;
-}
-
-.emptySessionPage__listItemSummary {
-  display: inline-flex;
-  align-items: flex-start;
-  gap: 4px;
-  font-size: $ouiFontSizeXS;
-  color: $ouiColorMediumShade;
-  line-height: 1.5;
-  margin-top: 4px;
-  white-space: normal;
-}
-
-.emptySessionPage__listItemMeta {
-  color: $ouiColorMediumShade;
-  font-size: $ouiFontSizeXS;
-  flex-shrink: 0;
-  white-space: nowrap;
 }
 
 // Filter chips row
 .emptySessionPage__chips {
   display: flex;
-  gap: 16px;
+  gap: 36px;
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -778,51 +348,31 @@
 
 .emptySessionPage__chip {
   display: flex;
-  flex: 1 1 0;
+  flex: 1;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 0 16px;
-  height: 48px;
+  gap: 16px;
+  padding: 16px;
   background-color: $ouiColorEmptyShade;
-  border: $ouiBorderThin;
-  border-radius: 999px;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
   font-size: $ouiFontSizeXS;
   color: $ouiTitleColor;
   white-space: nowrap;
   transition: background-color 150ms ease-in-out;
-  min-width: 0;
-  position: relative;
 
   &:hover {
-    background-color: $ouiColorLightestShade;
+    background-color: $ouiColorLightShade;
   }
 
   &--active {
-    background-color: $ouiColorLightestShade;
+    background-color: $ouiColorLightShade;
+    font-weight: 600;
 
     &:hover {
-      background-color: $ouiColorLightShade;
+      background-color: darken($ouiColorLightShade, 3%);
     }
   }
-
-  &--iconOnly {
-    flex: 0 0 48px;
-    width: 48px;
-    padding: 0;
-    position: relative;
-  }
-}
-
-.emptySessionPage__chipDot {
-  position: absolute;
-  top: 18px;
-  right: 12px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: $ouiColorDanger;
 }
 
 .emptySessionPage__searchLabel {
@@ -830,193 +380,4 @@
   color: $ouiColorMediumShade;
   text-align: left;
   padding-left: 8px;
-}
-
-// Meta pill (e.g. alert source) — inline pill above summary
-.emptySessionPage__listItemMetaPill {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 2px 8px;
-  margin-top: 4px;
-  background-color: tintOrShade($ouiColorWarning, 85%, 75%);
-  border: 1px solid tintOrShade($ouiColorWarning, 60%, 50%);
-  border-radius: 999px;
-  font-size: $ouiFontSizeXS;
-  color: $ouiColorDarkShade;
-  line-height: 1.4;
-  width: fit-content;
-}
-
-// Activity card layout
-.emptySessionPage__activityCard {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  flex: 1;
-  min-width: 0;
-  width: 100%;
-}
-
-.emptySessionPage__activityCardHeader {
-  display: flex;
-  align-items: center;
-  gap: $ouiSizeS;
-}
-
-.emptySessionPage__activityCardPills {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  margin-top: 8px;
-  width: 100%;
-}
-
-.emptySessionPage__activityPill {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 0;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  background-color: transparent;
-  border: none;
-  border-radius: 0;
-  font-size: $ouiFontSizeXS;
-  color: $ouiColorDarkShade;
-  line-height: 1.5;
-  width: 100%;
-}
-
-.emptySessionPage__activityPillText {
-  flex: 1;
-  min-width: 0;
-}
-
-.emptySessionPage__activityPillMeta {
-  flex-shrink: 0;
-  color: $ouiColorMediumShade;
-  font-size: $ouiFontSizeXS;
-  white-space: nowrap;
-}
-
-// Favorite panels (Top services / Top dependency paths)
-.emptySessionPage__favoritePanels {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  width: 100%;
-}
-
-.emptySessionPage__favoritePanel {
-  border: $ouiBorderThin;
-  border-radius: $ouiBorderRadius;
-  background-color: $ouiColorEmptyShade;
-  padding: $ouiSize;
-}
-
-.emptySessionPage__favoritePanelTitle {
-  font-size: $ouiFontSizeS;
-  font-weight: $ouiFontWeightMedium;
-  color: $ouiTitleColor;
-  margin-bottom: 12px;
-}
-
-.emptySessionPage__favoritePanelTable {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-.emptySessionPage__favoritePanelHeader {
-  display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 8px;
-  font-size: $ouiFontSizeXS;
-  color: $ouiColorMediumShade;
-  padding-bottom: 8px;
-  border-bottom: $ouiBorderThin;
-
-  &--3col {
-    grid-template-columns: 120px 100px 1fr;
-  }
-}
-
-.emptySessionPage__favoritePanelRow {
-  display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 8px;
-  align-items: center;
-  padding: 6px 0;
-  border-bottom: $ouiBorderThin;
-
-  &--3col {
-    grid-template-columns: 120px 100px 1fr;
-  }
-}
-
-.emptySessionPage__favoritePanelLink {
-  font-size: $ouiFontSizeXS;
-  color: $ouiColorPrimary;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  text-align: left;
-
-  &:hover {
-    text-decoration: underline;
-  }
-
-  &--static {
-    font-size: $ouiFontSizeXS;
-    color: $ouiColorPrimary;
-  }
-}
-
-.emptySessionPage__favoritePanelBar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-
-  span {
-    font-size: $ouiFontSizeXS;
-    color: $ouiColorMediumShade;
-    white-space: nowrap;
-  }
-}
-
-.emptySessionPage__favoritePanelBarTrack {
-  flex: 1;
-  height: 8px;
-  background-color: $ouiColorLightestShade;
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.emptySessionPage__favoritePanelBarFill {
-  height: 100%;
-  background-color: $ouiColorPrimary;
-  border-radius: 4px;
-}
-
-// Edit favorites button
-.emptySessionPage__editButton {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  background-color: $ouiColorLightestShade;
-  border: none;
-  border-radius: 999px;
-  cursor: pointer;
-  font-size: $ouiFontSizeXS;
-  color: $ouiColorMediumShade;
-  align-self: center;
-
-  &:hover {
-    background-color: $ouiColorLightShade;
-    color: $ouiTextColor;
-  }
 }

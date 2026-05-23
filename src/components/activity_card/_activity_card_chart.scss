@@ -1,0 +1,131 @@
+/*!
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+.ouiActivityCardChart {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid $ouiFormBorderColor;
+  border-radius: $ouiBorderRadiusLarge;
+  background-color: $ouiColorEmptyShade;
+  padding: $ouiSizeM;
+  gap: $ouiSizeS;
+  transition: box-shadow 200ms ease, transform 150ms ease;
+  cursor: default;
+  text-align: left;
+  font-family: $ouiFontFamily;
+  width: 100%;
+
+  &:hover {
+    box-shadow: 0 4px 12px lightOrDarkTheme(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.25));
+    transform: translateY(-1px);
+  }
+}
+
+.ouiActivityCardChart--alert {
+  border-color: lightOrDarkTheme(rgba(197, 57, 97, 0.3), rgba(197, 57, 97, 0.4));
+}
+
+// Top row
+.ouiActivityCardChart__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $ouiSizeS;
+}
+
+.ouiActivityCardChart__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.ouiActivityCardChart__kind {
+  font-family: $ouiCodeFontFamily;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: $ouiColorMediumShade;
+}
+
+.ouiActivityCardChart__title {
+  font-size: $ouiFontSizeS;
+  font-weight: 600;
+  color: $ouiTitleColor;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ouiActivityCardChart__live {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 500;
+  color: $ouiColorMediumShade;
+  flex-shrink: 0;
+}
+
+.ouiActivityCardChart__liveDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: $ouiColorSuccess;
+  animation: ouiActivityCardChartLivePulse 2s ease-in-out infinite;
+}
+
+@keyframes ouiActivityCardChartLivePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.ouiActivityCardChart__menu {
+  flex-shrink: 0;
+}
+
+// Preview area
+.ouiActivityCardChart__preview {
+  min-height: 48px;
+}
+
+// Footer
+.ouiActivityCardChart__footer {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: $ouiSizeS;
+  padding-top: $ouiSizeXS;
+  border-top: 1px solid lightOrDarkTheme($ouiColorLightestShade, $ouiColorLightShade);
+}
+
+.ouiActivityCardChart__value {
+  font-size: $ouiFontSize;
+  font-weight: 700;
+  color: $ouiTitleColor;
+
+  &--alert {
+    color: $ouiColorDanger;
+  }
+}
+
+.ouiActivityCardChart__trend {
+  font-size: $ouiFontSizeXS;
+  font-weight: 500;
+
+  &--up {
+    color: $ouiColorDanger;
+  }
+
+  &--down {
+    color: $ouiColorSuccess;
+  }
+
+  &--flat {
+    color: $ouiColorMediumShade;
+  }
+}

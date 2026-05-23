@@ -14,6 +14,7 @@ import React, { useState, useMemo } from 'react';
 import {
   OuiButtonIcon,
   OuiCompressedTextArea,
+  OuiHorizontalRule,
   OuiIcon,
   OuiTab,
   OuiTabs,
@@ -22,75 +23,102 @@ import {
 } from '../../../../src/components';
 
 import { SOURCE_PAGE_MOCK } from './session_models';
-import { Mascot } from '../../../../olly-mascot/Mascot';
 
 /**
  * Quick access shortcut definitions.
  * Maps to existing OUI icon assets.
  */
+const QUICK_ACCESS_ITEMS = [
+  {
+    key: 'new-chat',
+    label: 'New chat',
+    icon: 'generate',
+    action: 'thread',
+  },
+  {
+    key: 'discover-log',
+    label: 'Discover (log)',
+    icon: 'navDiscover',
+    action: 'page',
+    pageKey: 'discover-log',
+  },
+  {
+    key: 'discover-metric',
+    label: 'Discover (Metric)',
+    icon: 'visArea',
+    action: 'page',
+    pageKey: 'discover-metric',
+  },
+  {
+    key: 'app-map',
+    label: 'Application Map',
+    icon: 'navServiceMap',
+    action: 'page',
+    pageKey: 'app-map',
+  },
+  {
+    key: 'app-traces',
+    label: 'Application Traces',
+    icon: 'apmTrace',
+    action: 'page',
+    pageKey: 'app-traces',
+  },
+  {
+    key: 'app-services',
+    label: 'Application Services',
+    icon: 'navDashboards',
+    action: 'page',
+    pageKey: 'app-services',
+  },
+  { key: 'more', label: 'More', icon: 'apps', action: 'more' },
+];
 
 /**
  * Filter chips for the bottom section.
  */
 const FILTER_CHIPS = [
-  { key: 'recent', label: null, icon: 'history', iconOnly: true },
-  { key: 'activity', label: 'Overview' },
-  { key: 'discover', label: 'Discover', icon: 'navDiscover' },
-  { key: 'monitor', label: 'Monitor', icon: 'navAlerting' },
-  { key: 'more', label: 'More', icon: 'apps' },
+  { key: 'favorites', label: 'Favorites', icon: 'starEmpty' },
+  { key: 'dashboards', label: 'Dashboards', icon: 'navDashboards' },
+  { key: 'saved-logs', label: 'Saved logs', icon: 'navDiscover' },
+  { key: 'saved-metric', label: 'Saved metric', icon: 'visArea' },
+  { key: 'alerts', label: 'Alerts', icon: 'navAlerting' },
 ];
 
 /**
  * Mock data for each filter chip.
  */
 const CHIP_DATA = {
-  activity: [
-    {
-      key: 'insight-1',
-      title: 'Latency Spike Investigation',
-      subtitle: 'Created by AI · 15 min ago',
-      summary: 'Payment-service P99 crossed 2,000ms. Connection pool exhaustion identified on 3 of 4 pods with no recent deployments.',
-      meta: 'Alert: Payment service P99 latency breach',
-      icon: 'alert',
-      sessionId: 'latency-spike-session',
-    },
-    {
-      key: 'insight-2',
-      title: 'Error Rate Spike — Checkout Service',
-      subtitle: 'Shared by team · 2 hours ago',
-      summary: 'Checkout error rate jumped to 12.4%. Auth-service deployment regression identified — OIDC token validation timing out.',
-      meta: 'Shared from Sichenl',
-      icon: 'user',
-      sessionId: 'error-rate-spike-session',
-    },
+  favorites: [
+    { key: 'fav-1', title: 'System overview', subtitle: 'Dashboard · Updated 5 min ago' },
+    { key: 'fav-2', title: 'Error rate by service', subtitle: 'Saved log · source=logs | where level="ERROR"' },
+    { key: 'fav-3', title: 'CPU utilization', subtitle: 'Saved metric · source=metrics | stats avg(cpu) by host' },
+    { key: 'fav-4', title: 'Payment service P99 latency breach', subtitle: 'Alert · Critical · 15 min ago' },
+    { key: 'fav-5', title: 'API performance', subtitle: 'Dashboard · Updated 30 min ago' },
   ],
-  recent: [
-    { key: 'dash-1', title: 'System overview', subtitle: 'Dashboard · Updated 5 min ago' },
-    { key: 'log-5', title: 'Connection timeout errors', subtitle: 'Saved log · source=logs | where severity="ERROR"' },
-    { key: 'met-2', title: 'CPU utilization', subtitle: 'Saved metric · Updated 30 min ago' },
-    { key: 'dash-4', title: 'Payment service — connection pool', subtitle: 'Dashboard · Created from thread' },
+  dashboards: [
+    { key: 'dash-1', title: 'System overview', subtitle: 'Updated 5 min ago' },
+    { key: 'dash-2', title: 'Web traffic analytics', subtitle: 'Updated 15 min ago' },
+    { key: 'dash-3', title: 'API performance', subtitle: 'Updated 30 min ago' },
+    { key: 'dash-4', title: 'Payment service — connection pool', subtitle: 'Created from thread · just now' },
   ],
-  favorite: [
-    { key: 'fav-1', title: 'System overview', subtitle: 'Dashboard', pageKey: 'dashboards', typeIcon: 'navDashboards' },
-    { key: 'fav-2', title: 'Error rate by service', subtitle: 'Saved log', pageKey: 'logs', typeIcon: 'navDiscover' },
-  ],
-  discover: [
+  'saved-logs': [
     { key: 'log-1', title: 'Error rate by service', subtitle: 'source=logs | where level="ERROR"' },
     { key: 'log-2', title: 'Auth failure events', subtitle: 'source=logs | where event="auth_fail"' },
     { key: 'log-3', title: 'Slow query log', subtitle: 'source=logs | where duration > 5000' },
     { key: 'log-4', title: 'Payment service timeout logs', subtitle: 'source=payment | where level="WARN"' },
-    { key: 'log-5b', title: 'Connection timeout errors', subtitle: 'source=logs | where severity="ERROR"' },
+    { key: 'log-5', title: 'Connection timeout errors', subtitle: 'source=logs | where severity="ERROR"' },
   ],
-  monitor: [
+  'saved-metric': [
+    { key: 'met-1', title: 'Throughput over time', subtitle: 'source=metrics | stats avg(throughput)' },
+    { key: 'met-2', title: 'CPU utilization', subtitle: 'source=metrics | stats avg(cpu) by host' },
+    { key: 'met-3', title: 'Memory pressure', subtitle: 'source=metrics | stats max(mem_used)' },
+    { key: 'met-4', title: 'Disk I/O by volume', subtitle: 'source=metrics | stats avg(disk_io) by volume' },
+  ],
+  alerts: [
     { key: 'alert-1', title: 'CPU threshold exceeded', subtitle: 'Critical · 10 min ago' },
     { key: 'alert-2', title: 'Disk usage warning', subtitle: 'Warning · 1 hour ago' },
     { key: 'alert-3', title: 'Error rate spike', subtitle: 'Critical · 3 hours ago' },
-    { key: 'alert-4', title: 'Payment service P99 latency breach', subtitle: 'Critical · 15 min ago', meta: 'Active', icon: 'alert' },
-  ],
-  more: [
-    { key: 'other-1', title: 'Inventory service dependency map', subtitle: 'Notebook · Updated 2 hours ago' },
-    { key: 'other-2', title: 'Weekly capacity report', subtitle: 'Notebook · Updated 1 day ago' },
-    { key: 'other-3', title: 'Deployment rollback runbook', subtitle: 'Notebook · Updated 3 days ago' },
+    { key: 'alert-4', title: 'Payment service P99 latency breach', subtitle: 'Critical · 15 min ago' },
   ],
 };
 
@@ -227,7 +255,7 @@ const DualPurposeInput = ({ onStartThread, onOpenPage, onSearchChange }) => {
     <div className="emptySessionPage__inputWrap">
       <div className="emptySessionPage__inputField">
         <OuiCompressedTextArea
-          placeholder="Ask AI anything, or type to search a page"
+          placeholder="Ask anything. Type / for actions."
           value={inputValue}
           onChange={handleChange}
           onKeyDown={handleSubmit}
@@ -267,6 +295,63 @@ const DualPurposeInput = ({ onStartThread, onOpenPage, onSearchChange }) => {
           />
         </div>
       </div>
+    </div>
+  );
+};
+
+/**
+ * QuickAccessRow — Row of circular icon buttons for common actions.
+ *
+ * @param {Object} props
+ * @param {(prompt: string) => void} props.onStartThread
+ * @param {(pageKey: string) => void} props.onOpenPage
+ */
+const QuickAccessRow = ({ onStartThread, onOpenPage }) => {
+  const [showMore, setShowMore] = useState(false);
+
+  const handleClick = (item) => {
+    if (item.action === 'thread') {
+      onStartThread('');
+    } else if (item.action === 'page') {
+      onOpenPage(item.pageKey);
+    } else if (item.action === 'more') {
+      setShowMore(!showMore);
+    }
+  };
+
+  return (
+    <div className="emptySessionPage__quickAccess">
+      <div className="emptySessionPage__quickAccessRow">
+        {QUICK_ACCESS_ITEMS.map((item) => (
+          <div
+            key={item.key}
+            className="emptySessionPage__quickAccessItem"
+            onClick={() => handleClick(item)}>
+            <button
+              className="emptySessionPage__quickAccessButton"
+              aria-label={item.label}>
+              <OuiIcon type={item.icon} size="m" />
+            </button>
+            <span className="emptySessionPage__quickAccessLabel">{item.label}</span>
+          </div>
+        ))}
+      </div>
+      {showMore && (
+        <div className="emptySessionPage__moreOptions">
+          {Object.entries(SOURCE_PAGE_MOCK).map(([pageKey, { title }]) => (
+            <button
+              key={pageKey}
+              className="emptySessionPage__moreOptionItem"
+              onClick={() => {
+                onOpenPage(pageKey);
+                setShowMore(false);
+              }}>
+              <OuiIcon type="document" size="s" />
+              <span>{title}</span>
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
@@ -458,18 +543,12 @@ function formatRelativeTime(timestamp) {
 export const EmptySessionPage = ({
   onStartThread,
   onOpenPage,
-  onViewSession,
-  onStartInvestigation,
-  onSelectSession,
-  sessions = [],
   recentItems = [],
   favoriteItems = [],
   systemAlert = null,
 }) => {
-  const [activeChip, setActiveChip] = useState('activity');
+  const [activeChip, setActiveChip] = useState('favorites');
   const [searchQuery, setSearchQuery] = useState('');
-  const [dismissedItems, setDismissedItems] = useState(new Set());
-  const [dismissingItems, setDismissingItems] = useState(new Set());
 
   // Build a flat searchable list from all chip data + SOURCE_PAGE_MOCK
   const allSearchableItems = useMemo(() => {
@@ -477,7 +556,7 @@ export const EmptySessionPage = ({
     // Add all chip data items
     Object.entries(CHIP_DATA).forEach(([category, categoryItems]) => {
       categoryItems.forEach((item) => {
-        items.push({ ...item, category, pageKey: category === 'discover' ? 'logs' : category === 'monitor' ? 'alerts' : category === 'recent' ? 'dashboards' : category === 'favorite' ? 'dashboards' : 'notebooks' });
+        items.push({ ...item, category, pageKey: category === 'dashboards' ? 'dashboards' : category === 'saved-logs' ? 'logs' : category === 'saved-metric' ? 'metrics' : 'alerts' });
       });
     });
     // Add SOURCE_PAGE_MOCK pages
@@ -499,21 +578,15 @@ export const EmptySessionPage = ({
   return (
     <div className="emptySessionPage">
       <div className="emptySessionPage__panel">
+        {/* Welcome title */}
+        <div className="emptySessionPage__header">
+          <OuiTitle size="m">
+            <h1>Welcome to OpenSearch Observability</h1>
+          </OuiTitle>
+        </div>
+
         {/* Content container — max 832px */}
         <div className="emptySessionPage__content">
-          {/* Welcome title */}
-          <div className="emptySessionPage__header">
-            <Mascot size={44} expression="comma" idle bob follow={false} />
-            <div className="emptySessionPage__headerText">
-              <OuiTitle size="m">
-                <h1>Good morning, John</h1>
-              </OuiTitle>
-              <OuiText size="s" color="subdued">
-                <p>All 247 services steady. 2 activities to review.</p>
-              </OuiText>
-            </div>
-          </div>
-
           {/* Textarea input */}
           <DualPurposeInput
             onStartThread={onStartThread}
@@ -544,247 +617,41 @@ export const EmptySessionPage = ({
             </div>
           ) : (
             <>
+              {/* Quick access row */}
+              <QuickAccessRow
+                onStartThread={onStartThread}
+                onOpenPage={onOpenPage}
+              />
+
+              {/* Horizontal rule */}
+              <OuiHorizontalRule margin="m" />
+
               {/* Filter chips */}
               <div className="emptySessionPage__chips">
-                {FILTER_CHIPS.map((chip) => {
-                  const hasActivityItems = chip.key === 'activity' && CHIP_DATA.activity.some((item) => !dismissedItems.has(item.key));
-                  return (
-                    <button
-                      key={chip.key}
-                      type="button"
-                      className={`emptySessionPage__chip${activeChip === chip.key ? ' emptySessionPage__chip--active' : ''}${chip.iconOnly ? ' emptySessionPage__chip--iconOnly' : ''}`}
-                      onClick={() => setActiveChip(chip.key)}>
-                      {chip.iconOnly ? <OuiIcon type={chip.icon} size="m" /> : chip.label}
-                      {hasActivityItems && <span className="emptySessionPage__chipDot" />}
-                    </button>
-                  );
-                })}
+                {FILTER_CHIPS.map((chip) => (
+                  <button
+                    key={chip.key}
+                    type="button"
+                    className={`emptySessionPage__chip${activeChip === chip.key ? ' emptySessionPage__chip--active' : ''}`}
+                    onClick={() => setActiveChip(chip.key)}>
+                    <OuiIcon type={chip.icon} size="m" />
+                    <span>{chip.label}</span>
+                  </button>
+                ))}
               </div>
 
               {/* List items based on active chip */}
               <div className="emptySessionPage__tabContent">
-                {activeChip === 'activity' && (
-                  <div className="emptySessionPage__sectionHeader">// LATEST</div>
-                )}
-                {activeChip === 'activity' && CHIP_DATA.activity.every((item) => dismissedItems.has(item.key)) && (
-                  <div className="emptySessionPage__listItemEmpty">
-                    All caught up, no ongoing activity
-                  </div>
-                )}
-                {activeChip === 'activity' && (CHIP_DATA.activity || []).filter((item) => !dismissedItems.has(item.key)).map((item) => (
-                  <div
+                {(CHIP_DATA[activeChip] || []).map((item) => (
+                  <button
                     key={item.key}
-                    className={`emptySessionPage__listItem emptySessionPage__listItem--activityLayout${item.icon === 'alert' ? ' emptySessionPage__listItem--activity' : ''}${dismissingItems.has(item.key) ? ' emptySessionPage__listItem--dismissing' : ''}`}>
-                    <button
-                      type="button"
-                      className="emptySessionPage__listItemClickable"
-                      onClick={() => onSelectSession(item.sessionId)}>
-                      <span className="emptySessionPage__activityCard">
-                        <span className="emptySessionPage__activityCardHeader">
-                          <span className="emptySessionPage__listItemTitle">{item.title}</span>
-                        </span>
-                        <span className="emptySessionPage__listItemTime">{item.subtitle}</span>
-                        <span className="emptySessionPage__activityCardPills">
-                          {item.summary && (
-                            <span className="emptySessionPage__activityPill">
-                              <OuiIcon type="generate" size="m" />
-                              <span className="emptySessionPage__activityPillText">{item.summary}</span>
-                              <span className="emptySessionPage__activityPillMeta">3 tabs</span>
-                            </span>
-                          )}
-                          {item.meta && (
-                            <span className="emptySessionPage__activityPill">
-                              {item.icon && <OuiIcon type={item.icon} size="m" color={item.icon === 'alert' ? 'warning' : 'subdued'} />}
-                              <span className="emptySessionPage__activityPillText">{item.meta}</span>
-                            </span>
-                          )}
-                        </span>
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      className="emptySessionPage__listItemDismiss"
-                      aria-label="Dismiss"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setDismissingItems((prev) => new Set([...prev, item.key]));
-                        setTimeout(() => {
-                          setDismissedItems((prev) => new Set([...prev, item.key]));
-                          setDismissingItems((prev) => { const next = new Set(prev); next.delete(item.key); return next; });
-                        }, 500);
-                      }}>
-                      Dismiss
-                    </button>
-                  </div>
-                ))}
-                {activeChip === 'discover' && (
-                  <div className="emptySessionPage__sectionHeader">// OPEN A PAGE TO DISCOVER</div>
-                )}
-                {activeChip === 'discover' && (
-                  <div className="emptySessionPage__discoverGrid">
-                    <button type="button" className="emptySessionPage__discoverGridItem" onClick={() => onOpenPage('discover-log')}>
-                      <OuiIcon type="navDiscover" size="m" />
-                      <span>Logs</span>
-                    </button>
-                    <button type="button" className="emptySessionPage__discoverGridItem" onClick={() => onOpenPage('discover-metric')}>
-                      <OuiIcon type="visArea" size="m" />
-                      <span>Metrics</span>
-                    </button>
-                    <button type="button" className="emptySessionPage__discoverGridItem" onClick={() => onOpenPage('dashboards-list')}>
-                      <OuiIcon type="navDashboards" size="m" />
-                      <span>Dashboards</span>
-                    </button>
-                    <button type="button" className="emptySessionPage__discoverGridItem" onClick={() => onOpenPage('alerts-list')}>
-                      <OuiIcon type="navAlerting" size="m" />
-                      <span>Alerts</span>
-                    </button>
-                  </div>
-                )}
-                {activeChip === 'monitor' && (
-                  <div className="emptySessionPage__sectionHeader">// OPEN A PAGE TO MONITOR</div>
-                )}
-                {activeChip === 'monitor' && (
-                  <div className="emptySessionPage__discoverGrid">
-                    <button type="button" className="emptySessionPage__discoverGridItem" onClick={() => onOpenPage('app-map')}>
-                      <OuiIcon type="navServiceMap" size="m" />
-                      <span>Application Map</span>
-                    </button>
-                    <button type="button" className="emptySessionPage__discoverGridItem" onClick={() => onOpenPage('app-perf-services')}>
-                      <OuiIcon type="navOverview" size="m" />
-                      <span>Application Services</span>
-                    </button>
-                    <button type="button" className="emptySessionPage__discoverGridItem" onClick={() => onOpenPage('app-traces')}>
-                      <OuiIcon type="apmTrace" size="m" />
-                      <span>Application Traces</span>
-                    </button>
-                    <button type="button" className="emptySessionPage__discoverGridItem" onClick={() => onOpenPage('forecasting')}>
-                      <OuiIcon type="visLine" size="m" />
-                      <span>Forecasting</span>
-                    </button>
-                    <button type="button" className="emptySessionPage__discoverGridItem" onClick={() => onOpenPage('app-traces')}>
-                      <OuiIcon type="apmTrace" size="m" />
-                      <span>Agent traces</span>
-                    </button>
-                    <button type="button" className="emptySessionPage__discoverGridItem" onClick={() => onOpenPage('agent-spans')}>
-                      <OuiIcon type="visTagCloud" size="m" />
-                      <span>Agent spans</span>
-                    </button>
-                  </div>
-                )}
-                {activeChip === 'more' && (
-                  <div className="emptySessionPage__sectionHeader">// OPEN A PAGE</div>
-                )}
-                {activeChip === 'more' && (
-                  <div className="emptySessionPage__discoverGrid">
-                    <div className="emptySessionPage__discoverGridItem emptySessionPage__discoverGridItem--disabled">
-                      <OuiIcon type="document" size="m" />
-                      <span>Notebook</span>
-                    </div>
-                    <div className="emptySessionPage__discoverGridItem emptySessionPage__discoverGridItem--disabled">
-                      <OuiIcon type="navAlerting" size="m" />
-                      <span>Alert rules</span>
-                    </div>
-                  </div>
-                )}
-                {activeChip === 'activity' && (
-                  <div className="emptySessionPage__sideBySide">
-                    <div className="emptySessionPage__sideBySideCol">
-                      <div className="emptySessionPage__sectionHeader">// SERVICE</div>
-                      <div className="emptySessionPage__favoritePanel">
-                        <div className="emptySessionPage__favoritePanelTitle">Top services by fault rate</div>
-                        <div className="emptySessionPage__favoritePanelTable">
-                          <div className="emptySessionPage__favoritePanelHeader">
-                            <span>Service</span><span>Fault rate</span>
-                          </div>
-                          <div className="emptySessionPage__favoritePanelRow">
-                            <button type="button" className="emptySessionPage__favoritePanelLink" onClick={() => onOpenPage('service-detail', 'Service: checkout')}>checkout</button>
-                            <div className="emptySessionPage__favoritePanelBar"><div className="emptySessionPage__favoritePanelBarTrack"><div className="emptySessionPage__favoritePanelBarFill" style={{ width: '66.67%' }} /></div><span>66.67%</span></div>
-                          </div>
-                          <div className="emptySessionPage__favoritePanelRow">
-                            <span className="emptySessionPage__favoritePanelLink--static">frontend</span>
-                            <div className="emptySessionPage__favoritePanelBar"><div className="emptySessionPage__favoritePanelBarTrack"><div className="emptySessionPage__favoritePanelBarFill" style={{ width: '14.49%' }} /></div><span>14.49%</span></div>
-                          </div>
-                          <div className="emptySessionPage__favoritePanelRow">
-                            <span className="emptySessionPage__favoritePanelLink--static">frontend-proxy</span>
-                            <div className="emptySessionPage__favoritePanelBar"><div className="emptySessionPage__favoritePanelBarTrack"><div className="emptySessionPage__favoritePanelBarFill" style={{ width: '14.29%' }} /></div><span>14.29%</span></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="emptySessionPage__sideBySideCol">
-                      <div className="emptySessionPage__sectionHeader">// SAVED QUERY</div>
-                      <button type="button" className="emptySessionPage__savedQueryCard" onClick={() => onOpenPage('discover-log')}>
-                        <div className="emptySessionPage__savedQueryLeft">
-                          <span className="emptySessionPage__savedQueryTitle">Connection timeout errors</span>
-                          <code className="emptySessionPage__savedQueryCode">source=logs | where severity=&quot;ERROR&quot;</code>
-                        </div>
-                        <div className="emptySessionPage__savedQueryChart">
-                          <svg viewBox="0 0 120 48" preserveAspectRatio="none" className="emptySessionPage__savedQuerySvg">
-                            <path d="M0,42 L8,41 L16,39 L24,38 L32,36 L40,33 L48,30 L56,27 L64,21 L72,18 L80,12 L88,9 L96,6 L104,4 L112,3 L120,1" fill="none" stroke="currentColor" strokeWidth="2" />
-                            <path d="M0,42 L8,41 L16,39 L24,38 L32,36 L40,33 L48,30 L56,27 L64,21 L72,18 L80,12 L88,9 L96,6 L104,4 L112,3 L120,1 L120,48 L0,48 Z" fill="currentColor" opacity="0.1" />
-                          </svg>
-                        </div>
-                        <div className="emptySessionPage__savedQueryRight">
-                          <span className="emptySessionPage__savedQueryValue">847</span>
-                          <span className="emptySessionPage__savedQueryTrend">↑ +312%</span>
-                          <span className="emptySessionPage__savedQueryRange">Last 15 min</span>
-                        </div>
-                      </button>
-                    </div>
-                  </div>
-                )}
-                {activeChip === 'activity' && (
-                  <div className="emptySessionPage__sectionHeader">// FAVORITES</div>
-                )}
-                {activeChip === 'activity' && (CHIP_DATA.favorite || []).map((item) => (
-                  <div key={item.key} className="emptySessionPage__listItem">
-                    <button
-                      type="button"
-                      className="emptySessionPage__listItemClickable"
-                      onClick={() => onOpenPage(item.pageKey || 'dashboards')}>
-                      <span className="emptySessionPage__listItemContent">
-                        <span className="emptySessionPage__listItemTitle">{item.title}</span>
-                        <span className="emptySessionPage__listItemTime">{item.subtitle}</span>
-                      </span>
-                      {item.typeIcon && (
-                        <span className="emptySessionPage__listItemRight">
-                          <OuiIcon type={item.typeIcon} size="m" color="subdued" />
-                        </span>
-                      )}
-                    </button>
-                  </div>
-                ))}
-                {activeChip === 'activity' && (
-                  <button type="button" className="emptySessionPage__editButton">
-                    <span>Edit overview</span>
+                    type="button"
+                    className="emptySessionPage__listItem"
+                    onClick={() => onOpenPage(activeChip === 'dashboards' ? 'dashboards' : activeChip === 'saved-logs' ? 'logs' : activeChip === 'saved-metric' ? 'metrics' : 'alerts')}>
+                    <span className="emptySessionPage__listItemTitle">{item.title}</span>
+                    <span className="emptySessionPage__listItemTime">{item.subtitle}</span>
                   </button>
-                )}
-                {activeChip === 'recent' && (
-                  sessions.filter((s) => !s.hidden).slice(0, 5).map((session) => (
-                    <div key={session.id} className="emptySessionPage__listItem">
-                      <button
-                        type="button"
-                        className="emptySessionPage__listItemClickable"
-                        onClick={() => onSelectSession(session.id)}>
-                        <span className="emptySessionPage__activityCard">
-                          <span className="emptySessionPage__listItemTitle">{session.title}</span>
-                          <span className="emptySessionPage__listItemTime">{formatRelativeTime(session.createdAt)}</span>
-                          {session.summary && (
-                            <span className="emptySessionPage__activityCardPills">
-                              <span className="emptySessionPage__activityPill">
-                                <OuiIcon type="generate" size="m" />
-                                <span className="emptySessionPage__activityPillText">{session.summary}</span>
-                                <span className="emptySessionPage__activityPillMeta">
-                                  {session.tabs.length > 0 ? `${session.tabs.length} ${session.tabs.length === 1 ? 'tab' : 'tabs'}` : 'No tabs'}
-                                </span>
-                              </span>
-                            </span>
-                          )}
-                        </span>
-                      </button>
-                    </div>
-                  ))
-                )}
+                ))}
               </div>
             </>
           )}

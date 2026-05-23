@@ -5,6 +5,8 @@
 
 export { OuiAccordion } from './accordion';
 
+export { OuiActivityCard, OuiActivityCardChart } from './activity_card';
+
 export { OuiAspectRatio } from './aspect_ratio';
 
 export { OuiAvatar } from './avatar';

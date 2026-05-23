@@ -20,10 +20,10 @@ import { SOURCE_PAGE_MOCK } from './session_models';
  * Filter chips for the new tab page.
  */
 const TAB_FILTER_CHIPS = [
-  { key: 'favorite', label: 'Favorite' },
-  { key: 'discover', label: 'Discover' },
-  { key: 'monitor', label: 'Monitor' },
-  { key: 'more', label: 'More' },
+  { key: 'favorite', label: 'Favorite', icon: 'starEmpty' },
+  { key: 'discover', label: 'Discover', icon: 'navDiscover' },
+  { key: 'monitor', label: 'Monitor', icon: 'navServiceMap' },
+  { key: 'more', label: 'More', icon: 'apps' },
 ];
 
 /**
@@ -99,6 +99,7 @@ export const NewTabPage = ({ onSelectPage }) => {
                 type="button"
                 className={`emptySessionPage__chip${activeChip === chip.key ? ' emptySessionPage__chip--active' : ''}`}
                 onClick={() => setActiveChip(chip.key)}>
+                <OuiIcon type={chip.icon} size="s" />
                 {chip.label}
               </button>
             ))}
