@@ -19,6 +19,7 @@ import {
 import { SOURCE_PAGE_MOCK } from './session_models';
 import { DetailPageHeader } from './detail_page_header';
 import { NewTabPage } from './new_tab_page';
+import { Mascot } from '../../../../olly-mascot/Mascot';
 
 /**
  * Icon mapping for page keys.
@@ -28,17 +29,23 @@ export const PAGE_TAB_ICONS = {
   alerts: 'navAlerting',
   'alerts-list': 'navAlerting',
   'alerts-detail': 'navAlerting',
+  'alert-rule': 'navAlerting',
   dashboards: 'navDashboards',
   'dashboards-list': 'navDashboards',
   notebooks: 'document',
-  metrics: 'visArea',
+  metrics: 'visLine',
   discover: 'navDiscover',
   'discover-log': 'navDiscover',
+  'discover-log-correlated': 'navDiscover',
   'discover-metric': 'visArea',
   'app-map': 'navServiceMap',
   'app-traces': 'apmTrace',
-  'app-services': 'navDashboards',
-  traces: 'navServices',
+  'app-services': 'navOverview',
+  'app-perf-services': 'navOverview',
+  'service-detail': 'navOverview',
+  traces: 'visTagCloud',
+  forecasting: 'visLine',
+  'agent-spans': 'visTagCloud',
   'new-tab': 'folderClosed',
 };
 
@@ -82,23 +89,8 @@ const TabBar = ({ tabs, activeTabId, onTabSelect, onTabClose, onAddTab, onExpand
   return (
     <div className="pagePanel__tabBar">
       {onExpandChat && (
-        <div className={`pagePanel__aiButton${aiButtonHighlight ? ' pagePanel__aiButton--highlight' : ''}`} onClick={onExpandChat}>
-          <OuiButtonIcon
-            iconType="generate"
-            aria-label="Open AI chat"
-            size="s"
-            color={aiButtonHighlight ? 'primary' : 'text'}
-            display="empty"
-          />
-          {aiButtonHighlight && aiButtonMessage && (
-            <>
-              {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
-              <div className="pagePanel__aiPopoverOverlay" onClick={(e) => { e.stopPropagation(); onDismissAiPopover(); }} />
-              <div className="pagePanel__aiPopover" onClick={onExpandChat}>
-                <p className="pagePanel__aiPopoverText">{aiButtonMessage}</p>
-              </div>
-            </>
-          )}
+        <div className="pagePanel__aiButton" onClick={onExpandChat}>
+          <OuiIcon type="chatLeft" size="m" />
         </div>
       )}
       <div
@@ -222,6 +214,7 @@ export const PagePanel = ({
   onTabClose,
   onAddTab,
   onSelectPage,
+  onOpenCanvasPage,
   onExpandChat,
   aiButtonHighlight,
   aiButtonMessage,
@@ -256,11 +249,11 @@ export const PagePanel = ({
     const PageComponent = pageEntry.component;
 
     // Pages that have their own header — skip DetailPageHeader
-    const PAGES_WITH_OWN_HEADER = new Set(['discover-log', 'discover-metric']);
+    const PAGES_WITH_OWN_HEADER = new Set(['discover-log', 'discover-log-correlated', 'discover-metric', 'app-perf-services']);
     const skipHeader = PAGES_WITH_OWN_HEADER.has(activeTab.pageKey);
 
     // List pages that need onSelectPage callback
-    const LIST_PAGES = new Set(['dashboards-list', 'alerts-list']);
+    const LIST_PAGES = new Set(['dashboards-list', 'alerts-list', 'app-perf-services', 'service-detail']);
     const isListPage = LIST_PAGES.has(activeTab.pageKey);
 
     return (
@@ -268,8 +261,9 @@ export const PagePanel = ({
         {!skipHeader && <DetailPageHeader title={activeTab.title} hideAskAi />}
         <div className="pagePanel__canvasContent">
           <PageComponent
-            onQueryExecute={skipHeader ? onQueryExecute : undefined}
+            onQueryExecute={(skipHeader || isListPage) ? onQueryExecute : undefined}
             onSelectPage={isListPage ? onSelectPage : undefined}
+            onOpenCanvasPage={isListPage ? onOpenCanvasPage : undefined}
           />
         </div>
       </div>
@@ -285,9 +279,6 @@ export const PagePanel = ({
         onTabClose={onTabClose}
         onAddTab={onAddTab}
         onExpandChat={onExpandChat}
-        aiButtonHighlight={aiButtonHighlight}
-        aiButtonMessage={aiButtonMessage}
-        onDismissAiPopover={onDismissAiPopover}
       />
       <div
         className="pagePanel__content"
@@ -295,6 +286,22 @@ export const PagePanel = ({
         aria-label={activeTab ? activeTab.title : 'No tab selected'}>
         {renderTabContent()}
       </div>
+      {onExpandChat && (
+        <button
+          type="button"
+          className={`pagePanel__floatingMascot${aiButtonHighlight ? ' pagePanel__floatingMascot--highlight' : ''}`}
+          aria-label="Open AI chat"
+          onClick={onExpandChat}>
+          <Mascot size={36} expression="comma" idle bob follow={false} />
+          {aiButtonHighlight && aiButtonMessage && (
+            <div className="pagePanel__aiPopover" onClick={onExpandChat}>
+              <div className="pagePanel__aiPopoverInner">
+                <p className="pagePanel__aiPopoverText">{aiButtonMessage}</p>
+              </div>
+            </div>
+          )}
+        </button>
+      )}
     </div>
   );
 };
