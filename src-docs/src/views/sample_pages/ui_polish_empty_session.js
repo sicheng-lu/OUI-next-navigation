@@ -34,10 +34,10 @@ const OpenSearchMascot = ({ size = 28, expression = 'comma' }) => (
     <circle cx="40" cy="40" r="39.5" fill="url(#mascotGrad)" />
     <ellipse cx="28" cy="22" rx="22" ry="14" fill="url(#mascotHL)" />
     {expression === 'wow' ? (
-      /* Big open eyes — white circles */
+      /* Big open eyes — white circles, smaller radius to avoid touching */
       <g>
-        <circle cx="30" cy="38" r="13" fill="#fff" />
-        <circle cx="50" cy="38" r="13" fill="#fff" />
+        <circle cx="28" cy="38" r="9" fill="#fff" />
+        <circle cx="52" cy="38" r="9" fill="#fff" />
       </g>
     ) : (
       /* Default comma eyes */
