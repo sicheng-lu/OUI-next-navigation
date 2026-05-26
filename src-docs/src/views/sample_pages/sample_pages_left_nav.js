@@ -1661,6 +1661,8 @@ const WorkspaceNavPanelContent = ({
 const APPEARANCE_OPTIONS = [
   { key: 'v9-light', label: 'Light' },
   { key: 'v9-dark', label: 'Dark' },
+  { key: 'v10-light', label: 'v10 Light' },
+  { key: 'v10-dark', label: 'v10 Dark' },
   { key: 'system', label: 'System' },
 ];
 
@@ -1669,6 +1671,8 @@ const SettingsPopoverContent = ({
   themeContext,
   appearanceSelection,
   onAppearanceChange,
+  appearanceOptions,
+  onThemeSelect,
 }) => {
   const [appearanceOpen, setAppearanceOpen] = useState(false);
   const appearanceTimer = useRef(null);
@@ -1681,6 +1685,11 @@ const SettingsPopoverContent = ({
   };
 
   const handleThemeSelect = (themeKey) => {
+    if (onThemeSelect) {
+      onThemeSelect(themeKey);
+      if (onAppearanceChange) onAppearanceChange(themeKey);
+      return;
+    }
     if (!themeContext) return;
     if (onAppearanceChange) onAppearanceChange(themeKey);
     if (themeKey === 'system') {
@@ -1758,7 +1767,7 @@ const SettingsPopoverContent = ({
             <div onMouseEnter={openAppearance} onMouseLeave={closeAppearance}>
               <div className="samplePagesLeftNav__toolsPopover">
                 <div className="samplePagesLeftNav__toolsPopoverContent">
-                  {APPEARANCE_OPTIONS.map((opt) => (
+                  {(appearanceOptions || APPEARANCE_OPTIONS).map((opt) => (
                     <button
                       key={opt.key}
                       type="button"
@@ -1788,13 +1797,14 @@ const SettingsPopoverContent = ({
 };
 
 // Profile popover content
-const ProfilePopoverContent = () => {
+const ProfilePopoverContent = ({ avatarName }) => {
   const [helpOpen, setHelpOpen] = useState(false);
+  const displayName = avatarName || 'OS';
   return (
     <div className="samplePagesLeftNav__toolsPopover">
       <div className="samplePagesLeftNav__profilePopoverHeader">
-        <OuiAvatar name="OS" size="s" />
-        <span className="samplePagesLeftNav__profilePopoverName">John</span>
+        <OuiAvatar name={displayName} size="s" />
+        <span className="samplePagesLeftNav__profilePopoverName">{displayName}</span>
       </div>
       <div className="samplePagesLeftNav__toolsPopoverContent">
         <button

@@ -39,11 +39,14 @@ export const SessionLeftNav = ({
   sessions = [],
   activeView,
   isEmptySession,
+  appearanceOptions,
+  onThemeSelect,
+  avatarName,
 }) => {
   const themeContext = useContext(ThemeContext);
-  const isDark = themeContext.theme === 'v9-dark';
+  const isDark = themeContext.theme === 'v9-dark' || themeContext.theme === 'v10-dark';
   const [appearanceSelection, setAppearanceSelection] = useState(
-    isDark ? 'v9-dark' : 'v9-light'
+    themeContext.theme || (isDark ? 'v9-dark' : 'v9-light')
   );
   const [navPopover, setNavPopover] = useState(null);
   const navPopoverTimer = useRef(null);
@@ -237,6 +240,8 @@ export const SessionLeftNav = ({
                 themeContext={themeContext}
                 appearanceSelection={appearanceSelection}
                 onAppearanceChange={setAppearanceSelection}
+                appearanceOptions={appearanceOptions}
+                onThemeSelect={onThemeSelect}
                 onPageChange={() => {
                   setNavPopover(null);
                 }}
@@ -249,7 +254,7 @@ export const SessionLeftNav = ({
           onMouseEnter={() => openNavPopover('profile')}
           onMouseLeave={() => closeNavPopover()}>
           <OuiPopover
-            button={<OuiAvatar name="OS" size="s" />}
+            button={<OuiAvatar name={avatarName || "OS"} size="s" />}
             isOpen={navPopover === 'profile'}
             closePopover={() => setNavPopover(null)}
             anchorPosition="rightDown"
@@ -258,7 +263,7 @@ export const SessionLeftNav = ({
             <div
               onMouseEnter={() => openNavPopover('profile')}
               onMouseLeave={() => closeNavPopover()}>
-              <ProfilePopoverContent />
+              <ProfilePopoverContent avatarName={avatarName} />
             </div>
           </OuiPopover>
         </div>
