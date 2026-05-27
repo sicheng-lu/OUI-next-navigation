@@ -521,7 +521,7 @@ export const EmptySessionPage = ({
                 if (textarea) textarea.focus();
               }}
               style={{ cursor: 'pointer' }}>
-              <OllyAvatar size={52} lookingDown={inputActive} />
+              <OllyAvatar size={52} lookingDown={inputActive} idle />
             </div>
             <div className="emptySessionPage__headerText">
               <OuiTitle size="m">

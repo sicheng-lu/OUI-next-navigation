@@ -430,27 +430,3 @@
   }
 }
 
-// Rotating highlight arc on OllyAvatar border
-.ollyAvatar__highlight {
-  transform-origin: 40px 40px;
-  animation: ollyHighlightSpin 2.5s linear infinite;
-}
-
-@keyframes ollyHighlightSpin {
-  0% {
-    transform: rotate(0deg);
-    opacity: 1;
-  }
-  40% {
-    transform: rotate(360deg);
-    opacity: 1;
-  }
-  45% {
-    transform: rotate(360deg);
-    opacity: 0;
-  }
-  100% {
-    transform: rotate(360deg);
-    opacity: 0;
-  }
-}

@@ -317,7 +317,7 @@ export const PagePanel = ({
           onClick={onExpandChat}
           onMouseEnter={() => setOllyHovered(true)}
           onMouseLeave={() => setOllyHovered(false)}>
-          <OllyAvatar size={36} highlight={ollyHovered} />
+          <OllyAvatar size={36} idle />
           {aiButtonHighlight && aiButtonMessage && (
             <div className="pagePanel__aiPopover" onClick={onExpandChat}>
               <div className="pagePanel__aiPopoverInner">
