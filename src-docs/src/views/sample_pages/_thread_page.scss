@@ -620,7 +620,9 @@
 // Remove default textarea border so the wrapper controls it
 .threadPage__textarea textarea {
   padding-bottom: 36px;
-  border-color: lightOrDarkTheme(rgba(13, 48, 87, 0.14), rgba(207, 228, 247, 0.16));
+  border-radius: 0;
+  border: 1px solid lightOrDarkTheme(rgba(13, 48, 87, 0.14), rgba(207, 228, 247, 0.16));
+  background-color: lightOrDarkTheme(rgba(255, 255, 255, 0.6), rgba(16, 62, 110, 0.4));
   transition: border-color 200ms ease;
 
   &:focus {
@@ -628,6 +630,7 @@
   }
 }
 
+// Hide textarea border when animated border is showing (hover)
 .threadPage__inputWrapper:hover .threadPage__textarea textarea:not(:focus) {
   border-color: transparent;
 }
