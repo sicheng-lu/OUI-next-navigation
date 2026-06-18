@@ -1,0 +1,7 @@
+/* v10 Blueprint page styles — loaded alongside the v10 pages.
+   The v10 pages are self-contained (inline styles + CSS vars from tokens.css),
+   but this file ensures the correct body overflow for the dashboard layout. */
+
+.v10-dashboard-body {
+  overflow: hidden;
+}

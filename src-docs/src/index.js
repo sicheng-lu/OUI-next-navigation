@@ -28,6 +28,8 @@ import themeNextLight from './theme_next_light.scss';
 import themeNextDark from './theme_next_dark.scss';
 import themeV9Light from './theme_v9_light.scss';
 import themeV9Dark from './theme_v9_dark.scss';
+import themeV10Light from './theme_v10_light.scss';
+import themeV10Dark from './theme_v10_dark.scss';
 import { ThemeProvider } from './components/with_theme/theme_context';
 import ScrollToHash from './components/scroll_to_hash';
 import { LinkWrapper } from './views/link_wrapper';
@@ -39,6 +41,8 @@ import { LoginPage } from './views/sample_pages/login_page';
 
 import { OnboardingWizardPage } from './views/sample_pages/onboarding_wizard_page';
 import { MarketingPage } from './views/sample_pages/marketing_page';
+import { V10WelcomePage } from './views/sample_pages/v10_welcome_page';
+import { V10DashboardPage } from './views/sample_pages/v10_dashboard_page';
 
 registerTheme('light', [themeLight]);
 registerTheme('dark', [themeDark]);
@@ -46,6 +50,8 @@ registerTheme('next-light', [themeNextLight]);
 registerTheme('next-dark', [themeNextDark]);
 registerTheme('v9-light', [themeV9Light]);
 registerTheme('v9-dark', [themeV9Dark]);
+registerTheme('v10-light', [themeV10Light]);
+registerTheme('v10-dark', [themeV10Dark]);
 
 // Set up app
 
@@ -102,6 +108,22 @@ render(
             )}
           />
 
+          <Route
+            path="/sample-pages-v10"
+            render={() => (
+              <LinkWrapper>
+                <V10WelcomePage />
+              </LinkWrapper>
+            )}
+          />
+          <Route
+            path="/v10-dashboard"
+            render={() => (
+              <LinkWrapper>
+                <V10DashboardPage />
+              </LinkWrapper>
+            )}
+          />
           <Route
             path="/sample-pages"
             render={() => (

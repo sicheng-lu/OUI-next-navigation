@@ -1,0 +1,354 @@
+// v10 Blueprint — Global visual overrides
+// Forces the drafted/technical aesthetic: square corners, no shadows,
+// Outfit/IBM Plex Mono fonts, drafting grid, corner ticks, accent borders.
+
+// ── Font overrides (before v9 !default definitions) ──
+$ouiFontFamily: 'Outfit', system-ui, sans-serif;
+$ouiFontFamilyDisplay: 'Outfit', system-ui, sans-serif;
+$ouiCodeFontFamily: 'IBM Plex Mono', ui-monospace, monospace;
+
+// ── Border radius — zero everywhere ──
+$ouiBorderRadius: 0;
+$ouiBorderRadiusSmall: 0;
+
+// ── Global resets ──
+*:not(.ouiAvatar):not(.euiAvatar):not([class*="ouiAvatar"]):not([class*="euiAvatar"]),
+*:not(.ouiAvatar):not(.euiAvatar):not([class*="ouiAvatar"]):not([class*="euiAvatar"])::before,
+*:not(.ouiAvatar):not(.euiAvatar):not([class*="ouiAvatar"]):not([class*="euiAvatar"])::after {
+  border-radius: 0 !important;
+}
+
+// ── No box shadows on surfaces ──
+.ouiPanel,
+.ouiCard,
+.ouiModal,
+.ouiPopover__panel,
+.ouiFlyout,
+.ouiToast,
+.ouiToolTip,
+.euiPanel,
+.euiCard,
+.threadPanel,
+.sessionContainer__collapsedPanel,
+.emptySessionPage__panel,
+.emptySessionPage__savedQueryCard,
+.emptySessionPage__listItem,
+.emptySessionPage__moreOptions,
+.emptySessionPage__suggestions {
+  box-shadow: none !important;
+}
+
+// ── Corner tick mixin ──
+// Applies 6×6 corner brackets on panels/cards
+@mixin v10-corner-ticks($accent: $ouiColorPrimary, $muted: $ouiBorderColor) {
+  &::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: 6px;
+    height: 6px;
+    border-top: 1px solid $accent;
+    border-left: 1px solid $accent;
+    pointer-events: none;
+    z-index: 1;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    width: 6px;
+    height: 6px;
+    border-top: 1px solid $muted;
+    border-right: 1px solid $muted;
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+
+// Bottom corner ticks require extra elements — we simulate with box-shadow tricks
+// or outline on specific components below.
+
+// ── Page background: drafting grid ──
+html {
+  background-color: $ouiPageBackgroundColor;
+  background-image:
+    linear-gradient(to right, $ouiBorderColor 1px, transparent 1px),
+    linear-gradient(to bottom, $ouiBorderColor 1px, transparent 1px),
+    linear-gradient(to right, rgba($ouiColorPrimary, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba($ouiColorPrimary, 0.12) 1px, transparent 1px);
+  background-size: 16px 16px, 16px 16px, 80px 80px, 80px 80px;
+}
+
+// ── Empty session page panel ──
+.emptySessionPage {
+  background-color: $ouiPageBackgroundColor !important;
+}
+
+.emptySessionPage__panel {
+  border-radius: 0 !important;
+  border: 1px solid $ouiBorderColor;
+  position: relative;
+  background-color: transparent !important;
+  background-image:
+    linear-gradient(to right, $ouiBorderColor 1px, transparent 1px),
+    linear-gradient(to bottom, $ouiBorderColor 1px, transparent 1px),
+    linear-gradient(to right, rgba($ouiColorPrimary, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba($ouiColorPrimary, 0.12) 1px, transparent 1px) !important;
+  background-size: 16px 16px, 16px 16px, 80px 80px, 80px 80px !important;
+
+  @include v10-corner-ticks;
+
+  // Remove the fade gradient overlay — not part of v10
+  &::before {
+    // Override the ::before from the parent (the fade gradient)
+    // We repurpose it for corner ticks, so remove the gradient
+    background: none !important;
+    width: 6px;
+    height: 6px;
+    top: -1px;
+    left: -1px;
+    right: auto;
+    bottom: auto;
+    border-top: 1px solid $ouiColorPrimary;
+    border-left: 1px solid $ouiColorPrimary;
+  }
+}
+
+// ── Cards/list items — left accent + corner ticks ──
+.emptySessionPage__listItem,
+.emptySessionPage__savedQueryCard {
+  border-radius: 0 !important;
+  border: 1px solid $ouiBorderColor;
+  border-left: 2px solid $ouiColorPrimary;
+  position: relative;
+  background-color: rgba($ouiColorEmptyShade, 0.55);
+
+  @include v10-corner-ticks;
+}
+
+// ── Favorite panel ──
+.emptySessionPage__favoritePanel {
+  border-radius: 0 !important;
+  border: 1px solid $ouiBorderColor;
+  position: relative;
+
+  @include v10-corner-ticks;
+}
+
+// ── Section headers — // LABEL style ──
+.emptySessionPage__sectionHeader {
+  font-family: $ouiCodeFontFamily;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: $ouiColorPrimary;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &::after {
+    content: '';
+    flex: 1;
+    border-top: 1px dashed $ouiBorderColor;
+  }
+}
+
+// ── Tab headers — mono uppercase ──
+.emptySessionPage__tabHeader {
+  font-family: $ouiCodeFontFamily;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  border-bottom-width: 2px;
+
+  &--active {
+    border-bottom-style: solid;
+  }
+}
+
+// ── Quick access buttons — square, not round ──
+.emptySessionPage__quickAccessButton {
+  border-radius: 0 !important;
+  border: 1px solid $ouiBorderColor;
+}
+
+// ── Input/textarea ──
+.emptySessionPage__inputWrap,
+.emptySessionPage__textarea textarea {
+  border-radius: 0 !important;
+  border: 1px solid $ouiBorderColor;
+  background-color: $ouiFormBackgroundColor;
+}
+
+// ── Alert callout — amber accent ──
+.emptySessionPage__alertCallout {
+  border-radius: 0 !important;
+  border: 1px solid rgba($ouiColorWarning, 0.45);
+  border-left: 2px solid $ouiColorWarning;
+  background-color: rgba($ouiColorWarning, 0.12);
+  position: relative;
+
+  @include v10-corner-ticks($ouiColorWarning, $ouiBorderColor);
+}
+
+.emptySessionPage__alertCalloutAction {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-family: $ouiCodeFontFamily;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+// ── Session left nav ──
+.sessionLeftNav {
+  background-color: rgba($ouiColorEmptyShade, 0.55);
+  border-right: 1px solid $ouiBorderColor;
+  width: 56px;
+  min-width: 56px;
+}
+
+.sessionLeftNav__actionButton {
+  border-radius: 0 !important;
+  border: 1px solid transparent;
+  width: 36px;
+  height: 36px;
+  color: $ouiTextSubduedColor;
+  transition: background-color 150ms ease-out, border-color 150ms ease-out, color 150ms ease-out;
+
+  &:hover {
+    background-color: rgba($ouiColorPrimary, 0.05);
+    color: $ouiColorDarkShade;
+  }
+
+  &--active {
+    background-color: rgba($ouiColorPrimary, 0.10) !important;
+    border-color: rgba($ouiColorPrimary, 0.45) !important;
+    color: $ouiColorPrimary !important;
+
+    &:hover {
+      background-color: rgba($ouiColorPrimary, 0.14) !important;
+    }
+  }
+}
+
+.sessionLeftNav__footerButton {
+  width: 36px;
+  height: 36px;
+  color: $ouiTextSubduedColor;
+}
+
+// Avatar — v10 PersonAvatar style (double-ring)
+.sessionLeftNav__footer .ouiAvatar,
+.ouiAvatar {
+  border-radius: 50% !important;
+  background-color: transparent !important;
+  color: $ouiColorDanger !important;
+  border: 1.4px solid $ouiColorDanger !important;
+  box-shadow: inset 0 0 0 2px $ouiPageBackgroundColor, inset 0 0 0 3.4px rgba($ouiColorDanger, 0.45) !important;
+  font-family: $ouiCodeFontFamily;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+// ── Thread panel ──
+.threadPanel {
+  border-radius: 0 !important;
+  border: 1px solid $ouiBorderColor;
+  position: relative;
+
+  @include v10-corner-ticks;
+}
+
+.threadPanel__header {
+  border-bottom: 1px solid $ouiBorderColor;
+}
+
+// ── Session container ──
+.sessionContainer__collapsedPanel {
+  border-radius: 0 !important;
+  border: 1px solid $ouiBorderColor;
+}
+
+// ── Page panel (canvas area) ──
+.pagePanel {
+  border-radius: 0 !important;
+  border: 1px solid $ouiBorderColor;
+  position: relative;
+
+  @include v10-corner-ticks;
+}
+
+// ── Buttons ──
+.ouiButton,
+.ouiButtonEmpty,
+.ouiButtonIcon,
+.euiButton,
+.euiButtonEmpty,
+.euiButtonIcon {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-family: $ouiCodeFontFamily;
+  letter-spacing: 0.8px;
+}
+
+// ── Tabs ──
+.ouiTab,
+.euiTab {
+  border-radius: 0 !important;
+  font-family: $ouiCodeFontFamily;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+// ── Forms ──
+.ouiFieldText,
+.ouiFieldSearch,
+.ouiTextArea,
+.ouiSelect,
+.euiFieldText,
+.euiFieldSearch,
+.euiTextArea,
+.euiSelect {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+// ── Badges / Pills — square, mono ──
+.ouiBadge,
+.euiBadge {
+  border-radius: 0 !important;
+  font-family: $ouiCodeFontFamily;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 9px;
+}
+
+// ── Popovers ──
+.ouiPopover__panel,
+.euiPopover__panel {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  border: 1px solid $ouiBorderColor;
+}
+
+// ── Scrollbars ──
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba($ouiColorDarkShade, 0.22);
+  border-radius: 0 !important;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba($ouiColorDarkShade, 0.38);
+}
