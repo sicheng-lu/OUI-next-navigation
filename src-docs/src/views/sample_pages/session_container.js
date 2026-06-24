@@ -99,6 +99,17 @@ export const SessionContainer = ({
     animTimerRef.current = setTimeout(() => setIsAnimating(false), 550);
   }, []);
 
+  // Animate the panel resize whenever the panel state changes from outside this
+  // component (e.g. the AI chat opens a canvas page while the canvas is collapsed,
+  // which expands full-screen chat back to side-by-side).
+  const prevPanelStateRef = useRef(threadPanelState);
+  useEffect(() => {
+    if (prevPanelStateRef.current !== threadPanelState) {
+      prevPanelStateRef.current = threadPanelState;
+      triggerAnimation();
+    }
+  }, [threadPanelState, triggerAnimation]);
+
   useEffect(() => {
     return () => {
       if (animTimerRef.current) clearTimeout(animTimerRef.current);
