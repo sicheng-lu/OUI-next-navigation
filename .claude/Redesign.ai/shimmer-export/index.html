@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Olly · Dot-matrix shimmer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 48px 56px 80px;
+    background: #EBEEF7;
+    font-family: 'Hanken Grotesk', sans-serif;
+    color: #221C2E;
+    -webkit-font-smoothing: antialiased;
+  }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #8A7BD8; font-weight: 600; }
+  h1 { font-size: 38px; font-weight: 700; letter-spacing: -0.02em; margin: 12px 0 8px; }
+  .lede { font-size: 16px; line-height: 1.55; color: #6E6678; max-width: 680px; margin: 0 0 40px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; max-width: 1240px; }
+  .card { background: #fff; border: 1px solid #E4E8F1; border-radius: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.07); overflow: hidden; }
+  .card .stage { height: 200px; background: #FBFBFE; }
+  .card canvas { width: 100%; height: 100%; display: block; }
+  .card .cap { padding: 13px 16px; border-top: 1px solid #EEF0F6; font-size: 13px; color: #6E6678; }
+  .card .cap b { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #6A42C7; display: block; margin-bottom: 4px; }
+  .wide { grid-column: 1 / -1; }
+  /* Hero */
+  .hero { position: relative; height: 360px; background: radial-gradient(120% 90% at 50% 42%, #FFFFFF 30%, #F4F2FC 100%); }
+  .hero canvas { position: absolute; inset: 0; }
+  .hero .label { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; }
+  .hero .k { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: #8A7BD8; font-weight: 600; margin-bottom: 14px; }
+  .hero .t { font-size: 26px; font-weight: 600; letter-spacing: -0.01em; }
+  /* Input + surround */
+  .surround { position: relative; padding: 62px 78px; background: #FBFBFE; border-radius: 12px; }
+  .surround canvas { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+  .box { position: relative; z-index: 1; background: #FFFFFF; border: 1px solid #E4E1EC; border-radius: 14px; box-shadow: 0 4px 14px rgba(60,42,104,0.05); padding: 22px 22px 16px; }
+  .box .ph { font-size: 15px; color: #9A93A6; margin-bottom: 36px; }
+  .box .row { display: flex; align-items: center; justify-content: space-between; }
+  .box .right { display: flex; align-items: center; gap: 16px; }
+  .send { width: 30px; height: 30px; border-radius: 50%; border: 1px solid #DAD6E6; display: flex; align-items: center; justify-content: center; }
+</style>
+</head>
+<body>
+  <div class="eyebrow">Olly · Agentic loading</div>
+  <h1>Dot-matrix shimmer</h1>
+  <p class="lede">A dependency-free canvas shimmer. Drop <code>shimmer.js</code> on any page and add <code>data-anim</code> to a <code>&lt;canvas&gt;</code>. Each animation below is a separate effect.</p>
+
+  <div class="grid">
+    <div class="card"><div class="stage"><canvas data-anim="wave" data-sp="14"></canvas></div><div class="cap"><b>wave</b>Diagonal sweep across the matrix.</div></div>
+    <div class="card"><div class="stage"><canvas data-anim="radial" data-sp="15"></canvas></div><div class="cap"><b>radial</b>Concentric rings pulse from center.</div></div>
+    <div class="card"><div class="stage"><canvas data-anim="scan" data-sp="15"></canvas></div><div class="cap"><b>scan</b>A column scans left to right.</div></div>
+    <div class="card"><div class="stage"><canvas data-anim="progress" data-sp="15"></canvas></div><div class="cap"><b>progress</b>Fill with a glowing leading edge.</div></div>
+    <div class="card"><div class="stage"><canvas data-anim="twinkle" data-sp="14"></canvas></div><div class="cap"><b>twinkle</b>Ambient breathing field.</div></div>
+    <div class="card"><div class="stage"><canvas data-anim="orbit" data-sp="15"></canvas></div><div class="cap"><b>orbit</b>A bright node + trail circles.</div></div>
+
+    <div class="card wide">
+      <div class="hero"><canvas data-anim="hero" data-sp="17"></canvas>
+        <div class="label">
+          <div class="k">Investigating</div>
+          <div class="t">Tracing payment-service P99 breach</div>
+        </div>
+      </div>
+      <div class="cap"><b>hero</b>Full-bleed agent-working state — the only effect at full opacity.</div>
+    </div>
+
+    <div class="card wide">
+      <div class="surround">
+        <canvas data-anim="surround" data-sp="13"></canvas>
+        <div class="box" data-surround-box="1">
+          <div class="ph">Ask AI anything, or type to search a page</div>
+          <div class="row">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3C3648" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            <div class="right">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#3C3648" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+              <div class="send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#B7B0BF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cap"><b>surround</b>Soft cloud orbiting the OUTSIDE of an element marked <code>[data-surround-box]</code>.</div>
+    </div>
+  </div>
+
+  <script src="shimmer.js"></script>
+</body>
+</html>
