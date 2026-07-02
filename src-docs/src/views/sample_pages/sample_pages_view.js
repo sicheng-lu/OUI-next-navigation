@@ -1967,7 +1967,7 @@ export const SessionPagesView = ({ variant } = {}) => {
   return (
     <div
       className={`samplePagesWrapper${
-        isSessionView && variant ? ' samplePagesWrapper--noPattern' : ''
+        isSessionView && variant && !(activeSession && activeSession.threadKey === 'overview-home') ? ' samplePagesWrapper--noPattern' : ''
       }`}
       style={{
         display: 'flex',

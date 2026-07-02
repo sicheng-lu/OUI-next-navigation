@@ -113,7 +113,7 @@ render(
 
           <Route
             exact
-            path="/home"
+            path="/sample-pages-v7"
             render={() => (
               <LinkWrapper>
                 <SessionPagesView key="v6" variant="v6" />
