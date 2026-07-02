@@ -20,9 +20,12 @@
   padding: 4px 12px 8px;
 }
 
-.discoverPage__queryTextarea textarea {
+textarea.discoverPage__queryTextarea {
   font-family: $ouiCodeFontFamily;
   font-size: $ouiFontSizeS;
+  // Keep the field's full border, but drop the form-control underline
+  // gradient that reads as an extra inner bottom line.
+  background-image: none !important; // sass-lint:disable-line no-important
 }
 
 // Tab bar with actions
