@@ -369,63 +369,6 @@ export const OverviewHomePage = () => {
 
   return (
     <div className="overviewHomePage">
-      {/* Findings / Insights section */}
-      <div className="overviewHomePage__section">
-        <div className="overviewHomePage__sectionHeader">
-          <span className="overviewHomePage__sectionTitle">Insights</span>
-          <span className="overviewHomePage__sectionMeta">Updated 2m ago</span>
-        </div>
-        <div className="overviewHomePage__findings">
-          {FINDINGS.map((finding, i) => {
-            if (i >= findingsLoaded) return null;
-            const colors = STATUS_COLORS[finding.statusColor] || STATUS_COLORS.blue;
-            const isExpanded = expandedFindings.has(finding.key);
-            return (
-              <div
-                key={finding.key}
-                className={`overviewHomePage__findingCard${isExpanded ? ' overviewHomePage__findingCard--expanded' : ''}`}
-                onClick={() => {
-                  setExpandedFindings((prev) => {
-                    const next = new Set(prev);
-                    if (next.has(finding.key)) next.delete(finding.key);
-                    else next.add(finding.key);
-                    return next;
-                  });
-                }}>
-                <div className="overviewHomePage__findingCardMain">
-                  <span
-                    className="overviewHomePage__statusPill"
-                    style={{ background: colors.bg, color: colors.color }}>
-                    {finding.status}
-                  </span>
-                  <span className="overviewHomePage__findingTitle">{finding.title}</span>
-                  <OuiIcon
-                    type="arrowDown"
-                    size="s"
-                    className={`overviewHomePage__findingChevron${isExpanded ? ' overviewHomePage__findingChevron--expanded' : ''}`}
-                  />
-                </div>
-                {isExpanded && (
-                  <div className="overviewHomePage__findingBody">
-                    <p className="overviewHomePage__findingBodyText">{finding.body}</p>
-                    {finding.evidence && (
-                      <ul className="overviewHomePage__evidenceList">
-                        {finding.evidence.map((e, idx) => <li key={idx}>{e}</li>)}
-                      </ul>
-                    )}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-          {findingsLoaded < FINDINGS.length && (
-            <div className="overviewHomePage__findingsLoader">
-              <OuiAgenticSpinner size="s" />
-            </div>
-          )}
-        </div>
-      </div>
-
       {/* Widget grid */}
       <div className="overviewHomePage__section">
         <div className={`overviewHomePage__widgetGrid${isEditMode ? ' overviewHomePage__widgetGrid--editing' : ''}`}>

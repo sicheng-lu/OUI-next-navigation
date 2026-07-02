@@ -68,11 +68,7 @@
   min-width: calc(var(--widget-min-w) + 128px); // 1 column + horizontal padding (64px × 2)
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: safe center;
-  gap: 8px;
-  padding: 24px 64px;
-  overflow-y: auto;
+  overflow: hidden;
   background-color: lightOrDarkTheme(rgba(236, 238, 248, 0.50), rgba(13, 19, 30, 0.50));
   container-type: inline-size;
   -ms-overflow-style: none;
@@ -99,7 +95,7 @@
 // ─── Left column inner content ────────────────────────────────
 .v6Scenario__leftContent {
   width: 100%;
-  max-width: 480px;
+  max-width: 560px;
 }
 
 // ─── Mascot row ────────────────────────────────────────────────
@@ -108,7 +104,7 @@
   align-items: center;
   gap: 10px;
   width: 100%;
-  max-width: 480px;
+  max-width: 560px;
   padding-bottom: 4px;
 }
 
@@ -135,7 +131,7 @@
 // ─── Title + summary ───────────────────────────────────────────
 .v6Scenario__title {
   width: 100%;
-  max-width: 480px;
+  max-width: 560px;
   padding-bottom: 4px;
 }
 
@@ -145,7 +141,7 @@
   color: lightOrDarkTheme(rgba(0, 0, 0, 0.65), rgba(255, 255, 255, 0.65));
   margin: 0;
   width: 100%;
-  max-width: 480px;
+  max-width: 560px;
 
   strong {
     color: $ouiTitleColor;
@@ -156,7 +152,7 @@
 // ─── Agentic loaders ──────────────────────────────────────────
 .v6Scenario__summaryLoader {
   width: 100%;
-  max-width: 480px;
+  max-width: 560px;
   display: flex;
   align-items: center;
   padding: 4px 0;
@@ -395,11 +391,36 @@
 
 // ─── Single-column layout (v8 / home3) ────────────────────────
 .v6Scenario--singleColumn {
+  position: relative;
+
   .v6Scenario__inputArea,
   .v6Scenario__mascotRow,
   .v6Scenario__title,
   .v6Scenario__summary {
     max-width: 560px;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, var(--nb-accent, #{$ouiColorPrimary}) 12%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--nb-accent, #{$ouiColorPrimary}) 12%, transparent) 1px, transparent 1px);
+    background-size: 19px 19px;
+    background-repeat: repeat;
+    pointer-events: none;
+    z-index: 0;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 25%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 25%);
+  }
+
+  .v6Scenario__twoCol {
+    position: relative;
+    z-index: 1;
   }
 }
 
@@ -765,7 +786,7 @@
 // ─── Input area ────────────────────────────────────────────────
 .v6Scenario__inputArea {
   width: 100%;
-  max-width: 480px;
+  max-width: 560px;
   padding-top: 8px;
 }
 
@@ -794,10 +815,11 @@
 .v6Scenario__jumpTo {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 9px;
   flex-wrap: wrap;
   width: 100%;
-  max-width: 480px;
+  max-width: 560px;
   padding-top: 20px;
 }
 

@@ -223,7 +223,7 @@ render(
             path="/sample-pages"
             render={() => (
               <LinkWrapper>
-                <SessionPagesView key="v1" />
+                <SessionPagesView />
               </LinkWrapper>
             )}
           />
