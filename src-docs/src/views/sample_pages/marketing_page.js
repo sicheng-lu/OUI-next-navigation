@@ -289,7 +289,7 @@ const HeroSection = () => (
       <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
         <button
           onClick={() => {
-            window.location.href = '/#/onboarding-wizard';
+            window.location.href = '/#/console-create-application';
           }}
           style={{
             backgroundColor: '#1a1a2e',
@@ -302,7 +302,7 @@ const HeroSection = () => (
             cursor: 'pointer',
             fontFamily: fonts.base,
           }}>
-          Launch in OpenSearch UI
+          Launch now
         </button>
         <button
           style={{
@@ -316,7 +316,7 @@ const HeroSection = () => (
             cursor: 'pointer',
             fontFamily: fonts.base,
           }}>
-          Launch in IDE
+          Launch in CLI or IDE
         </button>
       </div>
     </div>
