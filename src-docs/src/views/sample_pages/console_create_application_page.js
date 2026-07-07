@@ -359,6 +359,243 @@ export const ConsoleCreateApplicationPage = () => {
             </div>
           </div>
 
+          {/* Your Application is ready */}
+          <section
+            style={{
+              backgroundColor: colors.cardBg,
+              border: `1px solid ${colors.borderLight}`,
+              borderRadius: '4px',
+              padding: '24px',
+              marginBottom: '20px',
+            }}>
+            <h2
+              style={{
+                fontSize: '16px',
+                fontWeight: 700,
+                color: colors.textPrimary,
+                margin: '0 0 20px 0',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+              }}>
+              <span style={{ fontSize: '12px' }}>▼</span> Your Application is
+              ready
+            </h2>
+
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                gap: '24px',
+              }}>
+              {/* Launch OpenSearch UI card */}
+              <div
+                style={{
+                  display: 'flex',
+                  gap: '16px',
+                  alignItems: 'flex-start',
+                }}>
+                <div
+                  style={{
+                    width: '80px',
+                    height: '80px',
+                    borderRadius: '4px',
+                    backgroundColor: '#f1faff',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}>
+                  <svg
+                    width="40"
+                    height="40"
+                    viewBox="0 0 48 48"
+                    fill="none">
+                    <rect
+                      x="6"
+                      y="10"
+                      width="36"
+                      height="24"
+                      rx="2"
+                      stroke={colors.linkBlue}
+                      strokeWidth="2"
+                      fill="none"
+                    />
+                    <rect
+                      x="10"
+                      y="14"
+                      width="12"
+                      height="8"
+                      rx="1"
+                      fill={colors.linkBlue}
+                      opacity="0.2"
+                    />
+                    <rect
+                      x="26"
+                      y="14"
+                      width="12"
+                      height="3"
+                      rx="1"
+                      fill={colors.linkBlue}
+                      opacity="0.3"
+                    />
+                    <rect
+                      x="26"
+                      y="19"
+                      width="8"
+                      height="3"
+                      rx="1"
+                      fill={colors.linkBlue}
+                      opacity="0.2"
+                    />
+                    <line
+                      x1="18"
+                      y1="38"
+                      x2="30"
+                      y2="38"
+                      stroke={colors.borderMedium}
+                      strokeWidth="2"
+                    />
+                    <line
+                      x1="24"
+                      y1="34"
+                      x2="24"
+                      y2="38"
+                      stroke={colors.borderMedium}
+                      strokeWidth="2"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h3
+                    style={{
+                      fontSize: '14px',
+                      fontWeight: 700,
+                      color: colors.textPrimary,
+                      margin: '0 0 4px 0',
+                    }}>
+                    Launch OpenSearch UI
+                  </h3>
+                  <p
+                    style={{
+                      fontSize: '12px',
+                      color: colors.textSecondary,
+                      margin: '0 0 12px 0',
+                      lineHeight: '1.4',
+                    }}>
+                    Open the unified observability experience to visualize and
+                    explore your data. Set up dashboards, alerts, and
+                    investigations.
+                  </p>
+                  <button
+                    onClick={() => {
+                      window.location.href = '/#/onboarding-wizard';
+                    }}
+                    style={{
+                      backgroundColor: '#ffffff',
+                      color: colors.textPrimary,
+                      border: `1px solid ${colors.borderMedium}`,
+                      borderRadius: '16px',
+                      padding: '4px 14px',
+                      fontSize: '13px',
+                      cursor: 'pointer',
+                      fontFamily: fonts.base,
+                    }}>
+                    Launch OpenSearch UI
+                  </button>
+                </div>
+              </div>
+
+              {/* Launch in IDE/CLI card */}
+              <div
+                style={{
+                  display: 'flex',
+                  gap: '16px',
+                  alignItems: 'flex-start',
+                }}>
+                <div
+                  style={{
+                    width: '80px',
+                    height: '80px',
+                    borderRadius: '4px',
+                    backgroundColor: '#f7f7f7',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}>
+                  <svg
+                    width="40"
+                    height="40"
+                    viewBox="0 0 48 48"
+                    fill="none">
+                    <rect
+                      x="6"
+                      y="10"
+                      width="36"
+                      height="28"
+                      rx="3"
+                      stroke={colors.textSecondary}
+                      strokeWidth="2"
+                      fill="none"
+                    />
+                    <path
+                      d="M14 22l5 4-5 4"
+                      stroke={colors.textSecondary}
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <line
+                      x1="22"
+                      y1="30"
+                      x2="30"
+                      y2="30"
+                      stroke={colors.textSecondary}
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h3
+                    style={{
+                      fontSize: '14px',
+                      fontWeight: 700,
+                      color: colors.textPrimary,
+                      margin: '0 0 4px 0',
+                    }}>
+                    Launch in IDE/CLI
+                  </h3>
+                  <p
+                    style={{
+                      fontSize: '12px',
+                      color: colors.textSecondary,
+                      margin: '0 0 12px 0',
+                      lineHeight: '1.4',
+                    }}>
+                    Connect from your local development environment using the
+                    CLI or IDE plugins to manage ingestion pipelines and queries
+                    programmatically.
+                  </p>
+                  <button
+                    style={{
+                      backgroundColor: '#ffffff',
+                      color: colors.textPrimary,
+                      border: `1px solid ${colors.borderMedium}`,
+                      borderRadius: '16px',
+                      padding: '4px 14px',
+                      fontSize: '13px',
+                      cursor: 'pointer',
+                      fontFamily: fonts.base,
+                    }}>
+                    Launch in IDE/CLI
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+
           {/* Details card */}
           <section
             style={{
