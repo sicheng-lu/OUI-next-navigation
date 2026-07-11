@@ -341,7 +341,7 @@ export const ConsoleCreateApplicationPage = () => {
               </button>
               <button
                 onClick={() => {
-                  window.location.href = '/#/onboarding-wizard';
+                  window.location.hash = '#/onboarding-wizard';
                 }}
                 style={{
                   backgroundColor: colors.awsOrange,
@@ -489,7 +489,7 @@ export const ConsoleCreateApplicationPage = () => {
                   </p>
                   <button
                     onClick={() => {
-                      window.location.href = '/#/onboarding-wizard';
+                      window.location.hash = '#/onboarding-wizard';
                     }}
                     style={{
                       backgroundColor: '#ffffff',
@@ -978,7 +978,7 @@ export const ConsoleCreateApplicationPage = () => {
           }}>
           <button
             onClick={() => {
-              window.location.href = '/#/marketing';
+              window.location.hash = '#/marketing';
             }}
             style={{
               backgroundColor: '#ffffff',

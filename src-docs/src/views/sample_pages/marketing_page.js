@@ -289,7 +289,7 @@ const HeroSection = () => (
       <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
         <button
           onClick={() => {
-            window.location.href = '/#/console-create-application';
+            window.location.hash = '#/console-create-application';
           }}
           style={{
             backgroundColor: '#1a1a2e',
