@@ -175,7 +175,7 @@ const STEPS = [
     question: 'Here\u2019s a summary of your setup. Everything look good?',
     dynamicQuestion: (selections) => {
       if (selections[0] === 'application') {
-        return 'Here\u2019s a summary of your setup. Everything look good?\n\nBased on your data, I recommend storing your telemetry in an OpenSearch Serverless Collection with Optimized engine. Columnar storage handles time-series log data more efficiently.';
+        return 'Here\u2019s a summary of your setup. Everything look good?\n\nBased on your data, we have discovered 14 services. We will store them in a dataset otel-v1-*.';
       }
       return 'Here\u2019s a summary of your setup. Everything look good?';
     },
@@ -638,7 +638,7 @@ const TelemetryStoragePanel = ({ selectedOption }) => {
 const SummaryPanel = ({ allSelections }) => {
   const summaryRows = [
     {
-      label: 'Services instrumented',
+      label: 'Services discovered',
       stepIdx: 0,
       valueMap: {
         application: '14 services',
@@ -660,14 +660,14 @@ const SummaryPanel = ({ allSelections }) => {
       label: 'Telemetry storage',
       stepIdx: 4,
       valueMap: {
-        'looks-good': 'OpenSearch Serverless Collection (Optimized engine)',
-        customize: 'Custom configuration',
-        'store-existing': 'Existing resource',
+        'looks-good': 'otel-v1-*',
+        customize: 'otel-v1-*',
+        'store-existing': 'otel-v1-*',
       },
       // When user chose "Instrument application" or "EKS", 1d is skipped — auto-recommended
       skippedWhen: () =>
         allSelections[0] === 'application' || allSelections[1] === 'eks',
-      skippedLabel: 'OpenSearch Serverless Collection (Optimized engine)',
+      skippedLabel: 'otel-v1-*',
     },
   ];
 

@@ -39,6 +39,7 @@ import { LoginPage } from './views/sample_pages/login_page';
 
 import { OnboardingWizardPage } from './views/sample_pages/onboarding_wizard_page';
 import { MarketingPage } from './views/sample_pages/marketing_page';
+import { ConsoleCreateApplicationPage } from './views/sample_pages/console_create_application_page';
 import { FirstRunPage } from './views/sample_pages/first_run_page';
 
 registerTheme('light', [themeLight]);
@@ -87,6 +88,14 @@ render(
             render={() => (
               <LinkWrapper>
                 <MarketingPage />
+              </LinkWrapper>
+            )}
+          />
+          <Route
+            path="/console-create-application"
+            render={() => (
+              <LinkWrapper>
+                <ConsoleCreateApplicationPage />
               </LinkWrapper>
             )}
           />
