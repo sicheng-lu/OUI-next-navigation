@@ -90,9 +90,12 @@
   display: flex;
   gap: $ouiSize;
   padding: $ouiSize;
-  border: 1px solid $ouiColorWarning;
+  border: 1px solid lightOrDarkTheme($ouiColorWarning, rgba($ouiColorWarning, .45));
   border-radius: $ouiBorderRadius;
-  background-color: tintOrShade($ouiColorWarning, 90%, 80%);
+  background-color: lightOrDarkTheme(
+    tint($ouiColorWarning, 90%),
+    mix($ouiColorWarning, $ouiColorEmptyShade, 10%)
+  );
 }
 
 .emptySessionPage__alertCalloutIcon {
@@ -594,8 +597,11 @@
   }
 
   &--activity {
-    border-color: $ouiColorWarning;
-    background-color: tintOrShade($ouiColorWarning, 94%, 85%);
+    border-color: lightOrDarkTheme($ouiColorWarning, rgba($ouiColorWarning, .45));
+    background-color: lightOrDarkTheme(
+      tint($ouiColorWarning, 94%),
+      mix($ouiColorWarning, $ouiColorEmptyShade, 8%)
+    );
     position: relative;
     flex-direction: column;
     align-items: stretch;
@@ -839,11 +845,17 @@
   gap: 4px;
   padding: 2px 8px;
   margin-top: 4px;
-  background-color: tintOrShade($ouiColorWarning, 85%, 75%);
-  border: 1px solid tintOrShade($ouiColorWarning, 60%, 50%);
+  background-color: lightOrDarkTheme(
+    tint($ouiColorWarning, 85%),
+    mix($ouiColorWarning, $ouiColorEmptyShade, 14%)
+  );
+  border: 1px solid lightOrDarkTheme(
+    tint($ouiColorWarning, 60%),
+    rgba($ouiColorWarning, .4)
+  );
   border-radius: 999px;
   font-size: $ouiFontSizeXS;
-  color: $ouiColorDarkShade;
+  color: lightOrDarkTheme($ouiColorDarkShade, $ouiColorWarning);
   line-height: 1.4;
   width: fit-content;
 }
